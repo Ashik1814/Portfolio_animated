@@ -15,7 +15,7 @@ import {
   Crown,
   BookOpen,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
 interface SkillBarProps {
   name: string;
@@ -128,8 +128,8 @@ export function Skills() {
           {skillCategories.map((category) => {
             const Icon = category.icon;
             return (
-              <Card key={category.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
-                <CardContent className="p-6 space-y-5">
+              <CardSpotlight key={category.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
+                <div className="p-6 space-y-5">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${category.color}12` }}>
                       <Icon className="w-5 h-5" style={{ color: category.color }} />
@@ -141,8 +141,8 @@ export function Skills() {
                       <SkillBar key={skill.name} name={skill.name} percentage={skill.percentage} color={category.color} />
                     ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
@@ -155,15 +155,15 @@ export function Skills() {
           {softSkills.map((skill) => {
             const Icon = skill.icon;
             return (
-              <Card key={skill.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
-                <CardContent className="p-4 space-y-2">
+              <CardSpotlight key={skill.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
+                <div className="p-4 space-y-2">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: `${skill.color}12` }}>
                     <Icon className="w-5 h-5" style={{ color: skill.color }} />
                   </div>
                   <h4 className="text-xs font-bold dark:text-white text-gray-900">{skill.name}</h4>
                   <span className="text-lg font-bold" style={{ color: skill.color }}>{skill.percentage}%</span>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
@@ -188,13 +188,13 @@ export function Skills() {
               <h3 className="text-xl font-bold dark:text-white text-gray-900">Currently Learning</h3>
             </div>
           </div>
-          <Card className="glass-card-solid">
-            <CardContent className="p-6 space-y-4">
+          <CardSpotlight className="glass-card-solid">
+            <div className="p-6 space-y-4">
               {currentlyLearning.map((item) => (
                 <SkillBar key={item.name} name={item.name} percentage={item.percentage} color={item.color} />
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </CardSpotlight>
         </div>
       </div>
     </section>

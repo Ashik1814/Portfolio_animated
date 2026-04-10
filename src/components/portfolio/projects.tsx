@@ -15,6 +15,7 @@ import {
   Github,
 } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -241,9 +242,9 @@ export function Projects() {
           {filteredProjects.map((project) => {
             const Icon = project.icon;
             return (
-              <div
+              <CardSpotlight
                 key={project.title}
-                className="group glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5"
+                className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group"
               >
                 {/* Gradient Banner */}
                 <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
@@ -289,7 +290,7 @@ export function Projects() {
                     </AnimatedBorderButton>
                   </div>
                 </div>
-              </div>
+              </CardSpotlight>
             );
           })}
         </div>

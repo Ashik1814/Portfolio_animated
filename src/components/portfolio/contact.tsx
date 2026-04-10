@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
 const contactCards = [
   { icon: Mail, label: "Email", value: "hello@ashik.dev", href: "mailto:hello@ashik.dev" },
@@ -73,7 +74,7 @@ export function Contact() {
                   const Icon = card.icon;
                   return (
                     <a key={card.label} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined} className="group">
-                      <div className="p-4 rounded-lg glass-card-solid dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200">
+                      <CardSpotlight className="p-4 rounded-lg glass-card-solid dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200">
                         <div className="flex items-start gap-3">
                           <div className="w-9 h-9 rounded-lg dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center shrink-0 dark:group-hover:bg-[#00e5ff]/15 group-hover:bg-[#00a8cc]/15 transition-colors">
                             <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
@@ -83,7 +84,7 @@ export function Contact() {
                             <p className="text-sm font-medium dark:text-white text-gray-900 truncate dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors">{card.value}</p>
                           </div>
                         </div>
-                      </div>
+                      </CardSpotlight>
                     </a>
                   );
                 })}
@@ -95,7 +96,7 @@ export function Contact() {
             </div>
 
             {/* Right Column - Contact Form */}
-            <div className="p-6 rounded-lg glass-card-solid">
+            <CardSpotlight className="p-6 rounded-lg glass-card-solid">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Name</label>
@@ -119,7 +120,7 @@ export function Contact() {
                   Send Message
                 </AnimatedBorderButton>
               </form>
-            </div>
+            </CardSpotlight>
           </div>
         </div>
       </section>

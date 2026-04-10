@@ -13,7 +13,7 @@ import {
   Sparkles,
   Award,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
 const skills = [
   {
@@ -132,11 +132,11 @@ export function About() {
           {skills.map((skill) => {
             const Icon = skill.icon;
             return (
-              <Card
+              <CardSpotlight
                 key={skill.title}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group"
               >
-                <CardContent className="p-6 space-y-4">
+                <div className="p-6 space-y-4">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center"
                     style={{ backgroundColor: `${skill.color}12` }}
@@ -163,15 +163,15 @@ export function About() {
                       {skill.metricLabel}
                     </span>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
 
         {/* My Approach */}
-        <Card className="glass-card-solid mb-12">
-          <CardContent className="p-8 text-center max-w-3xl mx-auto">
+        <CardSpotlight className="glass-card-solid mb-12">
+          <div className="p-8 text-center max-w-3xl mx-auto">
             <div className="w-12 h-12 rounded-full dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
             </div>
@@ -188,8 +188,8 @@ export function About() {
               the most value for users while maintaining technical
               excellence?&apos; This philosophy guides every project I take on.
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </CardSpotlight>
 
         {/* Tech Tags */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
@@ -211,11 +211,11 @@ export function About() {
           {coreValues.map((value) => {
             const Icon = value.icon;
             return (
-              <Card
+              <CardSpotlight
                 key={value.title}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center"
               >
-                <CardContent className="p-5 space-y-2">
+                <div className="p-5 space-y-2">
                   <div className="w-10 h-10 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto">
                     <Icon className="w-5 h-5 text-[#64b5f6]" />
                   </div>
@@ -223,8 +223,8 @@ export function About() {
                     {value.title}
                   </h4>
                   <p className="text-xs dark:text-[#94a3b8] text-gray-600">{value.description}</p>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
@@ -261,8 +261,8 @@ export function About() {
                     : "md:pl-8 md:ml-auto"
                 }`}
               >
-                <Card className="glass-card-solid">
-                  <CardContent className="p-4">
+                <CardSpotlight className="glass-card-solid">
+                  <div className="p-4">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="md:hidden text-xs font-bold dark:text-[#00e5ff] text-[#00a8cc]">
                         {item.year}
@@ -274,8 +274,8 @@ export function About() {
                     <p className="text-xs dark:text-[#94a3b8] text-gray-600 leading-relaxed">
                       {item.description}
                     </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </CardSpotlight>
               </div>
             </div>
           ))}

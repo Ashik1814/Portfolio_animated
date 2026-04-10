@@ -12,7 +12,7 @@ import {
   Zap,
   Monitor,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardSpotlight } from "@/components/ui/card-spotlight";
 
 const degrees = [
   {
@@ -87,8 +87,8 @@ export function Education() {
           {degrees.map((degree) => {
             const Icon = degree.icon;
             return (
-              <Card key={degree.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
-                <CardContent className="p-6 sm:p-8">
+              <CardSpotlight key={degree.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
+                <div className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-[#64b5f6]/10 flex items-center justify-center shrink-0">
                       <Icon className="w-6 h-6 text-[#64b5f6]" />
@@ -114,8 +114,8 @@ export function Education() {
                       ))}
                     </ul>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
@@ -128,8 +128,8 @@ export function Education() {
           {certifications.map((cert) => {
             const Icon = cert.icon;
             return (
-              <Card key={cert.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group">
-                <CardContent className="p-5 flex items-start gap-4">
+              <CardSpotlight key={cert.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group">
+                <div className="p-5 flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${cert.color}12` }}>
                     <Icon className="w-5 h-5" style={{ color: cert.color }} />
                   </div>
@@ -137,8 +137,8 @@ export function Education() {
                     <h4 className="text-sm font-bold dark:text-white text-gray-900 mb-0.5">{cert.name}</h4>
                     <p className="text-xs dark:text-[#94a3b8] text-gray-600">{cert.issuer} &bull; {cert.year}</p>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </CardSpotlight>
             );
           })}
         </div>
