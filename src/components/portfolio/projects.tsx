@@ -270,10 +270,9 @@ export function Projects() {
                   <div className="flex gap-3 pt-3">
                     <AnimatedBorderButton
                       size="sm"
-                      className="flex-1 dark:bg-white bg-gray-900 dark:text-[#06080f] text-white dark:hover:bg-white/90 hover:bg-gray-800 font-medium text-xs rounded-md h-9"
-                      style={{ color: project.accentColor }}
-                      gradientVia={project.accentColor}
-                      gradientTo={project.accentColor}
+                      className="flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200"
+                      gradientVia="#64b5f6"
+                      gradientTo="#a78bfa"
                     >
                       <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
                       Live Demo
@@ -281,7 +280,7 @@ export function Projects() {
                     <AnimatedBorderButton
                       size="sm"
                       variant="outline"
-                      className="flex-1 dark:border-white/20 border-gray-300 dark:text-white text-gray-900 dark:hover:bg-white hover:bg-gray-100 dark:hover:text-[#06080f] hover:text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-300"
+                      className="flex-1 dark:border-[#00e5ff]/25 border-[#00a8cc]/25 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/8 hover:bg-[#00a8cc]/8 dark:hover:border-[#00e5ff]/40 hover:border-[#00a8cc]/40 font-medium text-xs rounded-md h-9 transition-all duration-200"
                       gradientVia="#a78bfa"
                       gradientTo="#64b5f6"
                     >
