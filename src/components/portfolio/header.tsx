@@ -7,12 +7,12 @@ import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 import { useTheme } from "next-themes";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Skills", href: "/skills" },
+  { label: "Projects", href: "/projects" },
+  { label: "Education", href: "/education" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Header() {
@@ -51,7 +51,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <a
-            href="#home"
+            href="/"
             className="text-xl font-bold transition-all duration-200 hover:scale-105"
           >
             <span className="text-[#f472b6]">Alchemist</span>
