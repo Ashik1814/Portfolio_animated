@@ -1,86 +1,122 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, Github, Linkedin, Twitter } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Education", href: "#education" },
   { label: "Skills", href: "#skills" },
   { label: "Projects", href: "#projects" },
+  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const [darkMode, setDarkMode] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+
+      const sections = navLinks.map((link) => link.href.replace("#", ""));
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = document.getElementById(sections[i]);
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0f0a1e]/80 backdrop-blur-md border-b border-white/5">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-[#0a0a1a]/90 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
+          : "bg-transparent border-b border-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#home" className="text-xl font-bold gradient-text">
-            Portfolio
+          <a
+            href="#home"
+            className="text-xl font-bold transition-all duration-200 hover:scale-105"
+          >
+            <span className="text-[#64b5f6]">Ashik</span>
+            <span className="text-white">.dev</span>
           </a>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-sm text-[#a0a0b0] hover:text-white transition-colors duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
+          {/* Desktop Nav - Centered */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const sectionId = link.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
+                    isActive
+                      ? "text-[#64b5f6]"
+                      : "text-[#b0b0b0] hover:text-[#64b5f6]"
+                  }`}
+                >
+                  {link.label}
+                  {/* Active underline */}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-[#64b5f6] rounded-full" />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
-          {/* Desktop Social & CTA */}
+          {/* Right Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="https://github.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#a0a0b0] hover:text-white transition-colors"
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-9 h-9 rounded-full bg-transparent border border-white/20 flex items-center justify-center text-[#ffd54f] hover:bg-white/10 transition-all duration-200"
+              aria-label="Toggle theme"
             >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#a0a0b0] hover:text-white transition-colors"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#a0a0b0] hover:text-white transition-colors"
-            >
-              <Twitter className="w-4 h-4" />
-            </a>
+              {darkMode ? (
+                <Sun className="w-4 h-4" />
+              ) : (
+                <Moon className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* CV Download Button */}
             <Button
               size="sm"
-              className="ml-2 bg-[#4dabf7] hover:bg-[#3d9be7] text-[#0f0a1e] font-medium rounded-full px-4"
+              className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5aa3e0] text-[#0a0a1a] font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#00e5ff]/20 transition-all duration-200 hover:scale-105"
             >
-              Hire Me
+              <Download className="w-4 h-4" />
+              CV
             </Button>
           </div>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-[#a0a0b0] hover:text-white"
+            className="md:hidden w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-[#b0b0b0] hover:text-[#64b5f6] hover:border-[#64b5f6]/40 transition-all duration-200"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5" />
             ) : (
-              <Menu className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             )}
           </button>
         </div>
@@ -88,28 +124,43 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0f0a1e]/95 backdrop-blur-md border-t border-white/5">
-          <nav className="flex flex-col py-4 px-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="py-3 text-sm text-[#a0a0b0] hover:text-white transition-colors border-b border-white/5 last:border-0"
-                onClick={() => setMobileMenuOpen(false)}
+        <div className="md:hidden bg-[#0a0a1a]/95 backdrop-blur-xl border-t border-white/5">
+          <nav className="flex flex-col py-2 px-4">
+            {navLinks.map((link) => {
+              const sectionId = link.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className={`py-3 px-3 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-3 ${
+                    isActive
+                      ? "text-[#64b5f6] bg-[#64b5f6]/5"
+                      : "text-[#b0b0b0] hover:text-[#64b5f6] hover:bg-[#64b5f6]/5"
+                  }`}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#64b5f6] ml-auto" />
+                  )}
+                </a>
+              );
+            })}
+            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-white/5">
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-[#ffd54f]"
               >
-                {link.label}
-              </a>
-            ))}
-            <div className="flex items-center gap-4 pt-4">
-              <a href="https://github.com" className="text-[#a0a0b0] hover:text-white">
-                <Github className="w-5 h-5" />
-              </a>
-              <a href="https://linkedin.com" className="text-[#a0a0b0] hover:text-white">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="https://twitter.com" className="text-[#a0a0b0] hover:text-white">
-                <Twitter className="w-5 h-5" />
-              </a>
+                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+              <Button
+                size="sm"
+                className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5aa3e0] text-[#0a0a1a] font-semibold rounded-full px-4 gap-1.5 flex-1"
+              >
+                <Download className="w-4 h-4" />
+                Download CV
+              </Button>
             </div>
           </nav>
         </div>
