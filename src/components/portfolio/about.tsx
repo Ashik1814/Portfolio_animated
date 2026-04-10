@@ -171,10 +171,9 @@ export function About() {
         {/* My Approach */}
         <CardSpotlight className="glass-card-solid mb-12">
           <div className="p-8 text-center max-w-3xl mx-auto">
-            <MovingBorderIcon borderRadius="9999px" className="w-12 h-12 mx-auto mb-4" duration={5}>
-              <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15" />
-              <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc] relative" />
-            </MovingBorderIcon>
+            <div className="w-12 h-12 rounded-full dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
+            </div>
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-4">My Approach</h3>
             <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4">
               I believe that great digital products are born at the intersection
