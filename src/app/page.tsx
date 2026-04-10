@@ -83,9 +83,9 @@ const projects = [
     description:
       "Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.",
     tags: [
-      { name: "React", bg: "bg-blue-500/20", text: "text-blue-300" },
-      { name: "Node.js", bg: "bg-green-500/20", text: "text-green-300" },
-      { name: "MongoDB", bg: "bg-yellow-500/20", text: "text-yellow-300" },
+      { name: "React", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
+      { name: "Node.js", bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-700 dark:text-emerald-300" },
+      { name: "MongoDB", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
     ],
     gradient: "from-[#ff6b6b] to-[#ff8e53]",
     accentColor: "#ff6b6b",
@@ -96,9 +96,9 @@ const projects = [
     description:
       "Comprehensive component library with guidelines, documentation, and accessibility standards.",
     tags: [
-      { name: "Figma", bg: "bg-purple-500/20", text: "text-purple-300" },
-      { name: "Storybook", bg: "bg-orange-500/20", text: "text-orange-300" },
-      { name: "Sketch", bg: "bg-pink-500/20", text: "text-pink-300" },
+      { name: "Figma", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
+      { name: "Storybook", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
+      { name: "Sketch", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
     ],
     gradient: "from-[#667eea] to-[#764ba2]",
     accentColor: "#667eea",
@@ -109,9 +109,9 @@ const projects = [
     description:
       "Automated business processes reducing manual work by 80% using AI and custom integrations.",
     tags: [
-      { name: "Python", bg: "bg-yellow-500/20", text: "text-yellow-200" },
-      { name: "Airflow", bg: "bg-blue-500/20", text: "text-blue-300" },
-      { name: "AWS", bg: "bg-orange-500/20", text: "text-orange-300" },
+      { name: "Python", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
+      { name: "Airflow", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
+      { name: "AWS", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
     ],
     gradient: "from-[#f093fb] to-[#f5576c]",
     accentColor: "#f093fb",
@@ -211,7 +211,7 @@ export default function Home() {
               asChild
               gradientVia="#a78bfa"
               gradientTo="#00e5ff"
-              className="bg-gradient-to-r from-[#a78bfa]/10 to-[#00e5ff]/10 dark:from-[#a78bfa]/10 dark:to-[#00e5ff]/10 border dark:border-[#a78bfa]/30 border-[#a78bfa]/30 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/20 dark:hover:to-[#00e5ff]/20 hover:from-[#a78bfa]/20 hover:to-[#00e5ff]/20 font-medium rounded-full px-6"
+              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#00e5ff]/15 dark:from-[#a78bfa]/15 dark:to-[#00e5ff]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/35 dark:hover:to-[#00e5ff]/35 hover:from-[#a78bfa]/30 hover:to-[#00e5ff]/30 dark:hover:border-[#a78bfa]/60 hover:border-[#a78bfa]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
               <a href="/about">
                 Learn More
@@ -296,7 +296,7 @@ export default function Home() {
               asChild
               gradientVia="#a78bfa"
               gradientTo="#64b5f6"
-              className="bg-gradient-to-r from-[#a78bfa]/10 to-[#64b5f6]/10 dark:from-[#a78bfa]/10 dark:to-[#64b5f6]/10 border dark:border-[#a78bfa]/30 border-[#a78bfa]/30 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/20 dark:hover:to-[#64b5f6]/20 hover:from-[#a78bfa]/20 hover:to-[#64b5f6]/20 font-medium rounded-full px-6"
+              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#64b5f6]/15 dark:from-[#a78bfa]/15 dark:to-[#64b5f6]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/35 dark:hover:to-[#64b5f6]/35 hover:from-[#a78bfa]/30 hover:to-[#64b5f6]/30 dark:hover:border-[#a78bfa]/60 hover:border-[#a78bfa]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
               <a href="/skills">
                 View All Skills
@@ -358,9 +358,9 @@ export default function Home() {
           <div className="text-center">
             <AnimatedBorderButton
               asChild
-              gradientVia="#f472b6"
+              gradientVia="#00e5ff"
               gradientTo="#64b5f6"
-              className="bg-gradient-to-r from-[#f472b6]/10 to-[#64b5f6]/10 dark:from-[#f472b6]/10 dark:to-[#64b5f6]/10 border dark:border-[#f472b6]/30 border-[#f472b6]/30 dark:text-[#f472b6] text-[#db2777] dark:hover:from-[#f472b6]/20 dark:hover:to-[#64b5f6]/20 hover:from-[#f472b6]/20 hover:to-[#64b5f6]/20 font-medium rounded-full px-6"
+              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#64b5f6]/15 dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/35 dark:hover:to-[#64b5f6]/35 hover:from-[#00a8cc]/30 hover:to-[#64b5f6]/30 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
               <a href="/projects">
                 View All Projects
@@ -432,7 +432,7 @@ export default function Home() {
               asChild
               gradientVia="#00e5ff"
               gradientTo="#2dd4bf"
-              className="bg-gradient-to-r from-[#00e5ff]/10 to-[#2dd4bf]/10 dark:from-[#00e5ff]/10 dark:to-[#2dd4bf]/10 border dark:border-[#00e5ff]/30 border-[#00e5ff]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/20 dark:hover:to-[#2dd4bf]/20 hover:from-[#00a8cc]/20 hover:to-[#2dd4bf]/20 font-medium rounded-full px-6"
+              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#2dd4bf]/15 dark:from-[#00e5ff]/15 dark:to-[#2dd4bf]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/35 dark:hover:to-[#2dd4bf]/35 hover:from-[#00a8cc]/30 hover:to-[#2dd4bf]/30 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
               <a href="/education">
                 View All
