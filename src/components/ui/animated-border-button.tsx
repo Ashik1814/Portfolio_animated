@@ -1,9 +1,22 @@
 "use client";
 
-import { buttonVariants, type VariantProps } from "@/components/ui/button";
+import { type VariantProps } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import React from "react";
+
+/* Size-only extraction from buttonVariants so we don't get conflicting
+   variant backgrounds (bg-primary, hover:bg-accent, etc.) that fight
+   with custom className styling. */
+const sizeOnly = (size: VariantProps<typeof buttonVariants>["size"]) => {
+  const full = buttonVariants({ size });
+  // buttonVariants always outputs: base + variant + size
+  // We keep the base (flex, whitespace, etc.) and size (h-9, px-4, etc.)
+  // but discard variant-specific bg/text/shadow/hover classes.
+  // Easiest approach: generate with a neutral variant and no variant classes.
+  return buttonVariants({ variant: "ghost", size, className: "" });
+};
 
 interface AnimatedBorderButtonProps
   extends React.ComponentProps<"button">,
@@ -82,14 +95,19 @@ export function AnimatedBorderButton({
     />
   );
 
+  /* Base button classes: layout + sizing only.
+     All color/bg/hover styling comes from the consumer's className. */
+  const baseClasses = cn(
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all shrink-0 outline-none relative",
+    sizeOnly(size),
+    className
+  );
+
   if (asChild && React.isValidElement(children)) {
-    // When asChild, clone the single child element and inject the overlay into it
     const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>;
     return React.cloneElement(child, {
       className: cn(
-        buttonVariants({ variant, size }),
-        "relative",
-        className,
+        baseClasses,
         (child.props as Record<string, unknown>).className as string | undefined
       ),
       ...props,
@@ -105,7 +123,7 @@ export function AnimatedBorderButton({
   return (
     <button
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }), "relative")}
+      className={baseClasses}
       {...props}
     >
       {overlay}

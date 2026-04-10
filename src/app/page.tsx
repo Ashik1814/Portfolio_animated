@@ -211,7 +211,7 @@ export default function Home() {
               asChild
               gradientVia="#a78bfa"
               gradientTo="#00e5ff"
-              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#00e5ff]/15 dark:from-[#a78bfa]/15 dark:to-[#00e5ff]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/35 dark:hover:to-[#00e5ff]/35 hover:from-[#a78bfa]/30 hover:to-[#00e5ff]/30 dark:hover:border-[#a78bfa]/60 hover:border-[#a78bfa]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
+              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#00e5ff]/15 dark:from-[#a78bfa]/15 dark:to-[#00e5ff]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/40 dark:hover:to-[#00e5ff]/40 hover:from-[#a78bfa]/35 hover:to-[#00e5ff]/35 dark:hover:border-[#a78bfa]/70 hover:border-[#a78bfa]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
               <a href="/about">
                 Learn More
@@ -296,7 +296,7 @@ export default function Home() {
               asChild
               gradientVia="#a78bfa"
               gradientTo="#64b5f6"
-              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#64b5f6]/15 dark:from-[#a78bfa]/15 dark:to-[#64b5f6]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/35 dark:hover:to-[#64b5f6]/35 hover:from-[#a78bfa]/30 hover:to-[#64b5f6]/30 dark:hover:border-[#a78bfa]/60 hover:border-[#a78bfa]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
+              className="bg-gradient-to-r from-[#a78bfa]/15 to-[#64b5f6]/15 dark:from-[#a78bfa]/15 dark:to-[#64b5f6]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/40 dark:hover:to-[#64b5f6]/40 hover:from-[#a78bfa]/35 hover:to-[#64b5f6]/35 dark:hover:border-[#a78bfa]/70 hover:border-[#a78bfa]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
               <a href="/skills">
                 View All Skills
@@ -360,7 +360,7 @@ export default function Home() {
               asChild
               gradientVia="#00e5ff"
               gradientTo="#64b5f6"
-              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#64b5f6]/15 dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/35 dark:hover:to-[#64b5f6]/35 hover:from-[#00a8cc]/30 hover:to-[#64b5f6]/30 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
+              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#64b5f6]/15 dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/40 dark:hover:to-[#64b5f6]/40 hover:from-[#00a8cc]/35 hover:to-[#64b5f6]/35 dark:hover:border-[#00e5ff]/70 hover:border-[#00a8cc]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
               <a href="/projects">
                 View All Projects
@@ -432,7 +432,7 @@ export default function Home() {
               asChild
               gradientVia="#00e5ff"
               gradientTo="#2dd4bf"
-              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#2dd4bf]/15 dark:from-[#00e5ff]/15 dark:to-[#2dd4bf]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/35 dark:hover:to-[#2dd4bf]/35 hover:from-[#00a8cc]/30 hover:to-[#2dd4bf]/30 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
+              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#2dd4bf]/15 dark:from-[#00e5ff]/15 dark:to-[#2dd4bf]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/40 dark:hover:to-[#2dd4bf]/40 hover:from-[#00a8cc]/35 hover:to-[#2dd4bf]/35 dark:hover:border-[#00e5ff]/70 hover:border-[#00a8cc]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
               <a href="/education">
                 View All

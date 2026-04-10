@@ -279,8 +279,7 @@ export function Projects() {
                     </AnimatedBorderButton>
                     <AnimatedBorderButton
                       size="sm"
-                      variant="outline"
-                      className="flex-1 dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/20 hover:bg-[#00a8cc]/20 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium text-xs rounded-md h-9 transition-all duration-200"
+                      className="flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200"
                       gradientVia="#a78bfa"
                       gradientTo="#64b5f6"
                     >
@@ -298,8 +297,7 @@ export function Projects() {
         <div className="text-center mt-14">
           <AnimatedBorderButton
             size="lg"
-            variant="outline"
-            className="dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/20 hover:bg-[#00a8cc]/20 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 font-medium rounded-full px-8 transition-all duration-300 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
+            className="bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium rounded-full px-8 transition-all duration-300 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             gradientVia="#00e5ff"
             gradientTo="#64b5f6"
           >
