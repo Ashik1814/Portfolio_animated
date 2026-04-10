@@ -266,11 +266,11 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
       // Detect touch device — use much stronger interaction for fat-finger touch
       const isTouchDevice = 'ontouchstart' in window;
-      const MOUSE_RADIUS = isTouchDevice ? 1400 : 900;
-      const MOUSE_PUSH_STRENGTH = isTouchDevice ? 6.0 : 2.5;
-      const MOUSE_UP_FORCE = isTouchDevice ? 4.0 : 1.8;
-      const DAMPING = 0.88;
-      const RETURN_FORCE = 0.04;
+      const MOUSE_RADIUS = isTouchDevice ? 1800 : 1200;
+      const MOUSE_PUSH_STRENGTH = isTouchDevice ? 12.0 : 6.0;
+      const MOUSE_UP_FORCE = isTouchDevice ? 8.0 : 4.5;
+      const DAMPING = 0.86;
+      const RETURN_FORCE = 0.03;
 
       let i = 0;
       for (let ix = 0; ix < AMOUNTX; ix++) {
@@ -321,7 +321,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
             colArr[index + 2] = bB + t * (highlightB - bB);
 
             // Grow dots near mouse even MORE — bigger boost on touch
-            const sizeBoost = isTouchDevice ? (isDark ? 40 : 50) : (isDark ? 24 : 30);
+            const sizeBoost = isTouchDevice ? (isDark ? 55 : 65) : (isDark ? 35 : 45);
             targetSize = baseSize + forceSq * sizeBoost;
           } else {
             // Smoothly fade back to base color
