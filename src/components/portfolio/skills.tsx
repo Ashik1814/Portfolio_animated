@@ -27,10 +27,10 @@ function SkillBar({ name, percentage, color }: SkillBarProps) {
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-center">
-        <span className="text-sm text-white font-medium">{name}</span>
-        <span className="text-xs text-[#64748b]">{percentage}%</span>
+        <span className="text-sm dark:text-white text-gray-900 font-medium">{name}</span>
+        <span className="text-xs dark:text-[#64748b] text-gray-500">{percentage}%</span>
       </div>
-      <div className="h-2 bg-[#0d1525] rounded-full overflow-hidden">
+      <div className="h-2 dark:bg-[#0d1525] bg-gray-200 rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{
@@ -117,7 +117,7 @@ export function Skills() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Skills & Expertise</span>
           </h2>
-          <p className="text-[#94a3b8] max-w-2xl mx-auto text-base">
+          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base">
             A comprehensive toolkit of design, development, and automation
             skills honed through years of passionate work and continuous learning
           </p>
@@ -128,13 +128,13 @@ export function Skills() {
           {skillCategories.map((category) => {
             const Icon = category.icon;
             return (
-              <Card key={category.title} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300">
+              <Card key={category.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
                 <CardContent className="p-6 space-y-5">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${category.color}12` }}>
                       <Icon className="w-5 h-5" style={{ color: category.color }} />
                     </div>
-                    <h3 className="text-lg font-bold text-white">{category.title}</h3>
+                    <h3 className="text-lg font-bold dark:text-white text-gray-900">{category.title}</h3>
                   </div>
                   <div className="space-y-3">
                     {category.skills.map((skill) => (
@@ -155,12 +155,12 @@ export function Skills() {
           {softSkills.map((skill) => {
             const Icon = skill.icon;
             return (
-              <Card key={skill.name} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300 text-center">
+              <Card key={skill.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
                 <CardContent className="p-4 space-y-2">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: `${skill.color}12` }}>
                     <Icon className="w-5 h-5" style={{ color: skill.color }} />
                   </div>
-                  <h4 className="text-xs font-bold text-white">{skill.name}</h4>
+                  <h4 className="text-xs font-bold dark:text-white text-gray-900">{skill.name}</h4>
                   <span className="text-lg font-bold" style={{ color: skill.color }}>{skill.percentage}%</span>
                 </CardContent>
               </Card>
@@ -174,7 +174,7 @@ export function Skills() {
         </div>
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {additionalTech.map((tech) => (
-            <span key={tech} className="px-4 py-2 rounded-full text-sm glass-card text-[#94a3b8] hover:text-[#00e5ff] hover:border-[#00e5ff]/20 transition-all duration-200 cursor-default">
+            <span key={tech} className="px-4 py-2 rounded-full text-sm glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default">
               {tech}
             </span>
           ))}
@@ -185,7 +185,7 @@ export function Skills() {
           <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-2">
               <BookOpen className="w-5 h-5 text-[#64b5f6]" />
-              <h3 className="text-xl font-bold text-white">Currently Learning</h3>
+              <h3 className="text-xl font-bold dark:text-white text-gray-900">Currently Learning</h3>
             </div>
           </div>
           <Card className="glass-card-solid">

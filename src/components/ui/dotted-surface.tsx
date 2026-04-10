@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useTheme } from 'next-themes';
 
 type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'>;
 
@@ -16,6 +17,13 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     animationId: number;
     count: number;
   } | null>(null);
+  const { theme } = useTheme();
+  const themeRef = useRef(theme);
+
+  // Keep themeRef in sync
+  useEffect(() => {
+    themeRef.current = theme;
+  }, [theme]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -66,6 +74,11 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     const positions: number[] = [];
     const colors: number[] = [];
 
+    // Dark mode base colors
+    const darkBaseR = 0.55, darkBaseG = 0.25, darkBaseB = 0.65;
+    // Light mode base colors (muted blue-gray)
+    const lightBaseR = 0.45, lightBaseG = 0.50, lightBaseB = 0.65;
+
     let idx = 0;
     for (let ix = 0; ix < AMOUNTX; ix++) {
       for (let iy = 0; iy < AMOUNTY; iy++) {
@@ -75,7 +88,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
         positions.push(x, y, z);
         baseX[idx] = x;
         baseZ[idx] = z;
-        colors.push(0.55, 0.25, 0.65);
+        colors.push(darkBaseR, darkBaseG, darkBaseB);
         idx++;
       }
     }
@@ -114,6 +127,20 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       const posArr = posAttr.array as Float32Array;
       const colAttr = geometry.attributes.color;
       const colArr = colAttr.array as Float32Array;
+
+      // Determine current theme colors
+      const isDark = themeRef.current === 'dark';
+      const fogColor = isDark ? 0x08050f : 0xf8f9fc;
+      scene.fog = new THREE.Fog(fogColor, 2000, 8000);
+
+      const baseR = isDark ? darkBaseR : lightBaseR;
+      const baseG = isDark ? darkBaseG : lightBaseG;
+      const baseB = isDark ? darkBaseB : lightBaseB;
+
+      // Light mode: near-cursor color shifts to deeper blue
+      const highlightR = isDark ? 1.0 : 0.2;
+      const highlightG = isDark ? 0.45 : 0.55;
+      const highlightB = isDark ? 1.0 : 0.85;
 
       // Convert mouse screen position to world coordinates using raycasting
       const mouse = mouseRef.current;
@@ -169,14 +196,14 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
             // Brighten dots near mouse
             const t = forceSq;
-            colArr[index] = 0.55 + t * 0.45;     // R → 1.0
-            colArr[index + 1] = 0.25 + t * 0.2;   // G → 0.45
-            colArr[index + 2] = 0.65 + t * 0.35;   // B → 1.0
+            colArr[index] = baseR + t * (highlightR - baseR);
+            colArr[index + 1] = baseG + t * (highlightG - baseG);
+            colArr[index + 2] = baseB + t * (highlightB - baseB);
           } else {
             // Smoothly fade back to base color
-            colArr[index] += (0.55 - colArr[index]) * 0.06;
-            colArr[index + 1] += (0.25 - colArr[index + 1]) * 0.06;
-            colArr[index + 2] += (0.65 - colArr[index + 2]) * 0.06;
+            colArr[index] += (baseR - colArr[index]) * 0.06;
+            colArr[index + 1] += (baseG - colArr[index + 1]) * 0.06;
+            colArr[index + 2] += (baseB - colArr[index + 2]) * 0.06;
           }
 
           // Spring force to return displacement to zero

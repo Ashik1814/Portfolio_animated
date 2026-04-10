@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -16,8 +17,14 @@ const navLinks = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [darkMode, setDarkMode] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  // Prevent hydration mismatch for theme icon
+  useEffect(() => {
+    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,11 +46,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#08050f]/40 backdrop-blur-xl border-b border-[#d946ef]/10 shadow-lg shadow-black/20"
+          ? "dark:bg-[#08050f]/40 bg-white/60 backdrop-blur-xl dark:border-b-[#d946ef]/10 border-b-gray-200/50 shadow-lg dark:shadow-black/20 shadow-gray-200/30"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -55,7 +66,7 @@ export function Header() {
             className="text-xl font-bold transition-all duration-200 hover:scale-105"
           >
             <span className="text-[#f472b6]">Ashik</span>
-            <span className="text-white">.dev</span>
+            <span className="dark:text-white text-gray-900">.dev</span>
           </a>
 
           {/* Desktop Nav - Centered */}
@@ -70,7 +81,7 @@ export function Header() {
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
                     isActive
                       ? "text-[#f472b6]"
-                      : "text-[#b0b0b0] hover:text-[#f472b6]"
+                      : "dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6]"
                   }`}
                 >
                   {link.label}
@@ -87,21 +98,21 @@ export function Header() {
           <div className="hidden md:flex items-center gap-3">
             {/* Theme Toggle */}
             <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="w-9 h-9 rounded-full bg-transparent border border-white/20 flex items-center justify-center text-[#fbbf24] hover:bg-white/10 transition-all duration-200"
+              onClick={toggleTheme}
+              className="w-9 h-9 rounded-full dark:bg-transparent bg-gray-100 dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#fbbf24] text-amber-500 hover:dark:bg-white/10 hover:bg-gray-200 transition-all duration-200"
               aria-label="Toggle theme"
             >
-              {darkMode ? (
+              {mounted && (theme === "dark" ? (
                 <Sun className="w-4 h-4" />
               ) : (
                 <Moon className="w-4 h-4" />
-              )}
+              ))}
             </button>
 
             {/* CV Download Button */}
             <Button
               size="sm"
-              className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] text-[#0a0a1a] font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#d946ef]/20 transition-all duration-200 hover:scale-105"
+              className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#d946ef]/20 transition-all duration-200 hover:scale-105"
             >
               <Download className="w-4 h-4" />
               CV
@@ -110,7 +121,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-[#b0b0b0] hover:text-[#f472b6] hover:border-[#f472b6]/40 transition-all duration-200"
+            className="md:hidden w-9 h-9 rounded-lg dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6] hover:border-[#f472b6]/40 transition-all duration-200"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -124,7 +135,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#08050f]/50 backdrop-blur-xl border-t border-[#d946ef]/10">
+        <div className="md:hidden dark:bg-[#08050f]/50 bg-white/70 backdrop-blur-xl dark:border-t-[#d946ef]/10 border-t-gray-200/50">
           <nav className="flex flex-col py-2 px-4">
             {navLinks.map((link) => {
               const sectionId = link.href.replace("#", "");
@@ -135,8 +146,8 @@ export function Header() {
                   href={link.href}
                   className={`py-3 px-3 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-3 ${
                     isActive
-                      ? "text-[#f472b6] bg-[#f472b6]/5"
-                      : "text-[#b0b0b0] hover:text-[#f472b6] hover:bg-[#f472b6]/5"
+                      ? "text-[#f472b6] dark:bg-[#f472b6]/5 bg-[#f472b6]/5"
+                      : "dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6] hover:bg-[#f472b6]/5"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -147,16 +158,16 @@ export function Header() {
                 </a>
               );
             })}
-            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-[#3b1a5e]/30">
+            <div className="flex items-center gap-3 pt-4 mt-2 dark:border-t-[#3b1a5e]/30 border-t-gray-200">
               <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-[#fbbf24]"
+                onClick={toggleTheme}
+                className="w-9 h-9 rounded-full dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#fbbf24] text-amber-500"
               >
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
               </button>
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] text-[#0a0a1a] font-semibold rounded-full px-4 gap-1.5 flex-1"
+                className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-4 gap-1.5 flex-1"
               >
                 <Download className="w-4 h-4" />
                 Download CV

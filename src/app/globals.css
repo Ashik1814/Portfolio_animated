@@ -43,8 +43,64 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* ===== LIGHT MODE (default) ===== */
 :root {
   --radius: 0.625rem;
+  --background: #f8f9fc;
+  --foreground: #1a1a2e;
+  --card: rgba(255, 255, 255, 0.8);
+  --card-foreground: #1a1a2e;
+  --popover: rgba(255, 255, 255, 0.9);
+  --popover-foreground: #1a1a2e;
+  --primary: #d946ef;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(240, 240, 250, 0.6);
+  --secondary-foreground: #1a1a2e;
+  --muted: rgba(230, 230, 245, 0.5);
+  --muted-foreground: #64748b;
+  --accent: #f472b6;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: rgba(100, 100, 160, 0.12);
+  --input: rgba(100, 100, 160, 0.12);
+  --ring: #d946ef;
+  --chart-1: #d946ef;
+  --chart-2: #f472b6;
+  --chart-3: #a78bfa;
+  --chart-4: #00a8cc;
+  --chart-5: #fbbf24;
+  --sidebar: rgba(255, 255, 255, 0.8);
+  --sidebar-foreground: #1a1a2e;
+  --sidebar-primary: #d946ef;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(230, 230, 245, 0.5);
+  --sidebar-accent-foreground: #1a1a2e;
+  --sidebar-border: rgba(100, 100, 160, 0.12);
+  --sidebar-ring: #d946ef;
+
+  /* Portfolio-specific tokens */
+  --portfolio-bg: #f8f9fc;
+  --portfolio-bg-deep: #eef0f6;
+  --portfolio-text: #1a1a2e;
+  --portfolio-text-muted: #64748b;
+  --portfolio-text-dim: #94a3b8;
+  --portfolio-text-heading: #0f0f23;
+  --portfolio-border: rgba(100, 100, 160, 0.12);
+  --portfolio-glass-bg: rgba(255, 255, 255, 0.6);
+  --portfolio-glass-bg-solid: rgba(255, 255, 255, 0.75);
+  --portfolio-glass-border: rgba(100, 100, 160, 0.1);
+  --portfolio-glass-border-hover: rgba(0, 168, 204, 0.2);
+  --portfolio-input-bg: #ffffff;
+  --portfolio-input-border: #d1d5db;
+  --portfolio-scrollbar-track: #f1f5f9;
+  --portfolio-scrollbar-thumb: #c7d2fe;
+  --portfolio-scrollbar-thumb-hover: #a5b4fc;
+  --portfolio-accent-cyan: #00a8cc;
+  --portfolio-accent-cyan-light: rgba(0, 168, 204, 0.1);
+}
+
+/* ===== DARK MODE ===== */
+.dark {
   --background: #08050f;
   --foreground: #e8e0f0;
   --card: rgba(15, 8, 25, 0.75);
@@ -76,6 +132,26 @@
   --sidebar-accent-foreground: #e8e0f0;
   --sidebar-border: rgba(217, 70, 239, 0.08);
   --sidebar-ring: #d946ef;
+
+  /* Portfolio-specific tokens */
+  --portfolio-bg: #08050f;
+  --portfolio-bg-deep: #06080f;
+  --portfolio-text: #e8e0f0;
+  --portfolio-text-muted: #94a3b8;
+  --portfolio-text-dim: #64748b;
+  --portfolio-text-heading: #ffffff;
+  --portfolio-border: rgba(217, 70, 239, 0.08);
+  --portfolio-glass-bg: rgba(12, 6, 20, 0.35);
+  --portfolio-glass-bg-solid: rgba(10, 5, 18, 0.5);
+  --portfolio-glass-border: rgba(217, 70, 239, 0.08);
+  --portfolio-glass-border-hover: rgba(100, 181, 246, 0.15);
+  --portfolio-input-bg: #06080f;
+  --portfolio-input-border: #1e3a5f;
+  --portfolio-scrollbar-track: #08050f;
+  --portfolio-scrollbar-thumb: #3b1a5e;
+  --portfolio-scrollbar-thumb-hover: #5b2a8e;
+  --portfolio-accent-cyan: #00e5ff;
+  --portfolio-accent-cyan-light: rgba(0, 229, 255, 0.1);
 }
 
 @layer base {
@@ -83,7 +159,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background: #08050f;
+    background: var(--portfolio-bg);
     @apply text-foreground;
   }
 }
@@ -93,19 +169,19 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #08050f;
+  background: var(--portfolio-scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #3b1a5e;
+  background: var(--portfolio-scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5b2a8e;
+  background: var(--portfolio-scrollbar-thumb-hover);
 }
 
 /* Gradient text utilities */
 .gradient-text {
-  background: linear-gradient(135deg, #00e5ff, #64b5f6, #a78bfa);
+  background: linear-gradient(135deg, var(--portfolio-accent-cyan), #64b5f6, #a78bfa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -126,27 +202,27 @@
 }
 
 .gradient-text-cyan {
-  background: linear-gradient(135deg, #00e5ff, #64b5f6);
+  background: linear-gradient(135deg, var(--portfolio-accent-cyan), #64b5f6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Glassmorphism card — semi-transparent, nebula bleeds through */
+/* Glassmorphism card — semi-transparent, background bleeds through */
 .glass-card {
-  background: rgba(12, 6, 20, 0.35);
+  background: var(--portfolio-glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(217, 70, 239, 0.08);
+  border: 1px solid var(--portfolio-glass-border);
   border-radius: 1rem;
 }
 
-/* Glassmorphism card — slightly more opaque for content sections, still see-through */
+/* Glassmorphism card — slightly more opaque for content sections */
 .glass-card-solid {
-  background: rgba(10, 5, 18, 0.5);
+  background: var(--portfolio-glass-bg-solid);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(217, 70, 239, 0.06);
+  border: 1px solid var(--portfolio-glass-border);
   border-radius: 1rem;
 }
 
@@ -154,16 +230,28 @@
 .glow-cyan {
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.12);
 }
+.dark .glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.12);
+}
 
 .glow-magenta {
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
+}
+.dark .glow-magenta {
   box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
 }
 
 .glow-pink {
   box-shadow: 0 0 20px rgba(244, 114, 182, 0.15);
 }
+.dark .glow-pink {
+  box-shadow: 0 0 20px rgba(244, 114, 182, 0.15);
+}
 
 .glow-purple {
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
+}
+.dark .glow-purple {
   box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
 }
 

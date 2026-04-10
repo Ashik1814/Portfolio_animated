@@ -77,7 +77,7 @@ export function Education() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Education</span>
           </h2>
-          <p className="text-[#94a3b8] max-w-2xl mx-auto text-base">
+          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base">
             My academic journey and continual learning path in computer science and technology
           </p>
         </div>
@@ -87,27 +87,27 @@ export function Education() {
           {degrees.map((degree) => {
             const Icon = degree.icon;
             return (
-              <Card key={degree.title} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300">
+              <Card key={degree.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
                 <CardContent className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="w-12 h-12 rounded-xl bg-[#64b5f6]/10 flex items-center justify-center shrink-0">
                       <Icon className="w-6 h-6 text-[#64b5f6]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white mb-1">{degree.title}</h3>
-                      <p className="text-[#94a3b8] text-sm">{degree.institution} &bull; {degree.location}</p>
+                      <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-1">{degree.title}</h3>
+                      <p className="dark:text-[#94a3b8] text-gray-600 text-sm">{degree.institution} &bull; {degree.location}</p>
                       <div className="flex flex-wrap items-center gap-3 mt-2">
-                        <span className="text-sm text-[#94a3b8]">{degree.period}</span>
+                        <span className="text-sm dark:text-[#94a3b8] text-gray-600">{degree.period}</span>
                         <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>GPA: {degree.gpa}</span>
                       </div>
                     </div>
                   </div>
-                  <p className="text-[#94a3b8] text-sm leading-relaxed mb-4 ml-0 sm:ml-16">{degree.description}</p>
+                  <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4 ml-0 sm:ml-16">{degree.description}</p>
                   <div className="ml-0 sm:ml-16">
-                    <h4 className="text-sm font-semibold text-white mb-2">Key Achievements</h4>
+                    <h4 className="text-sm font-semibold dark:text-white text-gray-900 mb-2">Key Achievements</h4>
                     <ul className="space-y-1.5">
                       {degree.achievements.map((achievement) => (
-                        <li key={achievement} className="text-sm text-[#94a3b8] flex items-start gap-2">
+                        <li key={achievement} className="text-sm dark:text-[#94a3b8] text-gray-600 flex items-start gap-2">
                           <Award className="w-4 h-4 text-[#fbbf24] shrink-0 mt-0.5" />
                           {achievement}
                         </li>
@@ -128,14 +128,14 @@ export function Education() {
           {certifications.map((cert) => {
             const Icon = cert.icon;
             return (
-              <Card key={cert.name} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300 group">
+              <Card key={cert.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group">
                 <CardContent className="p-5 flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${cert.color}12` }}>
                     <Icon className="w-5 h-5" style={{ color: cert.color }} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white mb-0.5">{cert.name}</h4>
-                    <p className="text-xs text-[#94a3b8]">{cert.issuer} &bull; {cert.year}</p>
+                    <h4 className="text-sm font-bold dark:text-white text-gray-900 mb-0.5">{cert.name}</h4>
+                    <p className="text-xs dark:text-[#94a3b8] text-gray-600">{cert.issuer} &bull; {cert.year}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -149,7 +149,7 @@ export function Education() {
         </div>
         <div className="flex flex-wrap justify-center gap-3">
           {coursework.map((course) => (
-            <span key={course} className="px-4 py-2 rounded-lg text-sm glass-card text-[#94a3b8] hover:text-[#00e5ff] hover:border-[#00e5ff]/20 transition-all duration-200 cursor-default">
+            <span key={course} className="px-4 py-2 rounded-lg text-sm glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default">
               {course}
             </span>
           ))}
