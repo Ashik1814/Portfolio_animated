@@ -263,9 +263,12 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
       const mwx = mouseWorldPos.x;
       const mwz = mouseWorldPos.z;
-      const MOUSE_RADIUS = 900;
-      const MOUSE_PUSH_STRENGTH = 2.5;
-      const MOUSE_UP_FORCE = 1.8;
+
+      // Detect touch device — use much stronger interaction for fat-finger touch
+      const isTouchDevice = 'ontouchstart' in window;
+      const MOUSE_RADIUS = isTouchDevice ? 1400 : 900;
+      const MOUSE_PUSH_STRENGTH = isTouchDevice ? 6.0 : 2.5;
+      const MOUSE_UP_FORCE = isTouchDevice ? 4.0 : 1.8;
       const DAMPING = 0.88;
       const RETURN_FORCE = 0.04;
 
@@ -317,8 +320,9 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
             colArr[index + 1] = bG + t * (highlightG - bG);
             colArr[index + 2] = bB + t * (highlightB - bB);
 
-            // Grow dots near mouse even MORE
-            targetSize = baseSize + forceSq * (isDark ? 24 : 30);
+            // Grow dots near mouse even MORE — bigger boost on touch
+            const sizeBoost = isTouchDevice ? (isDark ? 40 : 50) : (isDark ? 24 : 30);
+            targetSize = baseSize + forceSq * sizeBoost;
           } else {
             // Smoothly fade back to base color
             colArr[index] += (bR - colArr[index]) * 0.06;
@@ -369,8 +373,28 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       mouseRef.current = { x: -9999, y: -9999 };
     };
 
+    // Touch tracking — map touch to the same mouseRef
+    const handleTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (touch) {
+        mouseRef.current = { x: touch.clientX, y: touch.clientY };
+      }
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (touch) {
+        mouseRef.current = { x: touch.clientX, y: touch.clientY };
+      }
+    };
+    const handleTouchEnd = () => {
+      mouseRef.current = { x: -9999, y: -9999 };
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     // Handle window resize
     const handleResize = () => {
@@ -399,6 +423,9 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
 
       if (sceneRef.current) {
         cancelAnimationFrame(sceneRef.current.animationId);
