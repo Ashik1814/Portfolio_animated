@@ -2,15 +2,6 @@
 
 import { useState } from "react";
 import {
-  ShoppingBag,
-  Palette,
-  Zap,
-  BarChart3,
-  Smartphone,
-  Bot,
-  Briefcase,
-  Utensils,
-  CheckSquare,
   ExternalLink,
   Github,
 } from "lucide-react";
@@ -18,142 +9,10 @@ import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useContent } from "@/stores/content-store";
+import { getIcon } from "@/lib/get-icon";
 
 const filters = ["All", "Development", "Design", "Automation"];
-
-interface TagConfig {
-  name: string;
-  bg: string;
-  text: string;
-}
-
-const projects: {
-  icon: typeof ShoppingBag;
-  title: string;
-  description: string;
-  tags: TagConfig[];
-  category: string;
-  gradient: string;
-  accentColor: string;
-}[] = [
-  {
-    icon: ShoppingBag,
-    title: "E-Commerce Platform",
-    description: "Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.",
-    tags: [
-      { name: "React", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
-      { name: "Node.js", bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-700 dark:text-emerald-300" },
-      { name: "MongoDB", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-    ],
-    category: "Development",
-    gradient: "from-[#ff6b6b] to-[#ff8e53]",
-    accentColor: "#ff6b6b",
-  },
-  {
-    icon: Palette,
-    title: "Design System",
-    description: "Comprehensive component library with guidelines, documentation, and accessibility standards.",
-    tags: [
-      { name: "Figma", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-      { name: "Storybook", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-      { name: "Sketch", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-    ],
-    category: "Design",
-    gradient: "from-[#667eea] to-[#764ba2]",
-    accentColor: "#667eea",
-  },
-  {
-    icon: Zap,
-    title: "Workflow Automation System",
-    description: "Automated business processes reducing manual work by 80% using AI and custom integrations.",
-    tags: [
-      { name: "Python", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-      { name: "Airflow", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-      { name: "AWS", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-    ],
-    category: "Automation",
-    gradient: "from-[#f093fb] to-[#f5576c]",
-    accentColor: "#f093fb",
-  },
-  {
-    icon: BarChart3,
-    title: "SaaS Analytics Dashboard",
-    description: "Real-time analytics dashboard with data visualization and customizable reporting features.",
-    tags: [
-      { name: "React", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
-      { name: "D3.js", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-      { name: "PostgreSQL", bg: "bg-blue-100 dark:bg-blue-500/20", text: "text-blue-700 dark:text-blue-300" },
-    ],
-    category: "Development",
-    gradient: "from-[#4facfe] to-[#00f2fe]",
-    accentColor: "#4facfe",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile App Design",
-    description: "User-centered mobile application with intuitive navigation and modern aesthetics.",
-    tags: [
-      { name: "Figma", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-      { name: "Prototyping", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-      { name: "User Research", bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-700 dark:text-emerald-300" },
-    ],
-    category: "Design",
-    gradient: "from-[#43e97b] to-[#38f9d7]",
-    accentColor: "#43e97b",
-  },
-  {
-    icon: Bot,
-    title: "AI Integration Tool",
-    description: "Seamless integration of AI capabilities into existing platforms with custom solutions.",
-    tags: [
-      { name: "Python", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-      { name: "TensorFlow", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
-      { name: "API", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-    ],
-    category: "Automation",
-    gradient: "from-[#fa709a] to-[#fee140]",
-    accentColor: "#fa709a",
-  },
-  {
-    icon: Briefcase,
-    title: "Portfolio Website",
-    description: "Modern portfolio website with glassmorphism effects, smooth animations, and responsive design.",
-    tags: [
-      { name: "React", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
-      { name: "Tailwind CSS", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-      { name: "Framer", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-    ],
-    category: "Development",
-    gradient: "from-[#30cfd0] to-[#330867]",
-    accentColor: "#30cfd0",
-  },
-  {
-    icon: Utensils,
-    title: "Restaurant Landing Page",
-    description: "Beautiful landing page for a restaurant with online ordering, menu display, and gallery.",
-    tags: [
-      { name: "Next.js", bg: "bg-slate-100 dark:bg-slate-500/20", text: "text-slate-700 dark:text-slate-300" },
-      { name: "Tailwind CSS", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-      { name: "Figma", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-    ],
-    category: "Design",
-    gradient: "from-[#a8edea] to-[#fed6e3]",
-    accentColor: "#a8edea",
-  },
-  {
-    icon: CheckSquare,
-    title: "Task Management App",
-    description: "Productivity app with kanban boards, task lists, and team collaboration features.",
-    tags: [
-      { name: "Vue.js", bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-700 dark:text-emerald-300" },
-      { name: "Firebase", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-      { name: "PWA", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-    ],
-    category: "Development",
-    gradient: "from-[#ffecd2] to-[#fcb69f]",
-    accentColor: "#fcb69f",
-  },
-];
 
 /** Animated border filter button */
 function AnimatedFilterButton({
@@ -175,7 +34,6 @@ function AnimatedFilterButton({
           : "bg-transparent dark:border-[#64b5f6]/30 border-[#00a8cc]/30 border dark:text-[#64b5f6] text-[#00a8cc] dark:hover:bg-[#64b5f6]/10 hover:bg-[#00a8cc]/10 dark:hover:border-[#64b5f6]/50 hover:border-[#00a8cc]/50"
       )}
     >
-      {/* Animated border overlay - only show for inactive (outline) buttons */}
       {!active && (
         <div
           className={cn(
@@ -190,14 +48,8 @@ function AnimatedFilterButton({
               background: "linear-gradient(to right, transparent, #00e5ff, #64b5f6)",
               offsetPath: "rect(0 auto auto 0 round 20px)",
             }}
-            animate={{
-              offsetDistance: ["0%", "100%"],
-            }}
-            transition={{
-              repeat: Number.POSITIVE_INFINITY,
-              duration: 5,
-              ease: "linear",
-            }}
+            animate={{ offsetDistance: ["0%", "100%"] }}
+            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 5, ease: "linear" }}
           />
         </div>
       )}
@@ -208,65 +60,58 @@ function AnimatedFilterButton({
 
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const siteConfig = useContent((s) => s.siteConfig);
+  const projects = useContent((s) => s.projects);
+
+  if (!siteConfig) return <section className="py-20" />;
 
   const filteredProjects = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
 
   return (
     <section id="projects" className="py-20 section-padding">
       <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Featured Projects</span>
           </h2>
           <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
-            A collection of my recent work showcasing expertise in design, development, and automation. Each project represents a unique challenge and learning opportunity.
+            {siteConfig.projectsDescription}
           </p>
         </div>
 
-        {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {filters.map((filter) => (
-            <AnimatedFilterButton
-              key={filter}
-              active={activeFilter === filter}
-              onClick={() => setActiveFilter(filter)}
-            >
+            <AnimatedFilterButton key={filter} active={activeFilter === filter} onClick={() => setActiveFilter(filter)}>
               {filter}
             </AnimatedFilterButton>
           ))}
         </div>
 
-        {/* Project Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => {
-            const Icon = project.icon;
+            const Icon = getIcon(project.icon);
             return (
               <CardSpotlight
-                key={project.title}
+                key={project.id}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group"
               >
-                {/* Gradient Banner */}
                 <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
                   <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                 </div>
 
-                {/* Card Body */}
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>
                   <p className="text-sm dark:text-[#94a3b8] text-gray-600 leading-relaxed line-clamp-2">{project.description}</p>
 
-                  {/* Tech Tags */}
                   <div className="flex flex-wrap gap-2 pt-1">
                     {project.tags.map((tag) => (
-                      <span key={tag.name} className={`px-3 py-1 rounded-full text-xs font-medium ${tag.bg} ${tag.text}`}>
+                      <span key={tag.id} className={`px-3 py-1 rounded-full text-xs font-medium ${tag.bgLight} dark:${tag.bgDark} ${tag.textLight} dark:${tag.textDark}`}>
                         {tag.name}
                       </span>
                     ))}
                   </div>
 
-                  {/* Action Buttons */}
                   <div className="flex gap-3 pt-3">
                     <AnimatedBorderButton
                       size="sm"
@@ -293,7 +138,6 @@ export function Projects() {
           })}
         </div>
 
-        {/* View All CTA */}
         <div className="text-center mt-14">
           <AnimatedBorderButton
             size="lg"

@@ -2,77 +2,48 @@
 
 import { useState } from "react";
 import {
-  Mail,
   MapPin,
   Send,
-  Github,
-  Linkedin,
-  Youtube,
-  MessageCircle,
-  Facebook,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
-
-const contactCards = [
-  { icon: Mail, label: "Email", value: "hello@alchemist.io", href: "mailto:hello@alchemist.io" },
-  { icon: Github, label: "GitHub", value: "@alchemist", href: "https://github.com" },
-  { icon: Linkedin, label: "LinkedIn", value: "Connect with me", href: "https://linkedin.com" },
-  { icon: Youtube, label: "YouTube", value: "Subscribe", href: "https://youtube.com" },
-  { icon: MessageCircle, label: "WhatsApp", value: "Chat with me", href: "https://wa.me/1234567890" },
-  { icon: Facebook, label: "Facebook", value: "Follow me", href: "https://facebook.com" },
-];
-
-const footerNavLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
-];
-
-const footerSocials = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-  { icon: Facebook, href: "https://facebook.com", label: "Facebook" },
-];
+import { useContent } from "@/stores/content-store";
+import { getIcon } from "@/lib/get-icon";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const siteConfig = useContent((s) => s.siteConfig);
+  const contactCards = useContent((s) => s.contactCards);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({ name: "", email: "", message: "" });
   };
 
+  if (!siteConfig) return <section className="py-20" />;
+
   return (
     <section id="contact" className="pt-20 pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold dark:text-white text-gray-900 mb-4">
             Let&apos;s work together
           </h2>
           <p className="dark:text-[#94a3b8] text-gray-600 max-w-xl mx-auto text-base leading-relaxed">
-            I&apos;m always open to discussing new projects, creative ideas, or
-            opportunities to be part of your vision.
+            {siteConfig.contactDescription}
           </p>
         </div>
 
-        {/* Contact Grid */}
         <div className="grid lg:grid-cols-2 gap-8 pb-16">
-          {/* Left Column - Social Cards */}
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               {contactCards.map((card) => {
-                const Icon = card.icon;
+                const Icon = getIcon(card.icon);
                 return (
-                  <a key={card.label} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined} className="group">
+                  <a key={card.id} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined} className="group">
                     <CardSpotlight className="p-4 glass-card-solid transition-all duration-200">
                       <div className="flex items-start gap-3">
                         <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9 shrink-0" duration={5}>
@@ -94,11 +65,10 @@ export function ContactSection() {
                 <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15" />
                 <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
               </MovingBorderIcon>
-              <span className="text-sm dark:text-[#94a3b8] text-gray-600">Available for remote work worldwide</span>
+              <span className="text-sm dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
             </div>
           </div>
 
-          {/* Right Column - Contact Form */}
           <CardSpotlight className="p-6 glass-card-solid">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -130,15 +100,15 @@ export function ContactSection() {
   );
 }
 
-/** Backward-compatible wrapper: ContactSection + Footer (for home page) */
 export function Contact() {
+  const socialLinks = useContent((s) => s.socialLinks);
+
   return (
     <>
       <ContactSection />
       <footer className="dark:border-t-[#00e5ff]/10 border-t-gray-200 dark:bg-[#06080f]/30 bg-gray-50/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid md:grid-cols-3 gap-8 items-start">
-            {/* Left - Logo & Copyright */}
             <div className="space-y-3">
               <a href="#home" className="text-lg font-bold inline-block hover:scale-105 transition-transform duration-200">
                 <span className="text-[#64b5f6]">Alchemist</span><span className="dark:text-white text-gray-900">.io</span>
@@ -148,27 +118,23 @@ export function Contact() {
               </p>
             </div>
 
-            {/* Center - Quick Links */}
             <div className="space-y-3">
               <h4 className="text-sm font-semibold dark:text-white text-gray-900">Quick Links</h4>
               <nav className="grid grid-cols-2 gap-x-6 gap-y-2">
-                {footerNavLinks.map((link) => (
-                  <a key={link.label} href={link.href} className="text-sm dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] transition-colors duration-200">{link.label}</a>
+                {["Home", "About", "Skills", "Projects", "Education", "Contact"].map((label) => (
+                  <a key={label} href={`#${label.toLowerCase()}`} className="text-sm dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] transition-colors duration-200">{label}</a>
                 ))}
               </nav>
             </div>
 
-            {/* Right - Social Icons */}
             <div className="space-y-3">
               <h4 className="text-sm font-semibold dark:text-white text-gray-900">Connect</h4>
               <div className="flex items-center gap-3">
-                {footerSocials.map((social) => {
-                  const Icon = social.icon;
+                {socialLinks.map((social) => {
+                  const Icon = getIcon(social.icon);
                   return (
-                    <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="group">
-                      <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9">
-                        <Icon className="w-4 h-4 dark:text-[#64748b] text-gray-500 dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200" />
-                      </MovingBorderIcon>
+                    <a key={social.id} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-9 h-9 rounded-lg dark:border-[#00e5ff]/10 border-gray-300/80 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/25 hover:border-[#00a8cc]/25 dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-200">
+                      <Icon className="w-4 h-4" />
                     </a>
                   );
                 })}

@@ -5,15 +5,7 @@ import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
-
-const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Skills", href: "/skills" },
-  { label: "Projects", href: "/projects" },
-  { label: "Education", href: "/education" },
-  { label: "Contact", href: "/contact" },
-];
+import { useContent } from "@/stores/content-store";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,6 +13,11 @@ export function Header() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const navItems = useContent((s) => s.navItems);
+  const siteConfig = useContent((s) => s.siteConfig);
+
+  const logoAccent = siteConfig?.logoText ? siteConfig.logoText.split('.')[0] : 'Alchemist';
+  const logoSuffix = siteConfig?.logoText ? '.' + siteConfig.logoText.split('.').slice(1).join('.') : '.io';
 
   useEffect(() => {
     setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
@@ -77,18 +74,18 @@ export function Header() {
               </svg>
             </div>
             <span className="text-xl font-bold tracking-tight">
-              <span className="dark:text-[#00e5ff] text-[#00a8cc]">Alchemist</span>
-              <span className="dark:text-white text-gray-900">.io</span>
+              <span className="dark:text-[#00e5ff] text-[#00a8cc]">{logoAccent}</span>
+              <span className="dark:text-white text-gray-900">{logoSuffix}</span>
             </span>
           </a>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1.5">
-            {navLinks.map((link) => {
+            {navItems.map((link) => {
               const active = isActive(link.href);
               return (
                 <a
-                  key={link.label}
+                  key={link.id}
                   href={link.href}
                   className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 border ${
                     active
@@ -118,15 +115,17 @@ export function Header() {
             </button>
 
             {/* CV Download Button */}
-            <AnimatedBorderButton
-              size="sm"
-              className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-300 hover:scale-105"
-              gradientVia="#64b5f6"
-              gradientTo="#a78bfa"
-            >
-              <Download className="w-4 h-4" />
-              CV
-            </AnimatedBorderButton>
+            <a href={siteConfig?.cvUrl || '#'}>
+              <AnimatedBorderButton
+                size="sm"
+                className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-300 hover:scale-105"
+                gradientVia="#64b5f6"
+                gradientTo="#a78bfa"
+              >
+                <Download className="w-4 h-4" />
+                CV
+              </AnimatedBorderButton>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -147,11 +146,11 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden dark:bg-[#08050f]/80 bg-white/85 backdrop-blur-2xl dark:border-t dark:border-[#00e5ff]/8 border-t border-gray-200/60">
           <nav className="flex flex-col py-3 px-4">
-            {navLinks.map((link) => {
+            {navItems.map((link) => {
               const active = isActive(link.href);
               return (
                 <a
-                  key={link.label}
+                  key={link.id}
                   href={link.href}
                   className={`py-2.5 px-4 text-sm font-medium rounded-full transition-all duration-200 flex items-center border ${
                     active
@@ -171,15 +170,17 @@ export function Header() {
               >
                 {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
               </button>
-              <AnimatedBorderButton
-                size="sm"
-                className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-4 gap-1.5 flex-1 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10"
-                gradientVia="#64b5f6"
-                gradientTo="#a78bfa"
-              >
-                <Download className="w-4 h-4" />
-                Download CV
-              </AnimatedBorderButton>
+              <a href={siteConfig?.cvUrl || '#'} className="flex-1">
+                <AnimatedBorderButton
+                  size="sm"
+                  className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-4 gap-1.5 flex-1 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10"
+                  gradientVia="#64b5f6"
+                  gradientTo="#a78bfa"
+                >
+                  <Download className="w-4 h-4" />
+                  Download CV
+                </AnimatedBorderButton>
+              </a>
             </div>
           </nav>
         </div>

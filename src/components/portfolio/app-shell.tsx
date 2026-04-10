@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { Header } from "@/components/portfolio/header";
 import { Footer } from "@/components/portfolio/footer";
 import { DottedSurface } from "@/components/ui/dotted-surface";
+import { useContent } from "@/stores/content-store";
 
 /**
  * Persistent shell that lives across page navigations.
@@ -12,6 +13,12 @@ import { DottedSurface } from "@/components/ui/dotted-surface";
  * so page transitions are near-instant.
  */
 export function AppShell({ children }: { children: ReactNode }) {
+  const fetchContent = useContent((s) => s.fetch);
+
+  useEffect(() => {
+    fetchContent();
+  }, [fetchContent]);
+
   return (
     <div className="min-h-screen flex flex-col relative">
       {/* Single Three.js instance — persists across all routes */}

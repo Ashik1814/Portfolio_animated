@@ -4,152 +4,27 @@ import { Hero } from "@/components/portfolio/hero";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import {
-  Paintbrush,
-  Code2,
-  Bot,
-  ShoppingBag,
-  Palette,
-  Zap,
-  Shield,
-  GraduationCap,
-  Mail,
-  Github,
-  Linkedin,
-  Youtube,
   ArrowRight,
 } from "lucide-react";
+import { useContent } from "@/stores/content-store";
+import { getIcon } from "@/lib/get-icon";
 
-/* ───────── About Preview Data ───────── */
-const aboutSkills = [
-  {
-    icon: Paintbrush,
-    title: "UI/UX Design",
-    metric: "50+",
-    metricLabel: "Design Projects",
-    color: "#a78bfa",
-  },
-  {
-    icon: Code2,
-    title: "Frontend Development",
-    metric: "30+",
-    metricLabel: "Projects Built",
-    color: "#00e5ff",
-  },
-  {
-    icon: Bot,
-    title: "n8n Automation",
-    metric: "80%",
-    metricLabel: "Efficiency Gained",
-    color: "#2dd4bf",
-  },
-];
-
-/* ───────── Skills Preview Data ───────── */
-const skillCategories = [
-  {
-    icon: Paintbrush,
-    title: "Design",
-    color: "#a78bfa",
-    skills: [
-      { name: "Figma", percentage: 95 },
-      { name: "Adobe XD", percentage: 88 },
-    ],
-  },
-  {
-    icon: Code2,
-    title: "Development",
-    color: "#00e5ff",
-    skills: [
-      { name: "React", percentage: 96 },
-      { name: "TypeScript", percentage: 83 },
-    ],
-  },
-  {
-    icon: Bot,
-    title: "Automation",
-    color: "#2dd4bf",
-    skills: [
-      { name: "n8n", percentage: 94 },
-      { name: "Zapier", percentage: 88 },
-    ],
-  },
-];
-
-/* ───────── Projects Preview Data ───────── */
-const projects = [
-  {
-    icon: ShoppingBag,
-    title: "E-Commerce Platform",
-    description:
-      "Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.",
-    tags: [
-      { name: "React", bg: "bg-cyan-100 dark:bg-cyan-500/20", text: "text-cyan-700 dark:text-cyan-300" },
-      { name: "Node.js", bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-700 dark:text-emerald-300" },
-      { name: "MongoDB", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-    ],
-    gradient: "from-[#ff6b6b] to-[#ff8e53]",
-    accentColor: "#ff6b6b",
-  },
-  {
-    icon: Palette,
-    title: "Design System",
-    description:
-      "Comprehensive component library with guidelines, documentation, and accessibility standards.",
-    tags: [
-      { name: "Figma", bg: "bg-violet-100 dark:bg-violet-500/20", text: "text-violet-700 dark:text-violet-300" },
-      { name: "Storybook", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-      { name: "Sketch", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-    ],
-    gradient: "from-[#667eea] to-[#764ba2]",
-    accentColor: "#667eea",
-  },
-  {
-    icon: Zap,
-    title: "Workflow Automation System",
-    description:
-      "Automated business processes reducing manual work by 80% using AI and custom integrations.",
-    tags: [
-      { name: "Python", bg: "bg-teal-100 dark:bg-teal-500/20", text: "text-teal-700 dark:text-teal-300" },
-      { name: "Airflow", bg: "bg-sky-100 dark:bg-sky-500/20", text: "text-sky-700 dark:text-sky-300" },
-      { name: "AWS", bg: "bg-indigo-100 dark:bg-indigo-500/20", text: "text-indigo-700 dark:text-indigo-300" },
-    ],
-    gradient: "from-[#f093fb] to-[#f5576c]",
-    accentColor: "#f093fb",
-  },
-];
-
-/* ───────── Education Preview Data ───────── */
-const degrees = [
-  {
-    icon: Shield,
-    title: "Bachelor of Technology in Computer Science",
-    institution: "University Name",
-    period: "2019 - 2023",
-    gpa: "8.5/10",
-    gpaColor: "#00e5ff",
-  },
-  {
-    icon: GraduationCap,
-    title: "Higher Secondary Education",
-    institution: "School Name",
-    period: "2017 - 2019",
-    gpa: "92%",
-    gpaColor: "#2dd4bf",
-  },
-];
-
-/* ───────── Contact Preview Data ───────── */
-const socialLinks = [
-  { icon: Mail, href: "mailto:hello@alchemist.io", label: "Email" },
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-];
-
-/* ═══════════════════════════════════════════════════════════════════════════ */
-/*  HOME PAGE                                                                 */
-/* ═══════════════════════════════════════════════════════════════════════════ */
 export default function Home() {
+  const siteConfig = useContent((s) => s.siteConfig);
+  const aboutSkills = useContent((s) => s.aboutSkills);
+  const skillCategories = useContent((s) => s.skillCategories);
+  const projects = useContent((s) => s.projects);
+  const degrees = useContent((s) => s.degrees);
+  const socialLinks = useContent((s) => s.socialLinks);
+
+  if (!siteConfig) {
+    return <Hero />;
+  }
+
+  // Preview data: take first 3 projects, first 2 degrees
+  const previewProjects = projects.slice(0, 3);
+  const previewDegrees = degrees.slice(0, 2);
+
   return (
     <>
       <Hero />
@@ -162,37 +37,28 @@ export default function Home() {
               What I <span className="gradient-text-cyan">Do</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              Combining design, development, and automation to create
-              impactful digital solutions.
+              {siteConfig.aboutDescription}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {aboutSkills.map((skill) => {
-              const Icon = skill.icon;
+              const Icon = getIcon(skill.icon);
               return (
-                <CardSpotlight key={skill.title} className="p-6">
+                <CardSpotlight key={skill.id} className="p-6">
                   <div className="flex items-start gap-4">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{
-                        backgroundColor: `${skill.color}15`,
-                      }}
+                      style={{ backgroundColor: `${skill.color}15` }}
                     >
-                      <Icon
-                        className="w-6 h-6"
-                        style={{ color: skill.color }}
-                      />
+                      <Icon className="w-6 h-6" style={{ color: skill.color }} />
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-semibold dark:text-white text-gray-900 text-lg mb-1">
                         {skill.title}
                       </h3>
                       <div className="flex items-baseline gap-2">
-                        <span
-                          className="text-3xl font-bold"
-                          style={{ color: skill.color }}
-                        >
+                        <span className="text-3xl font-bold" style={{ color: skill.color }}>
                           {skill.metric}
                         </span>
                         <span className="text-sm dark:text-[#94a3b8] text-gray-600">
@@ -227,50 +93,37 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
-              My{" "}
-              <span className="gradient-text-purple-blue">Skills</span>
+              My <span className="gradient-text-purple-blue">Skills</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              A snapshot of my core competencies across design, development,
-              and automation.
+              {siteConfig.skillsDescription}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {skillCategories.map((category) => {
-              const Icon = category.icon;
+              const Icon = getIcon(category.icon);
               return (
-                <CardSpotlight key={category.title} className="p-6">
+                <CardSpotlight key={category.id} className="p-6">
                   <div className="flex items-center gap-3 mb-5">
                     <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center"
-                      style={{
-                        backgroundColor: `${category.color}15`,
-                      }}
+                      style={{ backgroundColor: `${category.color}15` }}
                     >
-                      <Icon
-                        className="w-5 h-5"
-                        style={{ color: category.color }}
-                      />
+                      <Icon className="w-5 h-5" style={{ color: category.color }} />
                     </div>
-                    <h3
-                      className="font-semibold text-lg"
-                      style={{ color: category.color }}
-                    >
+                    <h3 className="font-semibold text-lg" style={{ color: category.color }}>
                       {category.title}
                     </h3>
                   </div>
                   <div className="space-y-4">
-                    {category.skills.map((skill) => (
-                      <div key={skill.name}>
+                    {category.skills.slice(0, 2).map((skill) => (
+                      <div key={skill.id}>
                         <div className="flex justify-between items-center mb-1.5">
                           <span className="text-sm font-medium dark:text-white text-gray-900">
                             {skill.name}
                           </span>
-                          <span
-                            className="text-xs font-semibold"
-                            style={{ color: category.color }}
-                          >
+                          <span className="text-xs font-semibold" style={{ color: category.color }}>
                             {skill.percentage}%
                           </span>
                         </div>
@@ -312,20 +165,18 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
-              Featured{" "}
-              <span className="gradient-text-pink-blue">Projects</span>
+              Featured <span className="gradient-text-pink-blue">Projects</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              A selection of my recent work spanning web development, design
-              systems, and automation.
+              {siteConfig.projectsDescription}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {projects.map((project) => {
-              const Icon = project.icon;
+            {previewProjects.map((project) => {
+              const Icon = getIcon(project.icon);
               return (
-                <CardSpotlight key={project.title} className="overflow-hidden">
+                <CardSpotlight key={project.id} className="overflow-hidden">
                   <div
                     className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}
                   >
@@ -342,8 +193,8 @@ export default function Home() {
                     <div className="flex flex-wrap gap-2">
                       {project.tags.map((tag) => (
                         <span
-                          key={tag.name}
-                          className={`text-xs px-2.5 py-1 rounded-full font-medium ${tag.bg} ${tag.text}`}
+                          key={tag.id}
+                          className={`text-xs px-2.5 py-1 rounded-full font-medium ${tag.bgLight} dark:${tag.bgDark} ${tag.textLight} dark:${tag.textDark}`}
                         >
                           {tag.name}
                         </span>
@@ -376,31 +227,24 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
-              My{" "}
-              <span className="gradient-text-cyan">Education</span>
+              My <span className="gradient-text-cyan">Education</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              Academic foundation that shaped my technical and creative
-              expertise.
+              {siteConfig.educationDescription}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6 mb-10 max-w-4xl mx-auto">
-            {degrees.map((degree) => {
-              const Icon = degree.icon;
+            {previewDegrees.map((degree) => {
+              const Icon = getIcon(degree.icon);
               return (
-                <CardSpotlight key={degree.title} className="p-6">
+                <CardSpotlight key={degree.id} className="p-6">
                   <div className="flex items-start gap-4">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{
-                        backgroundColor: `${degree.gpaColor}15`,
-                      }}
+                      style={{ backgroundColor: `${degree.gpaColor}15` }}
                     >
-                      <Icon
-                        className="w-6 h-6"
-                        style={{ color: degree.gpaColor }}
-                      />
+                      <Icon className="w-6 h-6" style={{ color: degree.gpaColor }} />
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-semibold dark:text-white text-gray-900 text-base mb-1 leading-snug">
@@ -413,10 +257,7 @@ export default function Home() {
                         <span className="text-xs dark:text-[#64748b] text-gray-500">
                           {degree.period}
                         </span>
-                        <span
-                          className="text-sm font-bold"
-                          style={{ color: degree.gpaColor }}
-                        >
+                        <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>
                           GPA: {degree.gpa}
                         </span>
                       </div>
@@ -448,8 +289,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
-              Let&apos;s{" "}
-              <span className="gradient-text-pink-blue">Connect</span>
+              Let&apos;s <span className="gradient-text-pink-blue">Connect</span>
             </h2>
           </div>
 
@@ -459,21 +299,20 @@ export default function Home() {
                 Let&apos;s work together
               </h3>
               <p className="dark:text-[#94a3b8] text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
-                Have a project in mind or just want to say hello? I&apos;d
-                love to hear from you. Let&apos;s create something amazing.
+                {siteConfig.contactDescription}
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-8">
                 {socialLinks.map((social) => {
-                  const Icon = social.icon;
+                  const Icon = getIcon(social.icon);
                   return (
                     <a
-                      key={social.label}
+                      key={social.id}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={social.label}
-                      className="w-12 h-12 rounded-xl dark:border-[#1e3a5f]/50 border-gray-300 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#f472b6] hover:text-[#db2777] dark:hover:border-[#f472b6]/30 hover:border-[#db2777]/30 dark:hover:bg-[#f472b6]/5 hover:bg-[#db2777]/5 transition-all duration-200"
+                      className="w-12 h-12 rounded-xl dark:border-[#1e3a5f]/50 border-gray-300 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/30 hover:border-[#00a8cc]/30 dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-200"
                     >
                       <Icon className="w-5 h-5" />
                     </a>
@@ -483,9 +322,9 @@ export default function Home() {
 
               <AnimatedBorderButton
                 asChild
-                gradientVia="#f472b6"
+                gradientVia="#00e5ff"
                 gradientTo="#64b5f6"
-                className="bg-[#f472b6] dark:bg-[#f472b6] hover:bg-[#e879a8] dark:hover:bg-[#e879a8] dark:text-[#06080f] text-white font-semibold rounded-full px-8 shadow-lg dark:shadow-[#f472b6]/25 shadow-[#db2777]/20"
+                className="bg-[#00e5ff] dark:bg-[#00e5ff] hover:bg-[#00c2e5] dark:hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-full px-8 shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20"
               >
                 <a href="/contact">
                   Get In Touch

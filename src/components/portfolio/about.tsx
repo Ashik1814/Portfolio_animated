@@ -1,117 +1,27 @@
 "use client";
 
 import {
-  Paintbrush,
-  Code2,
-  Bot,
   User,
   Lightbulb,
   Target,
   Handshake,
-  GraduationCap,
-  Briefcase,
   Sparkles,
   Award,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
-
-const skills = [
-  {
-    icon: Paintbrush,
-    title: "UI/UX Design",
-    description:
-      "Crafting intuitive and visually stunning user interfaces with a focus on user experience and accessibility. I believe great design is both functional and beautiful.",
-    metric: "50+",
-    metricLabel: "Design Projects",
-    color: "#a78bfa",
-  },
-  {
-    icon: Code2,
-    title: "Frontend Development",
-    description:
-      "Building responsive, performant web applications using modern technologies like React, TypeScript, and Tailwind CSS. Clean code is my priority.",
-    metric: "30+",
-    metricLabel: "Projects Built",
-    color: "#00e5ff",
-  },
-  {
-    icon: Bot,
-    title: "n8n Automation",
-    description:
-      "Designing and implementing intelligent automation solutions to streamline business processes and save countless hours of manual work.",
-    metric: "80%",
-    metricLabel: "Efficiency Gained",
-    color: "#2dd4bf",
-  },
-];
-
-const coreValues = [
-  {
-    icon: User,
-    title: "User-Centered",
-    description: "Every decision starts with the user in mind.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Innovation",
-    description: "Always exploring new technologies and approaches.",
-  },
-  {
-    icon: Target,
-    title: "Goal-Oriented",
-    description: "Focused on achieving measurable results.",
-  },
-  {
-    icon: Handshake,
-    title: "Collaboration",
-    description: "Working closely with teams and stakeholders.",
-  },
-];
-
-const journeyItems = [
-  {
-    year: "2019",
-    title: "Started CSE Journey",
-    description:
-      "Began my bachelor's in Computer Science Engineering, discovering my passion for web development and design.",
-  },
-  {
-    year: "2021",
-    title: "First Freelance Project",
-    description:
-      "Completed my first freelance project: a responsive website for a local business, sparking my entrepreneurial spirit.",
-  },
-  {
-    year: "2022",
-    title: "Deep Dive into UI/UX",
-    description:
-      "Pursued advanced training in design principles, Figma, and user research methodologies. Won college hackathon with innovative design.",
-  },
-  {
-    year: "2023",
-    title: "Graduated & Specialized",
-    description:
-      "Completed my B.Tech in Computer Science and began specializing in frontend development and n8n automation workflows.",
-  },
-  {
-    year: "2024",
-    title: "Full-Stack Growth",
-    description:
-      "Expanded into backend integration, API development, and building end-to-end automation solutions for clients worldwide.",
-  },
-];
-
-const techTags = [
-  "React",
-  "TypeScript",
-  "Figma",
-  "Tailwind CSS",
-  "n8n",
-  "Node.js",
-];
+import { useContent } from "@/stores/content-store";
+import { getIcon } from "@/lib/get-icon";
 
 export function About() {
+  const siteConfig = useContent((s) => s.siteConfig);
+  const aboutSkills = useContent((s) => s.aboutSkills);
+  const coreValues = useContent((s) => s.coreValues);
+  const journeyItems = useContent((s) => s.journeyItems);
+  const aboutTechTags = useContent((s) => s.aboutTechTags);
+
+  if (!siteConfig) return <section className="py-20" />;
+
   return (
     <section id="about" className="py-20 section-padding">
       <div className="max-w-7xl mx-auto">
@@ -121,20 +31,17 @@ export function About() {
             <span className="gradient-text-cyan">About Me</span>
           </h2>
           <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
-            I&apos;m a passionate CSE graduate who loves turning ideas into
-            reality through design and code. With a unique blend of creative
-            design thinking and technical expertise, I create digital
-            experiences that users love and businesses value.
+            {siteConfig.aboutDescription}
           </p>
         </div>
 
         {/* Skills Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          {skills.map((skill) => {
-            const Icon = skill.icon;
+          {aboutSkills.map((skill) => {
+            const Icon = getIcon(skill.icon);
             return (
               <CardSpotlight
-                key={skill.title}
+                key={skill.id}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group"
               >
                 <div className="p-6 space-y-4">
@@ -170,30 +77,24 @@ export function About() {
             <div className="w-12 h-12 rounded-full dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
             </div>
-            <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-4">My Approach</h3>
+            <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-4">{siteConfig.approachTitle}</h3>
             <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4">
-              I believe that great digital products are born at the intersection
-              of beautiful design, clean code, and smart automation. My approach
-              is user-centered, data-driven, and driven by a passion for
-              continuous learning and improvement.
+              {siteConfig.approachText1}
             </p>
             <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed">
-              Whether I&apos;m designing an interface, writing code, or setting
-              up an automation workflow, I always ask: &apos;How can this create
-              the most value for users while maintaining technical
-              excellence?&apos; This philosophy guides every project I take on.
+              {siteConfig.approachText2}
             </p>
           </div>
         </CardSpotlight>
 
         {/* Tech Tags */}
         <div className="flex flex-wrap justify-center gap-3 mb-16">
-          {techTags.map((tag) => (
+          {aboutTechTags.map((tag) => (
             <span
-              key={tag}
+              key={tag.id}
               className="px-4 py-2 rounded-full text-sm font-medium glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200"
             >
-              {tag}
+              {tag.name}
             </span>
           ))}
         </div>
@@ -204,10 +105,10 @@ export function About() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {coreValues.map((value) => {
-            const Icon = value.icon;
+            const Icon = getIcon(value.icon);
             return (
               <CardSpotlight
-                key={value.title}
+                key={value.id}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center"
               >
                 <div className="p-5 space-y-2">
@@ -234,7 +135,7 @@ export function About() {
 
           {journeyItems.map((item, index) => (
             <div
-              key={item.year}
+              key={item.id}
               className={`relative flex items-start mb-8 last:mb-0 ${
                 index % 2 === 0
                   ? "md:flex-row"
