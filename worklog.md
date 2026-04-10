@@ -47,3 +47,51 @@ Stage Summary:
 - All cards are now see-through glass with backdrop-filter blur
 - Background is visible through all content on the page
 - Lint passes, dev server compiles successfully
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Replace background with AI DNA Double Helix particle system
+
+Work Log:
+- Replaced Data Erosion Blueprint with DNA Double Helix concept
+- 20,000 particles arranged in double helix geometry (two intertwined strands)
+- Custom vertex shader with: DNA floating sway, slow helix rotation, mouse repulsion
+- Custom fragment shader with: soft glow, strand A (cyan #00e5ff) vs strand B (blue #64b5f6), white core
+- 120 rung lines connecting the two strands, animated to match helix rotation
+- Mouse interaction: particles repel away from cursor position within radius 3
+- Gentle camera breathing for depth
+- All cards remain transparent (glass-card / glass-card-solid from Task 2)
+- Lint passes, dev server compiles successfully
+
+Stage Summary:
+- AI DNA Double Helix background with 20,000 particles
+- Two colored strands (cyan + blue) with rung connections
+- Mouse repulsion in shader — particles push away from cursor
+- Smooth floating + rotation animation
+- Professional look with additive blending glow
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Replace background with Nebula Flow based on user's reference image
+
+Work Log:
+- Analyzed user's reference image using VLM — identified gaseous nebula aesthetic with deep teal/navy base, vibrant magenta/pink accents, fine glitter sparkles
+- Rebuilt particle-background.tsx with 3-layer Nebula Flow system:
+  - Layer 1: 180 large soft gaseous blobs (gaussian falloff, deep teal/navy + magenta/pink, slow swirling drift)
+  - Layer 2: 3000 medium flowing particles (cyan → blue → pink/magenta, directional flow with turbulence)
+  - Layer 3: 1500 fine glitter sparkles (white/cyan, twinkle animation, very slow drift)
+- Mouse repulsion on all 3 layers — particles flee from cursor with quadratic falloff
+- Particles near mouse get brighter and slightly larger (glow effect)
+- All layers use additive blending for ethereal, luminous look
+- Gentle camera breathing for depth
+- Cards remain transparent from previous tasks
+- Lint passes, dev server compiles successfully
+
+Stage Summary:
+- Nebula Flow background: 3-layer gaseous particle system (180 gas + 3000 flow + 1500 sparkles)
+- Deep teal/navy base with magenta/pink accents matching the reference image
+- Mouse repulsion — all particles push away from cursor
+- Soft, organic, swirling movement — professional nebula aesthetic
+- Background visible through all glass cards

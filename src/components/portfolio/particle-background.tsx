@@ -4,26 +4,18 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 /* ──────────────────────────────────────────────
-   Data Erosion Blueprint — Three.js
-   • 5000 data-point particles with life cycle
-   • Healthy → smooth directional flow (cyan)
-   • Eroding → jitter / fragment (amber → red)
-   • Dead → respawn at random edge
-   • Mouse: attract nearby, repel on proximity
-   • Subtle connection mesh between close particles
-   ────────────────────────────────────────────── */
+   Nebula Flow — Three.js
+   Inspired by gaseous nebula / cosmic smoke aesthetic
 
-const PARTICLE_COUNT = 5000;
-const CONNECTION_DISTANCE = 1.2;
-const MAX_CONNECTIONS = 300;
-const MOUSE_ATTRACT_RADIUS = 4.0;
-const MOUSE_REPEL_RADIUS = 0.8;
-const MOUSE_ATTRACT_FORCE = 0.004;
-const MOUSE_REPEL_FORCE = 0.02;
+   Layer 1: Large soft gaseous blobs (deep teal/navy + magenta/pink)
+   Layer 2: Medium flowing particles (cyan + pink drift)
+   Layer 3: Fine glitter sparkles (white/cyan dots)
+   Mouse: repulsion — particles flee from cursor
+   ────────────────────────────────────────────── */
 
 export function ParticleBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
+  const mouseRef = useRef({ x: -10, y: -10 });
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const rafRef = useRef<number>(0);
 
@@ -31,93 +23,300 @@ export function ParticleBackground() {
     const container = containerRef.current;
     if (!container) return;
 
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
     /* ── Scene ── */
     const scene = new THREE.Scene();
 
     /* ── Camera ── */
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      50,
-    );
-    camera.position.set(0, 0, 8);
+    const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 100);
+    camera.position.set(0, 0, 10);
 
     /* ── Renderer ── */
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+    renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     rendererRef.current = renderer;
     container.appendChild(renderer.domElement);
 
-    /* ── Particle Data ── */
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const velocities = new Float32Array(PARTICLE_COUNT * 3);
-    const life = new Float32Array(PARTICLE_COUNT);
-    const aLife = new Float32Array(PARTICLE_COUNT); // for shader
+    /* ═══════════════════════════════════════
+       Layer 1 — Gaseous Nebula Blobs
+       Large, soft, slow-moving volumetric clouds
+    ═══════════════════════════════════════ */
+    const GAS_COUNT = 180;
+    const gasPositions = new Float32Array(GAS_COUNT * 3);
+    const gasSizes = new Float32Array(GAS_COUNT);
+    const gasColorMix = new Float32Array(GAS_COUNT); // 0=teal, 1=pink
+    const gasVelocities: { vx: number; vy: number; baseX: number; baseY: number; phase: number; ampX: number; ampY: number }[] = [];
 
-    const BOUNDS_X = 10;
-    const BOUNDS_Y = 7;
-    const BOUNDS_Z = 4;
+    for (let i = 0; i < GAS_COUNT; i++) {
+      const x = (Math.random() - 0.5) * 22;
+      const y = (Math.random() - 0.5) * 16;
+      const z = (Math.random() - 0.5) * 6 - 2;
+      gasPositions[i * 3] = x;
+      gasPositions[i * 3 + 1] = y;
+      gasPositions[i * 3 + 2] = z;
+      gasSizes[i] = 40 + Math.random() * 80; // big soft blobs
+      gasColorMix[i] = Math.random();
 
-    function randomPosition(i3: number) {
-      positions[i3] = (Math.random() - 0.5) * BOUNDS_X * 2;
-      positions[i3 + 1] = (Math.random() - 0.5) * BOUNDS_Y * 2;
-      positions[i3 + 2] = (Math.random() - 0.5) * BOUNDS_Z * 2;
+      gasVelocities.push({
+        vx: (Math.random() - 0.5) * 0.003,
+        vy: (Math.random() - 0.3) * 0.002, // slight upward drift
+        baseX: x,
+        baseY: y,
+        phase: Math.random() * Math.PI * 2,
+        ampX: 0.3 + Math.random() * 0.8,
+        ampY: 0.2 + Math.random() * 0.6,
+      });
     }
 
-    function randomVelocity(i3: number) {
-      velocities[i3] = (Math.random() - 0.3) * 0.008; // bias rightward
-      velocities[i3 + 1] = (Math.random() - 0.5) * 0.004;
-      velocities[i3 + 2] = (Math.random() - 0.5) * 0.002;
-    }
+    const gasGeo = new THREE.BufferGeometry();
+    gasGeo.setAttribute("position", new THREE.BufferAttribute(gasPositions, 3));
+    gasGeo.setAttribute("aSize", new THREE.BufferAttribute(gasSizes, 1));
+    gasGeo.setAttribute("aColorMix", new THREE.BufferAttribute(gasColorMix, 1));
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const i3 = i * 3;
-      randomPosition(i3);
-      randomVelocity(i3);
-      life[i] = Math.random(); // stagger initial life
-      aLife[i] = life[i];
-    }
-
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("aLife", new THREE.BufferAttribute(aLife, 1));
-
-    /* ── Particle Shader ── */
-    const particleMaterial = new THREE.ShaderMaterial({
+    const gasMat = new THREE.ShaderMaterial({
       uniforms: {
-        uPixelRatio: { value: renderer.getPixelRatio() },
         uTime: { value: 0 },
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uMouse: { value: new THREE.Vector2(-10, -10) },
       },
       vertexShader: `
-        attribute float aLife;
+        attribute float aSize;
+        attribute float aColorMix;
         uniform float uPixelRatio;
         uniform float uTime;
-        varying float vLife;
-        varying float vDist;
+        uniform vec2 uMouse;
+        varying float vColorMix;
+        varying float vAlpha;
 
         void main() {
-          vLife = aLife;
-          vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-          vDist = -mvPos.z;
+          vColorMix = aColorMix;
+          vec3 p = position;
 
-          // Size: healthy particles are small & clean; eroding ones flicker larger
-          float baseSize = 2.0;
-          float erosionPulse = (1.0 - aLife) * sin(uTime * 12.0 + position.x * 5.0) * 2.0;
-          float s = baseSize + max(erosionPulse, 0.0);
+          // Mouse repulsion
+          vec2 mouseWorld = uMouse * vec2(11.0, 8.0);
+          float dist = distance(p.xy, mouseWorld);
+          if (dist < 4.0 && dist > 0.01) {
+            vec2 dir = normalize(p.xy - mouseWorld);
+            float force = (4.0 - dist) / 4.0;
+            force = force * force; // quadratic falloff
+            p.xy += dir * force * 2.5;
+          }
 
-          gl_PointSize = s * uPixelRatio * (5.0 / vDist);
-          gl_PointSize = clamp(gl_PointSize, 0.5, 8.0);
+          vec4 mvPos = modelViewMatrix * vec4(p, 1.0);
+          float depth = -mvPos.z;
+          vAlpha = smoothstep(12.0, 4.0, depth) * 0.12;
+
+          gl_PointSize = aSize * uPixelRatio * (6.0 / depth);
+          gl_PointSize = clamp(gl_PointSize, 2.0, 200.0);
           gl_Position = projectionMatrix * mvPos;
         }
       `,
       fragmentShader: `
-        varying float vLife;
-        varying float vDist;
+        varying float vColorMix;
+        varying float vAlpha;
+
+        void main() {
+          float d = length(gl_PointCoord - vec2(0.5));
+          if (d > 0.5) discard;
+
+          // Ultra-soft gaussian falloff — gaseous look
+          float glow = 1.0 - smoothstep(0.0, 0.5, d);
+          glow = pow(glow, 3.0); // very soft edges
+
+          // Deep teal/navy → vibrant magenta/pink
+          vec3 teal = vec3(0.0, 0.35, 0.45);
+          vec3 navy = vec3(0.04, 0.08, 0.22);
+          vec3 pink = vec3(0.7, 0.15, 0.45);
+          vec3 magenta = vec3(0.55, 0.05, 0.55);
+
+          vec3 coolBase = mix(navy, teal, vColorMix * 0.6 + 0.2);
+          vec3 warmAccent = mix(pink, magenta, vColorMix);
+          vec3 col = mix(coolBase, warmAccent, vColorMix * 0.5);
+
+          gl_FragColor = vec4(col, glow * vAlpha);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const gasPoints = new THREE.Points(gasGeo, gasMat);
+    scene.add(gasPoints);
+
+    /* ═══════════════════════════════════════
+       Layer 2 — Medium Flowing Particles
+       More defined, directional drift with color
+    ═══════════════════════════════════════ */
+    const FLOW_COUNT = 3000;
+    const flowPositions = new Float32Array(FLOW_COUNT * 3);
+    const flowSizes = new Float32Array(FLOW_COUNT);
+    const flowColorMix = new Float32Array(FLOW_COUNT);
+    const flowVels: number[] = [];
+
+    for (let i = 0; i < FLOW_COUNT; i++) {
+      const i3 = i * 3;
+      flowPositions[i3] = (Math.random() - 0.5) * 22;
+      flowPositions[i3 + 1] = (Math.random() - 0.5) * 16;
+      flowPositions[i3 + 2] = (Math.random() - 0.5) * 8 - 1;
+      flowSizes[i] = 1.5 + Math.random() * 3.0;
+      flowColorMix[i] = Math.random();
+      flowVels.push(
+        (Math.random() - 0.3) * 0.006,
+        (Math.random() - 0.5) * 0.004,
+        (Math.random() - 0.5) * 0.001,
+      );
+    }
+
+    const flowGeo = new THREE.BufferGeometry();
+    flowGeo.setAttribute("position", new THREE.BufferAttribute(flowPositions, 3));
+    flowGeo.setAttribute("aSize", new THREE.BufferAttribute(flowSizes, 1));
+    flowGeo.setAttribute("aColorMix", new THREE.BufferAttribute(flowColorMix, 1));
+
+    const flowMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uMouse: { value: new THREE.Vector2(-10, -10) },
+      },
+      vertexShader: `
+        attribute float aSize;
+        attribute float aColorMix;
+        uniform float uPixelRatio;
+        uniform float uTime;
+        uniform vec2 uMouse;
+        varying float vColorMix;
+        varying float vAlpha;
+
+        void main() {
+          vColorMix = aColorMix;
+          vec3 p = position;
+
+          // Mouse repulsion — stronger for these particles
+          vec2 mouseWorld = uMouse * vec2(11.0, 8.0);
+          float dist = distance(p.xy, mouseWorld);
+          float mouseInfluence = 0.0;
+          if (dist < 3.5 && dist > 0.01) {
+            vec2 dir = normalize(p.xy - mouseWorld);
+            float force = (3.5 - dist) / 3.5;
+            mouseInfluence = force;
+            p.xy += dir * force * force * 2.0;
+          }
+
+          vec4 mvPos = modelViewMatrix * vec4(p, 1.0);
+          float depth = -mvPos.z;
+          vAlpha = smoothstep(14.0, 3.0, depth) * (0.3 + mouseInfluence * 0.4);
+
+          float s = aSize;
+          if (mouseInfluence > 0.1) s += mouseInfluence * 3.0; // glow near mouse
+
+          gl_PointSize = s * uPixelRatio * (5.0 / depth);
+          gl_PointSize = clamp(gl_PointSize, 0.5, 12.0);
+          gl_Position = projectionMatrix * mvPos;
+        }
+      `,
+      fragmentShader: `
+        varying float vColorMix;
+        varying float vAlpha;
+
+        void main() {
+          float d = length(gl_PointCoord - vec2(0.5));
+          if (d > 0.5) discard;
+
+          float glow = 1.0 - smoothstep(0.0, 0.5, d);
+          glow = pow(glow, 1.5);
+
+          // Cyan → pink/magenta range
+          vec3 cyan = vec3(0.0, 0.9, 1.0);
+          vec3 pink = vec3(0.9, 0.2, 0.55);
+          vec3 blue = vec3(0.39, 0.71, 0.96);
+          vec3 magenta = vec3(0.7, 0.1, 0.7);
+
+          vec3 col;
+          if (vColorMix < 0.5) {
+            col = mix(cyan, blue, vColorMix * 2.0);
+          } else {
+            col = mix(blue, mix(pink, magenta, vColorMix), (vColorMix - 0.5) * 2.0);
+          }
+
+          // Bright core
+          col = mix(col, vec3(1.0), glow * glow * 0.15);
+
+          gl_FragColor = vec4(col, glow * vAlpha);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const flowPoints = new THREE.Points(flowGeo, flowMat);
+    scene.add(flowPoints);
+
+    /* ═══════════════════════════════════════
+       Layer 3 — Fine Glitter Sparkles
+       Tiny bright white/cyan dots
+    ═══════════════════════════════════════ */
+    const SPARKLE_COUNT = 1500;
+    const sparklePositions = new Float32Array(SPARKLE_COUNT * 3);
+    const sparkleSizes = new Float32Array(SPARKLE_COUNT);
+    const sparklePhase = new Float32Array(SPARKLE_COUNT);
+
+    for (let i = 0; i < SPARKLE_COUNT; i++) {
+      const i3 = i * 3;
+      sparklePositions[i3] = (Math.random() - 0.5) * 24;
+      sparklePositions[i3 + 1] = (Math.random() - 0.5) * 18;
+      sparklePositions[i3 + 2] = (Math.random() - 0.5) * 10;
+      sparkleSizes[i] = 0.5 + Math.random() * 1.5;
+      sparklePhase[i] = Math.random() * Math.PI * 2;
+    }
+
+    const sparkleGeo = new THREE.BufferGeometry();
+    sparkleGeo.setAttribute("position", new THREE.BufferAttribute(sparklePositions, 3));
+    sparkleGeo.setAttribute("aSize", new THREE.BufferAttribute(sparkleSizes, 1));
+    sparkleGeo.setAttribute("aPhase", new THREE.BufferAttribute(sparklePhase, 1));
+
+    const sparkleMat = new THREE.ShaderMaterial({
+      uniforms: {
+        uTime: { value: 0 },
+        uPixelRatio: { value: renderer.getPixelRatio() },
+        uMouse: { value: new THREE.Vector2(-10, -10) },
+      },
+      vertexShader: `
+        attribute float aSize;
+        attribute float aPhase;
+        uniform float uPixelRatio;
+        uniform float uTime;
+        uniform vec2 uMouse;
+        varying float vTwinkle;
+
+        void main() {
+          vec3 p = position;
+
+          // Mouse repulsion
+          vec2 mouseWorld = uMouse * vec2(12.0, 9.0);
+          float dist = distance(p.xy, mouseWorld);
+          if (dist < 3.0 && dist > 0.01) {
+            vec2 dir = normalize(p.xy - mouseWorld);
+            float force = (3.0 - dist) / 3.0;
+            p.xy += dir * force * force * 1.5;
+          }
+
+          // Twinkle
+          vTwinkle = 0.3 + 0.7 * abs(sin(uTime * 1.5 + aPhase));
+
+          vec4 mvPos = modelViewMatrix * vec4(p, 1.0);
+          float depth = -mvPos.z;
+          gl_PointSize = aSize * uPixelRatio * (4.0 / depth);
+          gl_PointSize = clamp(gl_PointSize, 0.3, 4.0);
+          gl_Position = projectionMatrix * mvPos;
+        }
+      `,
+      fragmentShader: `
+        varying float vTwinkle;
 
         void main() {
           float d = length(gl_PointCoord - vec2(0.5));
@@ -126,20 +325,10 @@ export function ParticleBackground() {
           float glow = 1.0 - smoothstep(0.0, 0.5, d);
           glow = pow(glow, 2.0);
 
-          // Color based on life: healthy=cyan → eroding=amber → dying=dim red
-          vec3 healthy = vec3(0.0, 0.9, 1.0);     // #00e5ff
-          vec3 eroding = vec3(1.0, 0.75, 0.0);     // amber
-          vec3 dying   = vec3(0.6, 0.1, 0.1);      // dim red
+          // White with slight cyan tint
+          vec3 col = vec3(0.85, 0.95, 1.0);
 
-          vec3 col;
-          if (vLife > 0.5) {
-            col = mix(eroding, healthy, (vLife - 0.5) * 2.0);
-          } else {
-            col = mix(dying, eroding, vLife * 2.0);
-          }
-
-          float alpha = glow * smoothstep(12.0, 3.0, vDist) * (0.3 + vLife * 0.5);
-          gl_FragColor = vec4(col, alpha);
+          gl_FragColor = vec4(col, glow * vTwinkle * 0.6);
         }
       `,
       transparent: true,
@@ -147,27 +336,8 @@ export function ParticleBackground() {
       blending: THREE.AdditiveBlending,
     });
 
-    const particleSystem = new THREE.Points(geometry, particleMaterial);
-    scene.add(particleSystem);
-
-    /* ── Connection Lines ── */
-    const linePositions = new Float32Array(MAX_CONNECTIONS * 6);
-    const lineColors = new Float32Array(MAX_CONNECTIONS * 6);
-    const lineGeometry = new THREE.BufferGeometry();
-    lineGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(linePositions, 3),
-    );
-    lineGeometry.setAttribute("color", new THREE.BufferAttribute(lineColors, 3));
-    const lineMaterial = new THREE.LineBasicMaterial({
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.18,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-    const lineSystem = new THREE.LineSegments(lineGeometry, lineMaterial);
-    scene.add(lineSystem);
+    const sparklePoints = new THREE.Points(sparkleGeo, sparkleMat);
+    scene.add(sparklePoints);
 
     /* ── Mouse Tracking ── */
     const handleMouseMove = (e: MouseEvent) => {
@@ -175,7 +345,7 @@ export function ParticleBackground() {
       mouseRef.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
     };
     const handleMouseLeave = () => {
-      mouseRef.current.x = -10; // move far away
+      mouseRef.current.x = -10;
       mouseRef.current.y = -10;
     };
     window.addEventListener("mousemove", handleMouseMove);
@@ -186,189 +356,77 @@ export function ParticleBackground() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      particleMaterial.uniforms.uPixelRatio.value = renderer.getPixelRatio();
+      const pr = renderer.getPixelRatio();
+      gasMat.uniforms.uPixelRatio.value = pr;
+      flowMat.uniforms.uPixelRatio.value = pr;
+      sparkleMat.uniforms.uPixelRatio.value = pr;
     };
     window.addEventListener("resize", handleResize);
 
-    /* ── Spatial Grid for connections (simple bucket) ── */
-    const GRID_SIZE = 1.5;
-    const gridMap = new Map<string, number[]>();
-
-    function gridKey(x: number, y: number): string {
-      return `${Math.floor(x / GRID_SIZE)},${Math.floor(y / GRID_SIZE)}`;
-    }
-
-    function buildGrid() {
-      gridMap.clear();
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const i3 = i * 3;
-        const key = gridKey(positions[i3], positions[i3 + 1]);
-        let bucket = gridMap.get(key);
-        if (!bucket) {
-          bucket = [];
-          gridMap.set(key, bucket);
-        }
-        bucket.push(i);
-      }
-    }
-
-    function getNeighborIndices(x: number, y: number): number[] {
-      const result: number[] = [];
-      const gx = Math.floor(x / GRID_SIZE);
-      const gy = Math.floor(y / GRID_SIZE);
-      for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dy++) {
-          const bucket = gridMap.get(`${gx + dx},${gy + dy}`);
-          if (bucket) {
-            for (const idx of bucket) result.push(idx);
-          }
-        }
-      }
-      return result;
-    }
-
     /* ── Animation Loop ── */
     const clock = new THREE.Clock();
-    let frameCount = 0;
 
     const animate = () => {
       rafRef.current = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
-      const dt = Math.min(clock.getDelta(), 0.05);
-      frameCount++;
-
       const mouse = mouseRef.current;
-      const mouseWorld = new THREE.Vector3(mouse.x * BOUNDS_X * 0.5, mouse.y * BOUNDS_Y * 0.5, 0);
 
-      const posAttr = geometry.getAttribute("position");
-      const lifeAttr = geometry.getAttribute("aLife");
-
-      /* ── Update Particles ── */
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
+      /* Update gas layer — gentle floating drift */
+      const gasPos = gasGeo.getAttribute("position");
+      const gasArr = gasPos.array as Float32Array;
+      for (let i = 0; i < GAS_COUNT; i++) {
+        const v = gasVelocities[i];
         const i3 = i * 3;
-
-        // Drain life
-        const drainRate = 0.001 + Math.sin(elapsed * 0.5 + i * 0.1) * 0.0003;
-        life[i] -= drainRate;
-
-        if (life[i] <= 0) {
-          // EROSION: jitter the dying particle
-          positions[i3] += (Math.random() - 0.5) * 0.04;
-          positions[i3 + 1] += (Math.random() - 0.5) * 0.04;
-          positions[i3 + 2] += (Math.random() - 0.5) * 0.02;
-
-          // Respawn when deeply dead
-          if (life[i] < -0.5) {
-            life[i] = 1.0;
-            // Respawn at left edge for directional flow
-            positions[i3] = -BOUNDS_X + Math.random() * 2;
-            positions[i3 + 1] = (Math.random() - 0.5) * BOUNDS_Y * 2;
-            positions[i3 + 2] = (Math.random() - 0.5) * BOUNDS_Z;
-            randomVelocity(i3);
-          }
-        } else {
-          // HEALTHY: smooth linear flow
-          positions[i3] += velocities[i3];
-          positions[i3 + 1] += velocities[i3 + 1] + Math.sin(elapsed * 0.3 + i * 0.01) * 0.001;
-          positions[i3 + 2] += velocities[i3 + 2];
-        }
-
-        // ── Mouse Interaction ──
-        const dx = positions[i3] - mouseWorld.x;
-        const dy = positions[i3 + 1] - mouseWorld.y;
-        const dz = positions[i3 + 2] - mouseWorld.z;
-        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        if (dist < MOUSE_ATTRACT_RADIUS && dist > MOUSE_REPEL_RADIUS) {
-          // Attract: pull toward cursor
-          const force = MOUSE_ATTRACT_FORCE * (1.0 - dist / MOUSE_ATTRACT_RADIUS);
-          positions[i3] -= dx * force;
-          positions[i3 + 1] -= dy * force;
-          positions[i3 + 2] -= dz * force * 0.3;
-          // Revive nearby particles (mouse "heals" data)
-          life[i] = Math.min(life[i] + 0.005, 1.0);
-        } else if (dist <= MOUSE_REPEL_RADIUS && dist > 0.01) {
-          // Repel: push away from cursor on very close approach
-          const force = MOUSE_REPEL_FORCE * (1.0 - dist / MOUSE_REPEL_RADIUS);
-          positions[i3] += (dx / dist) * force;
-          positions[i3 + 1] += (dy / dist) * force;
-          positions[i3 + 2] += (dz / dist) * force * 0.3;
-        }
-
-        // Wrap boundaries
-        if (positions[i3] > BOUNDS_X) { positions[i3] = -BOUNDS_X; }
-        if (positions[i3] < -BOUNDS_X) { positions[i3] = BOUNDS_X; }
-        if (positions[i3 + 1] > BOUNDS_Y) { positions[i3 + 1] = -BOUNDS_Y; }
-        if (positions[i3 + 1] < -BOUNDS_Y) { positions[i3 + 1] = BOUNDS_Y; }
-        if (positions[i3 + 2] > BOUNDS_Z) { positions[i3 + 2] = -BOUNDS_Z; }
-        if (positions[i3 + 2] < -BOUNDS_Z) { positions[i3 + 2] = BOUNDS_Z; }
-
-        aLife[i] = Math.max(life[i], 0);
+        gasArr[i3] = v.baseX + Math.sin(elapsed * 0.15 + v.phase) * v.ampX;
+        gasArr[i3 + 1] = v.baseY + Math.cos(elapsed * 0.12 + v.phase * 1.3) * v.ampY;
+        // Slow drift
+        v.baseX += v.vx;
+        v.baseY += v.vy;
+        // Wrap
+        if (v.baseX > 12) v.baseX = -12;
+        if (v.baseX < -12) v.baseX = 12;
+        if (v.baseY > 9) v.baseY = -9;
+        if (v.baseY < -9) v.baseY = 9;
       }
+      gasPos.needsUpdate = true;
+      gasMat.uniforms.uTime.value = elapsed;
+      gasMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
 
-      posAttr.needsUpdate = true;
-      lifeAttr.needsUpdate = true;
-      particleMaterial.uniforms.uTime.value = elapsed;
-
-      /* ── Connection Lines (update every 2 frames for perf) ── */
-      if (frameCount % 2 === 0) {
-        buildGrid();
-        const linePosAttr = lineGeometry.getAttribute("position");
-        const lineColAttr = lineGeometry.getAttribute("color");
-        const lArr = linePosAttr.array as Float32Array;
-        const cArr = lineColAttr.array as Float32Array;
-        let lineIdx = 0;
-
-        for (let i = 0; i < PARTICLE_COUNT && lineIdx < MAX_CONNECTIONS; i++) {
-          const i3 = i * 3;
-          if (life[i] < 0.3) continue; // skip dying particles
-
-          const neighbors = getNeighborIndices(positions[i3], positions[i3 + 1]);
-          for (const j of neighbors) {
-            if (j <= i || lineIdx >= MAX_CONNECTIONS) break;
-            if (life[j] < 0.3) continue;
-
-            const j3 = j * 3;
-            const dx = positions[i3] - positions[j3];
-            const dy = positions[i3 + 1] - positions[j3 + 1];
-            const dz = positions[i3 + 2] - positions[j3 + 2];
-            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-            if (dist < CONNECTION_DISTANCE) {
-              const li = lineIdx * 6;
-              lArr[li] = positions[i3];
-              lArr[li + 1] = positions[i3 + 1];
-              lArr[li + 2] = positions[i3 + 2];
-              lArr[li + 3] = positions[j3];
-              lArr[li + 4] = positions[j3 + 1];
-              lArr[li + 5] = positions[j3 + 2];
-
-              // Color: blend cyan based on life
-              const avgLife = (life[i] + life[j]) * 0.5;
-              const r = avgLife > 0.5 ? 0.0 : 0.4 * (1.0 - avgLife * 2.0);
-              const g = avgLife * 0.56;
-              const b = avgLife * 0.63;
-              cArr[li] = r; cArr[li + 1] = g; cArr[li + 2] = b;
-              cArr[li + 3] = r; cArr[li + 4] = g; cArr[li + 5] = b;
-
-              lineIdx++;
-            }
-          }
-        }
-
-        // Zero out unused
-        for (let i = lineIdx * 6; i < MAX_CONNECTIONS * 6; i++) {
-          lArr[i] = 0;
-          cArr[i] = 0;
-        }
-        linePosAttr.needsUpdate = true;
-        lineColAttr.needsUpdate = true;
-        lineGeometry.setDrawRange(0, lineIdx * 2);
+      /* Update flow layer — directional flowing motion */
+      const flowPos = flowGeo.getAttribute("position");
+      const flowArr = flowPos.array as Float32Array;
+      for (let i = 0; i < FLOW_COUNT; i++) {
+        const i3 = i * 3;
+        flowArr[i3] += flowVels[i3] + Math.sin(elapsed * 0.3 + i * 0.005) * 0.002;
+        flowArr[i3 + 1] += flowVels[i3 + 1] + Math.cos(elapsed * 0.2 + i * 0.008) * 0.001;
+        flowArr[i3 + 2] += flowVels[i3 + 2];
+        // Wrap
+        if (flowArr[i3] > 12) flowArr[i3] = -12;
+        if (flowArr[i3] < -12) flowArr[i3] = 12;
+        if (flowArr[i3 + 1] > 9) flowArr[i3 + 1] = -9;
+        if (flowArr[i3 + 1] < -9) flowArr[i3 + 1] = 9;
+        if (flowArr[i3 + 2] > 5) flowArr[i3 + 2] = -5;
+        if (flowArr[i3 + 2] < -5) flowArr[i3 + 2] = 5;
       }
+      flowPos.needsUpdate = true;
+      flowMat.uniforms.uTime.value = elapsed;
+      flowMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
 
-      /* ── Subtle camera sway ── */
-      camera.position.x = Math.sin(elapsed * 0.1) * 0.2;
-      camera.position.y = Math.cos(elapsed * 0.08) * 0.15;
+      /* Sparkles — very slow drift */
+      const sparkPos = sparkleGeo.getAttribute("position");
+      const sparkArr = sparkPos.array as Float32Array;
+      for (let i = 0; i < SPARKLE_COUNT; i++) {
+        const i3 = i * 3;
+        sparkArr[i3] += Math.sin(elapsed * 0.1 + i * 0.02) * 0.001;
+        sparkArr[i3 + 1] += Math.cos(elapsed * 0.08 + i * 0.03) * 0.0008;
+      }
+      sparkPos.needsUpdate = true;
+      sparkleMat.uniforms.uTime.value = elapsed;
+      sparkleMat.uniforms.uMouse.value.set(mouse.x, mouse.y);
+
+      /* Gentle camera breathing */
+      camera.position.x = Math.sin(elapsed * 0.07) * 0.3;
+      camera.position.y = Math.cos(elapsed * 0.05) * 0.2;
       camera.lookAt(0, 0, 0);
 
       renderer.render(scene, camera);
@@ -383,10 +441,12 @@ export function ParticleBackground() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
 
-      geometry.dispose();
-      particleMaterial.dispose();
-      lineGeometry.dispose();
-      lineMaterial.dispose();
+      gasGeo.dispose();
+      gasMat.dispose();
+      flowGeo.dispose();
+      flowMat.dispose();
+      sparkleGeo.dispose();
+      sparkleMat.dispose();
       renderer.dispose();
 
       if (container.contains(renderer.domElement)) {
@@ -399,7 +459,7 @@ export function ParticleBackground() {
     <div
       ref={containerRef}
       className="fixed inset-0 z-0"
-      style={{ background: "#06080f" }}
+      style={{ background: "#060810" }}
     />
   );
 }
