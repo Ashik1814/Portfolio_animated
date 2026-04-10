@@ -95,3 +95,51 @@ Stage Summary:
 - Mouse repulsion — all particles push away from cursor
 - Soft, organic, swirling movement — professional nebula aesthetic
 - Background visible through all glass cards
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Replace background with DottedSurface wave component per user request
+
+Work Log:
+- Created DottedSurface component at src/components/ui/dotted-surface.tsx based on user-provided code
+- 40x60 grid of dots (2400 total) with sine wave animation on Y axis
+- Added mouse interactivity: dots push upward + outward when cursor is near, creating a ripple effect
+- Dots near mouse brighten from muted magenta to vibrant pink/magenta
+- Dots smoothly fade back to base color when mouse moves away
+- Adapted colors for dark theme: muted magenta/purple dots (0.55, 0.25, 0.65) base, brightening to (0.95, 0.4, 0.95) near cursor
+- Fog color matches page background (#08050f) for depth fade
+- Updated page.tsx to use DottedSurface instead of ParticleBackground
+- Set body background to #08050f so canvas background is seamless
+- Glass cards remain semi-transparent, dots visible through backdrop blur
+- Lint passes, dev server compiles successfully
+
+Stage Summary:
+- DottedSurface wave animation: 2400 dots in a 40x60 grid with sine wave motion
+- Mouse interaction: dots push away from cursor + brighten near it
+- Muted magenta/purple color scheme matching the portfolio theme
+- Clean, professional look with wave animation
+- All existing portfolio sections render correctly over the background
+
+---
+Task ID: 5-b
+Agent: Sub Agent
+Task: Update header to magenta/pink nebula theme
+
+Work Log:
+- Read header.tsx and identified all cyan/blue color references
+- Applied 7 global color replacements via MultiEdit with replace_all:
+  - #00e5ff → #d946ef (primary cyan → magenta, 4 instances: scrolled bg border, gradient from, shadow, mobile border)
+  - #64b5f6 → #f472b6 (secondary blue → pink, 10 instances: logo text, active nav text, hover text, active underline, mobile active/hover/bg, mobile dot, gradient to)
+  - #06080f → #08050f (dark bg, 2 instances: scrolled header bg, mobile nav bg)
+  - #1e3a5f → #3b1a5e (border divider, 1 instance: mobile section border)
+  - #ffd54f → #fbbf24 (sun icon, 2 instances: desktop + mobile theme toggle)
+  - #00c2e5 → #c026d3 (hover gradient from, 2 instances: desktop + mobile CV button)
+  - #5aa3e0 → #e879a8 (hover gradient to, 2 instances: desktop + mobile CV button)
+- Preserved #b0b0b0 (nav text) and #94a3b8 (not present) as requested
+- Verified final file — all 23 color references updated, no old cyan/blue values remain
+
+Stage Summary:
+- Header color scheme fully transitioned from cyan/blue to magenta/pink nebula theme
+- All gradients, shadows, borders, text colors, and backgrounds updated consistently
+- Desktop and mobile views both updated with matching color scheme

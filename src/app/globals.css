@@ -45,37 +45,37 @@
 
 :root {
   --radius: 0.625rem;
-  --background: #06080f;
-  --foreground: #e2e8f0;
-  --card: rgba(10, 15, 30, 0.75);
-  --card-foreground: #e2e8f0;
-  --popover: rgba(10, 15, 30, 0.85);
-  --popover-foreground: #e2e8f0;
-  --primary: #00e5ff;
-  --primary-foreground: #06080f;
-  --secondary: rgba(10, 15, 30, 0.6);
-  --secondary-foreground: #e2e8f0;
-  --muted: rgba(20, 30, 50, 0.5);
-  --muted-foreground: #94a3b8;
-  --accent: #64b5f6;
-  --accent-foreground: #06080f;
+  --background: #08050f;
+  --foreground: #e8e0f0;
+  --card: rgba(15, 8, 25, 0.75);
+  --card-foreground: #e8e0f0;
+  --popover: rgba(15, 8, 25, 0.85);
+  --popover-foreground: #e8e0f0;
+  --primary: #d946ef;
+  --primary-foreground: #08050f;
+  --secondary: rgba(15, 8, 25, 0.6);
+  --secondary-foreground: #e8e0f0;
+  --muted: rgba(30, 15, 50, 0.5);
+  --muted-foreground: #a89bb8;
+  --accent: #f472b6;
+  --accent-foreground: #08050f;
   --destructive: #ef4444;
-  --border: rgba(100, 181, 246, 0.08);
-  --input: rgba(100, 181, 246, 0.08);
-  --ring: #00e5ff;
-  --chart-1: #00e5ff;
-  --chart-2: #64b5f6;
+  --border: rgba(217, 70, 239, 0.08);
+  --input: rgba(217, 70, 239, 0.08);
+  --ring: #d946ef;
+  --chart-1: #d946ef;
+  --chart-2: #f472b6;
   --chart-3: #a78bfa;
-  --chart-4: #2dd4bf;
+  --chart-4: #00e5ff;
   --chart-5: #fbbf24;
-  --sidebar: rgba(10, 15, 30, 0.75);
-  --sidebar-foreground: #e2e8f0;
-  --sidebar-primary: #00e5ff;
-  --sidebar-primary-foreground: #06080f;
-  --sidebar-accent: rgba(20, 30, 50, 0.5);
-  --sidebar-accent-foreground: #e2e8f0;
-  --sidebar-border: rgba(100, 181, 246, 0.08);
-  --sidebar-ring: #00e5ff;
+  --sidebar: rgba(15, 8, 25, 0.75);
+  --sidebar-foreground: #e8e0f0;
+  --sidebar-primary: #d946ef;
+  --sidebar-primary-foreground: #08050f;
+  --sidebar-accent: rgba(30, 15, 50, 0.5);
+  --sidebar-accent-foreground: #e8e0f0;
+  --sidebar-border: rgba(217, 70, 239, 0.08);
+  --sidebar-ring: #d946ef;
 }
 
 @layer base {
@@ -83,7 +83,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background: transparent;
+    background: #08050f;
     @apply text-foreground;
   }
 }
@@ -93,14 +93,14 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #06080f;
+  background: #08050f;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e3a5f;
+  background: #3b1a5e;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a4f7a;
+  background: #5b2a8e;
 }
 
 /* Gradient text utilities */
@@ -132,21 +132,21 @@
   background-clip: text;
 }
 
-/* Glassmorphism card — semi-transparent, background bleeds through */
+/* Glassmorphism card — semi-transparent, nebula bleeds through */
 .glass-card {
-  background: rgba(6, 8, 15, 0.35);
+  background: rgba(12, 6, 20, 0.35);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(217, 70, 239, 0.08);
   border-radius: 1rem;
 }
 
 /* Glassmorphism card — slightly more opaque for content sections, still see-through */
 .glass-card-solid {
-  background: rgba(6, 8, 15, 0.5);
+  background: rgba(10, 5, 18, 0.5);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(217, 70, 239, 0.06);
   border-radius: 1rem;
 }
 
@@ -155,16 +155,16 @@
   box-shadow: 0 0 20px rgba(0, 229, 255, 0.12);
 }
 
-.glow-blue {
-  box-shadow: 0 0 20px rgba(100, 181, 246, 0.12);
+.glow-magenta {
+  box-shadow: 0 0 20px rgba(217, 70, 239, 0.15);
+}
+
+.glow-pink {
+  box-shadow: 0 0 20px rgba(244, 114, 182, 0.15);
 }
 
 .glow-purple {
   box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
-}
-
-.glow-gold {
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.12);
 }
 
 /* Smooth scroll */

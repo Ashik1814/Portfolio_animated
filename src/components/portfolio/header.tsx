@@ -43,7 +43,7 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#06080f]/40 backdrop-blur-xl border-b border-[#00e5ff]/10 shadow-lg shadow-black/20"
+          ? "bg-[#08050f]/40 backdrop-blur-xl border-b border-[#d946ef]/10 shadow-lg shadow-black/20"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -54,7 +54,7 @@ export function Header() {
             href="#home"
             className="text-xl font-bold transition-all duration-200 hover:scale-105"
           >
-            <span className="text-[#64b5f6]">Ashik</span>
+            <span className="text-[#f472b6]">Ashik</span>
             <span className="text-white">.dev</span>
           </a>
 
@@ -69,14 +69,14 @@ export function Header() {
                   href={link.href}
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
                     isActive
-                      ? "text-[#64b5f6]"
-                      : "text-[#b0b0b0] hover:text-[#64b5f6]"
+                      ? "text-[#f472b6]"
+                      : "text-[#b0b0b0] hover:text-[#f472b6]"
                   }`}
                 >
                   {link.label}
                   {/* Active underline */}
                   {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-[#64b5f6] rounded-full" />
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-[#f472b6] rounded-full" />
                   )}
                 </a>
               );
@@ -88,7 +88,7 @@ export function Header() {
             {/* Theme Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="w-9 h-9 rounded-full bg-transparent border border-white/20 flex items-center justify-center text-[#ffd54f] hover:bg-white/10 transition-all duration-200"
+              className="w-9 h-9 rounded-full bg-transparent border border-white/20 flex items-center justify-center text-[#fbbf24] hover:bg-white/10 transition-all duration-200"
               aria-label="Toggle theme"
             >
               {darkMode ? (
@@ -101,7 +101,7 @@ export function Header() {
             {/* CV Download Button */}
             <Button
               size="sm"
-              className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5aa3e0] text-[#0a0a1a] font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#00e5ff]/20 transition-all duration-200 hover:scale-105"
+              className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] text-[#0a0a1a] font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#d946ef]/20 transition-all duration-200 hover:scale-105"
             >
               <Download className="w-4 h-4" />
               CV
@@ -110,7 +110,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-[#b0b0b0] hover:text-[#64b5f6] hover:border-[#64b5f6]/40 transition-all duration-200"
+            className="md:hidden w-9 h-9 rounded-lg border border-white/20 flex items-center justify-center text-[#b0b0b0] hover:text-[#f472b6] hover:border-[#f472b6]/40 transition-all duration-200"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -124,7 +124,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#06080f]/50 backdrop-blur-xl border-t border-[#00e5ff]/10">
+        <div className="md:hidden bg-[#08050f]/50 backdrop-blur-xl border-t border-[#d946ef]/10">
           <nav className="flex flex-col py-2 px-4">
             {navLinks.map((link) => {
               const sectionId = link.href.replace("#", "");
@@ -135,28 +135,28 @@ export function Header() {
                   href={link.href}
                   className={`py-3 px-3 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-3 ${
                     isActive
-                      ? "text-[#64b5f6] bg-[#64b5f6]/5"
-                      : "text-[#b0b0b0] hover:text-[#64b5f6] hover:bg-[#64b5f6]/5"
+                      ? "text-[#f472b6] bg-[#f472b6]/5"
+                      : "text-[#b0b0b0] hover:text-[#f472b6] hover:bg-[#f472b6]/5"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#64b5f6] ml-auto" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f472b6] ml-auto" />
                   )}
                 </a>
               );
             })}
-            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-[#1e3a5f]/30">
+            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-[#3b1a5e]/30">
               <button
                 onClick={() => setDarkMode(!darkMode)}
-                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-[#ffd54f]"
+                className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-[#fbbf24]"
               >
                 {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
               <Button
                 size="sm"
-                className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5aa3e0] text-[#0a0a1a] font-semibold rounded-full px-4 gap-1.5 flex-1"
+                className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] text-[#0a0a1a] font-semibold rounded-full px-4 gap-1.5 flex-1"
               >
                 <Download className="w-4 h-4" />
                 Download CV

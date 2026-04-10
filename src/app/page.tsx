@@ -7,15 +7,15 @@ import { Education } from "@/components/portfolio/education";
 import { Skills } from "@/components/portfolio/skills";
 import { Projects } from "@/components/portfolio/projects";
 import { Contact } from "@/components/portfolio/contact";
-import { ParticleBackground } from "@/components/portfolio/particle-background";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col relative">
-      {/* Interactive particle canvas background */}
-      <ParticleBackground />
+      {/* Interactive dotted wave surface background */}
+      <DottedSurface />
 
-      {/* All content sits above the particles */}
+      {/* All content sits above the dotted surface */}
       <div className="relative z-10">
         <Header />
         <main className="flex-1">
