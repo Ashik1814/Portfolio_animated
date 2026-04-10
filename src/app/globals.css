@@ -83,7 +83,8 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background: transparent;
+    @apply text-foreground;
   }
 }
 
@@ -131,21 +132,21 @@
   background-clip: text;
 }
 
-/* Glassmorphism card — designed to float over the particle canvas */
+/* Glassmorphism card — semi-transparent, background bleeds through */
 .glass-card {
-  background: rgba(10, 15, 30, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(100, 181, 246, 0.08);
+  background: rgba(6, 8, 15, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 229, 255, 0.08);
   border-radius: 1rem;
 }
 
-/* Glassmorphism card — stronger blur for content sections */
+/* Glassmorphism card — slightly more opaque for content sections, still see-through */
 .glass-card-solid {
-  background: rgba(6, 8, 15, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(100, 181, 246, 0.06);
+  background: rgba(6, 8, 15, 0.5);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(0, 229, 255, 0.06);
   border-radius: 1rem;
 }
 
@@ -160,6 +161,10 @@
 
 .glow-purple {
   box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.12);
 }
 
 /* Smooth scroll */

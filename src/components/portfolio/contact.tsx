@@ -120,7 +120,7 @@ export function Contact() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#1e3a5f]/40">
+      <footer className="border-t border-[#00e5ff]/10 bg-[#06080f]/30 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {/* Left - Logo & Copyright */}

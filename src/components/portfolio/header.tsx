@@ -43,7 +43,7 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#06080f]/80 backdrop-blur-xl border-b border-[#1e3a5f]/30 shadow-lg shadow-black/30"
+          ? "bg-[#06080f]/40 backdrop-blur-xl border-b border-[#00e5ff]/10 shadow-lg shadow-black/20"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -124,7 +124,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#06080f]/95 backdrop-blur-xl border-t border-[#1e3a5f]/30">
+        <div className="md:hidden bg-[#06080f]/50 backdrop-blur-xl border-t border-[#00e5ff]/10">
           <nav className="flex flex-col py-2 px-4">
             {navLinks.map((link) => {
               const sectionId = link.href.replace("#", "");
