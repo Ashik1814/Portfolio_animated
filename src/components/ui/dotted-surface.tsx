@@ -35,13 +35,13 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x08050f, 2000, 8000);
+    scene.fog = new THREE.Fog(0x08050f, 3500, 12000);
 
     const camera = new THREE.PerspectiveCamera(
       60,
       window.innerWidth / window.innerHeight,
       1,
-      10000,
+      12000,
     );
     camera.position.set(0, 355, 1220);
 
@@ -75,21 +75,20 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     const colors: number[] = [];
     const sizes: number[] = [];
 
-    // Dark mode: uniform muted magenta base
-    const darkBaseR = 0.55, darkBaseG = 0.25, darkBaseB = 0.65;
+    // Dark mode: INTENSE neon palette — ultra saturated, high luminance
+    const darkPalette = {
+      aR: 200 / 255, aG: 50 / 255,  aB: 255 / 255,   // electric violet  #c832ff
+      bR: 255 / 255, bG: 0 / 255,   bB: 200 / 255,    // neon magenta     #ff00c8
+      cR: 0 / 255,   cG: 255 / 255, cB: 255 / 255,    // blazing cyan     #00ffff
+      dR: 120 / 255, dG: 80 / 255,  dB: 255 / 255,    // neon indigo      #7850ff
+    };
 
-    // Light mode: vivid RGB gradient palette
-    // Flowing rainbow gradient across the grid:
-    //   Corner A (0,0) = vivid violet    rgb(139, 92, 246)  → #8b5cf6
-    //   Corner B (1,0) = hot pink        rgb(236, 72, 153)  → #ec4899
-    //   Corner C (0,1) = electric cyan   rgb(6, 182, 212)   → #06b6d4
-    //   Corner D (1,1) = emerald green   rgb(16, 185, 129)  → #10b981
-    //   Plus an intermediate orange-amber  rgb(245, 158, 11) → #f59e0b
+    // Light mode: PUNCHY neon palette — high contrast against white
     const lightPalette = {
-      aR: 139 / 255, aG: 92 / 255, aB: 246 / 255,   // violet
-      bR: 236 / 255, bG: 72 / 255, bB: 153 / 255,    // hot pink
-      cR: 6 / 255,   cG: 182 / 255, cB: 212 / 255,   // cyan
-      dR: 16 / 255,  dG: 185 / 255, dB: 129 / 255,   // emerald
+      aR: 220 / 255, aG: 0 / 255,   aB: 180 / 255,    // vivid magenta    #dc00b4
+      bR: 255 / 255, bG: 40 / 255,  bB: 100 / 255,    // hot neon pink    #ff2864
+      cR: 0 / 255,   cG: 200 / 255, cB: 255 / 255,    // electric sky     #00c8ff
+      dR: 255 / 255, dG: 100 / 255, dB: 0 / 255,       // neon orange      #ff6400
     };
 
     let idx = 0;
@@ -101,8 +100,8 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
         positions.push(x, y, z);
         baseX[idx] = x;
         baseZ[idx] = z;
-        colors.push(darkBaseR, darkBaseG, darkBaseB);
-        sizes.push(8); // base size
+        colors.push(0.6, 0.3, 0.8); // initial placeholder
+        sizes.push(35); // base size
         idx++;
       }
     }
@@ -114,10 +113,11 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
-    // Custom shader material for variable point sizes with glow
+    // Custom shader material — INTENSE neon glow with multi-layered bloom
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: renderer.getPixelRatio() },
+        uIsDark: { value: 1.0 },
       },
       vertexShader: `
         attribute float size;
@@ -132,23 +132,45 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       `,
       fragmentShader: `
         varying vec3 vColor;
+        uniform float uIsDark;
         void main() {
           float d = length(gl_PointCoord - vec2(0.5));
           if (d > 0.5) discard;
 
-          // Bright solid core
-          float core = 1.0 - smoothstep(0.0, 0.15, d);
-          // Soft inner glow
-          float innerGlow = 1.0 - smoothstep(0.05, 0.35, d);
+          // === Multi-layered neon glow ===
+          // Blazing white-hot core
+          float core = 1.0 - smoothstep(0.0, 0.08, d);
+          // Bright inner neon glow
+          float inner = 1.0 - smoothstep(0.0, 0.22, d);
+          // Mid glow ring
+          float mid = 1.0 - smoothstep(0.0, 0.35, d);
           // Wide outer glow halo
-          float outerGlow = 1.0 - smoothstep(0.1, 0.5, d);
+          float outer = 1.0 - smoothstep(0.02, 0.5, d);
 
-          // Compose: bright core + soft glow falloff
-          vec3 coreColor = vColor * 1.8 + vec3(0.3); // overbright center
-          vec3 glowColor = vColor * 1.2;
+          // Color layers — increasingly overbright toward center
+          vec3 coreColor = vec3(1.0, 1.0, 1.0);              // pure white center
+          vec3 innerColor = vColor * 4.0 + vec3(0.5);         // blazing neon
+          vec3 midColor = vColor * 2.5;                        // bright colored glow
+          vec3 outerColor = vColor * 1.2;                      // soft neon halo
 
-          vec3 finalColor = mix(glowColor, coreColor, core);
-          float alpha = innerGlow * 0.6 + outerGlow * 0.4;
+          vec3 finalColor = core * coreColor
+                          + (inner - core) * innerColor
+                          + (mid - inner) * midColor
+                          + (outer - mid) * outerColor;
+
+          // Alpha — solid core, gradual fade
+          float alpha = core * 1.0
+                      + (inner - core) * 0.95
+                      + (mid - inner) * 0.7
+                      + (outer - mid) * 0.4;
+
+          // Boost alpha in light mode for visibility
+          if (uIsDark < 0.5) {
+            alpha = core * 1.0
+                  + (inner - core) * 1.0
+                  + (mid - inner) * 0.85
+                  + (outer - mid) * 0.6;
+          }
 
           gl_FragColor = vec4(finalColor, alpha);
         }
@@ -171,29 +193,28 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     let count = 0;
     let animationId: number;
 
-    // Helper: bilinear interpolation between 4 palette corners
-    function lightColorAt(
-      fx: number, // 0..1 along X axis
-      fy: number, // 0..1 along Y axis
-      timeShift: number, // animated shift for flowing effect
+    // Helper: bilinear interpolation between 4 palette corners with flowing animation
+    function colorAt(
+      fx: number,
+      fy: number,
+      timeShift: number,
+      palette: typeof darkPalette,
     ): [number, number, number] {
-      // Shift the gradient coordinates over time for a flowing effect
       const sfx = (fx + Math.sin(timeShift) * 0.2 + 1) % 1;
       const sfy = (fy + Math.cos(timeShift * 0.7) * 0.15 + 1) % 1;
 
-      // Bilinear interpolation across 4 corners
-      const r = lightPalette.aR * (1 - sfx) * (1 - sfy)
-              + lightPalette.bR * sfx * (1 - sfy)
-              + lightPalette.cR * (1 - sfx) * sfy
-              + lightPalette.dR * sfx * sfy;
-      const g = lightPalette.aG * (1 - sfx) * (1 - sfy)
-              + lightPalette.bG * sfx * (1 - sfy)
-              + lightPalette.cG * (1 - sfx) * sfy
-              + lightPalette.dG * sfx * sfy;
-      const b = lightPalette.aB * (1 - sfx) * (1 - sfy)
-              + lightPalette.bB * sfx * (1 - sfy)
-              + lightPalette.cB * (1 - sfx) * sfy
-              + lightPalette.dB * sfx * sfy;
+      const r = palette.aR * (1 - sfx) * (1 - sfy)
+              + palette.bR * sfx * (1 - sfy)
+              + palette.cR * (1 - sfx) * sfy
+              + palette.dR * sfx * sfy;
+      const g = palette.aG * (1 - sfx) * (1 - sfy)
+              + palette.bG * sfx * (1 - sfy)
+              + palette.cG * (1 - sfx) * sfy
+              + palette.dG * sfx * sfy;
+      const b = palette.aB * (1 - sfx) * (1 - sfy)
+              + palette.bB * sfx * (1 - sfy)
+              + palette.cB * (1 - sfx) * sfy
+              + palette.dB * sfx * sfy;
       return [r, g, b];
     }
 
@@ -210,16 +231,24 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
       // Determine current theme
       const isDark = themeRef.current === 'dark';
+
+      // Update uniforms
+      material.uniforms.uIsDark.value = isDark ? 1.0 : 0.0;
+
+      // Update fog to match page background
       const fogColor = isDark ? 0x08050f : 0xf8f9fc;
-      scene.fog = new THREE.Fog(fogColor, 2000, 8000);
+      scene.fog = new THREE.Fog(fogColor, 3500, 12000);
 
-      // Dark mode base size, light mode gets bigger particles
-      const baseSize = isDark ? 8 : 12;
+      // Always use AdditiveBlending for neon glow
+      material.blending = THREE.AdditiveBlending;
 
-      // Light mode highlight: shift to bright warm gold near cursor
+      // Base sizes — MUCH larger for visibility
+      const baseSize = isDark ? 35 : 48;
+
+      // Highlight colors near cursor — even more intense
       const highlightR = isDark ? 1.0 : 1.0;
-      const highlightG = isDark ? 0.45 : 0.92;
-      const highlightB = isDark ? 1.0 : 0.6;
+      const highlightG = isDark ? 1.0 : 0.85;
+      const highlightB = isDark ? 1.0 : 1.0;
 
       // Convert mouse screen position to world coordinates using raycasting
       const mouse = mouseRef.current;
@@ -259,18 +288,11 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
           const dz = wz - mwz;
           const dist = Math.sqrt(dx * dx + dz * dz);
 
-          // Determine base color for this particle
-          let bR: number, bG: number, bB: number;
-          if (isDark) {
-            bR = darkBaseR;
-            bG = darkBaseG;
-            bB = darkBaseB;
-          } else {
-            // Light mode: each particle gets a vivid gradient color based on its grid position
-            const fx = ix / (AMOUNTX - 1);
-            const fy = iy / (AMOUNTY - 1);
-            [bR, bG, bB] = lightColorAt(fx, fy, count * 0.08);
-          }
+          // Determine base color for this particle — flowing gradient for BOTH modes
+          const fx = ix / (AMOUNTX - 1);
+          const fy = iy / (AMOUNTY - 1);
+          const palette = isDark ? darkPalette : lightPalette;
+          const [bR, bG, bB] = colorAt(fx, fy, count * 0.08, palette);
 
           // Current target size
           let targetSize = baseSize;
@@ -295,8 +317,8 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
             colArr[index + 1] = bG + t * (highlightG - bG);
             colArr[index + 2] = bB + t * (highlightB - bB);
 
-            // Grow dots near mouse
-            targetSize = baseSize + forceSq * (isDark ? 6 : 10);
+            // Grow dots near mouse even MORE
+            targetSize = baseSize + forceSq * (isDark ? 24 : 30);
           } else {
             // Smoothly fade back to base color
             colArr[index] += (bR - colArr[index]) * 0.06;
