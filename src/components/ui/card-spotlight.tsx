@@ -6,10 +6,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 interface CardSpotlightProps extends React.ComponentProps<"div"> {
   /** Spotlight radius in px. Defaults to 350. */
   radius?: number;
-  /** Spotlight color — any CSS color. Defaults to rgba(0,229,255,0.12) for dark / rgba(0,168,204,0.08) for light. */
+  /** Spotlight color in dark mode */
   color?: string;
-  /** Spotlight color in light mode. Defaults to rgba(0,168,204,0.08). */
+  /** Spotlight color in light mode */
   colorLight?: string;
+  /** Duration of the moving border rotation in seconds. Defaults to 6. */
+  movingBorderDuration?: number;
+  /** Whether to enable the moving border effect. Defaults to true. */
+  enableMovingBorder?: boolean;
 }
 
 export function CardSpotlight({
@@ -18,6 +22,8 @@ export function CardSpotlight({
   radius = 350,
   color,
   colorLight,
+  movingBorderDuration = 6,
+  enableMovingBorder = true,
   ...props
 }: CardSpotlightProps) {
   const divRef = useRef<HTMLDivElement>(null);
@@ -55,31 +61,87 @@ export function CardSpotlight({
     []
   );
 
+  // Spotlight overlay element
+  const spotlightOverlay = (
+    <div
+      className="pointer-events-none absolute transition-opacity duration-300"
+      style={{
+        opacity,
+        background: `radial-gradient(${radius}px circle at ${position.x}px ${position.y}px, ${isDark ? spotlightColor : spotlightColorLight}, transparent 70%)`,
+      }}
+    />
+  );
+
+  // Fallback: original behavior without moving border
+  if (!enableMovingBorder) {
+    return (
+      <div
+        ref={divRef}
+        className={cn("relative overflow-hidden rounded-xl border", className)}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setOpacity(1)}
+        onMouseLeave={() => setOpacity(0)}
+        onTouchMove={handleTouchMove}
+        onTouchStart={() => setOpacity(1)}
+        onTouchEnd={() => setOpacity(0)}
+        {...props}
+      >
+        {spotlightOverlay}
+        <div className="relative z-10">{children}</div>
+      </div>
+    );
+  }
+
+  // Moving border gradients — theme-aware neon colors
+  const borderGradient = isDark
+    ? "conic-gradient(from 0deg, transparent 0%, #00e5ff 10%, #a78bfa 20%, #2dd4bf 30%, transparent 40%)"
+    : "conic-gradient(from 0deg, transparent 0%, #00a8cc 10%, #7c3aed 20%, #14b8a6 30%, transparent 40%)";
+
+  const borderGradient2 = isDark
+    ? "conic-gradient(from 180deg, transparent 0%, #d946ef 5%, #f472b6 10%, transparent 15%)"
+    : "conic-gradient(from 180deg, transparent 0%, #c026d3 5%, #e879a8 10%, transparent 15%)";
+
   return (
     <div
-      ref={divRef}
-      className={cn(
-        "relative overflow-hidden rounded-xl border",
-        className
-      )}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setOpacity(1)}
-      onMouseLeave={() => setOpacity(0)}
-      onTouchMove={handleTouchMove}
-      onTouchStart={() => setOpacity(1)}
-      onTouchEnd={() => setOpacity(0)}
+      className="relative overflow-hidden rounded-[1rem] p-[1px]"
       {...props}
     >
-      {/* Spotlight gradient overlay */}
+      {/* Moving border: spinning gradient #1 (main arc) */}
       <div
-        className="pointer-events-none absolute -z-0 transition-opacity duration-300"
+        className="absolute"
         style={{
-          opacity,
-          background: `radial-gradient(${radius}px circle at ${position.x}px ${position.y}px, ${isDark ? spotlightColor : spotlightColorLight}, transparent 70%)`,
+          inset: "-100%",
+          background: borderGradient,
+          animation: `card-border-rotate ${movingBorderDuration}s linear infinite`,
         }}
       />
-      {/* Content sits above the spotlight */}
-      <div className="relative z-10">{children}</div>
+      {/* Moving border: spinning gradient #2 (smaller accent arc, reverse direction) */}
+      <div
+        className="absolute"
+        style={{
+          inset: "-100%",
+          background: borderGradient2,
+          animation: `card-border-rotate ${movingBorderDuration * 1.5}s linear infinite reverse`,
+        }}
+      />
+      {/* Inner card content — covers gradient center, leaves 1px border visible */}
+      <div
+        ref={divRef}
+        className={cn("relative z-[1] h-full w-full overflow-hidden", className)}
+        style={{
+          borderRadius: "calc(1rem - 1px)",
+          border: "none",
+        }}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setOpacity(1)}
+        onMouseLeave={() => setOpacity(0)}
+        onTouchMove={handleTouchMove}
+        onTouchStart={() => setOpacity(1)}
+        onTouchEnd={() => setOpacity(0)}
+      >
+        {spotlightOverlay}
+        <div className="relative z-10">{children}</div>
+      </div>
     </div>
   );
 }
