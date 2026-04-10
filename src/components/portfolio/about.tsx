@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Briefcase,
   Sparkles,
+  Award,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -22,7 +23,7 @@ const skills = [
       "Crafting intuitive and visually stunning user interfaces with a focus on user experience and accessibility. I believe great design is both functional and beautiful.",
     metric: "50+",
     metricLabel: "Design Projects",
-    color: "#a855f7",
+    color: "#a78bfa",
   },
   {
     icon: Code2,
@@ -31,7 +32,7 @@ const skills = [
       "Building responsive, performant web applications using modern technologies like React, TypeScript, and Tailwind CSS. Clean code is my priority.",
     metric: "30+",
     metricLabel: "Projects Built",
-    color: "#4dabf7",
+    color: "#00e5ff",
   },
   {
     icon: Bot,
@@ -116,9 +117,9 @@ export function About() {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="gradient-text">About Me</span>
+            <span className="gradient-text-cyan">About Me</span>
           </h2>
-          <p className="text-[#a0a0b0] max-w-2xl mx-auto text-base leading-relaxed">
+          <p className="text-[#94a3b8] max-w-2xl mx-auto text-base leading-relaxed">
             I&apos;m a passionate CSE graduate who loves turning ideas into
             reality through design and code. With a unique blend of creative
             design thinking and technical expertise, I create digital
@@ -133,12 +134,12 @@ export function About() {
             return (
               <Card
                 key={skill.title}
-                className="bg-[#1a1333] border-white/5 hover:border-white/10 transition-all duration-300 group"
+                className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300 group"
               >
                 <CardContent className="p-6 space-y-4">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: `${skill.color}15` }}
+                    style={{ backgroundColor: `${skill.color}12` }}
                   >
                     <Icon
                       className="w-6 h-6"
@@ -148,7 +149,7 @@ export function About() {
                   <h3 className="text-lg font-bold text-white">
                     {skill.title}
                   </h3>
-                  <p className="text-sm text-[#a0a0b0] leading-relaxed">
+                  <p className="text-sm text-[#94a3b8] leading-relaxed">
                     {skill.description}
                   </p>
                   <div className="pt-2">
@@ -158,7 +159,7 @@ export function About() {
                     >
                       {skill.metric}
                     </span>
-                    <span className="text-sm text-[#a0a0b0] ml-2">
+                    <span className="text-sm text-[#64748b] ml-2">
                       {skill.metricLabel}
                     </span>
                   </div>
@@ -169,19 +170,19 @@ export function About() {
         </div>
 
         {/* My Approach */}
-        <Card className="bg-[#1a1333] border-white/5 mb-12">
+        <Card className="glass-card-solid mb-12">
           <CardContent className="p-8 text-center max-w-3xl mx-auto">
-            <div className="w-12 h-12 rounded-full bg-[#a855f7]/15 flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-6 h-6 text-[#a855f7]" />
+            <div className="w-12 h-12 rounded-full bg-[#00e5ff]/10 flex items-center justify-center mx-auto mb-4">
+              <Sparkles className="w-6 h-6 text-[#00e5ff]" />
             </div>
             <h3 className="text-xl font-bold text-white mb-4">My Approach</h3>
-            <p className="text-[#a0a0b0] text-sm leading-relaxed mb-4">
+            <p className="text-[#94a3b8] text-sm leading-relaxed mb-4">
               I believe that great digital products are born at the intersection
               of beautiful design, clean code, and smart automation. My approach
               is user-centered, data-driven, and driven by a passion for
               continuous learning and improvement.
             </p>
-            <p className="text-[#a0a0b0] text-sm leading-relaxed">
+            <p className="text-[#94a3b8] text-sm leading-relaxed">
               Whether I&apos;m designing an interface, writing code, or setting
               up an automation workflow, I always ask: &apos;How can this create
               the most value for users while maintaining technical
@@ -195,7 +196,7 @@ export function About() {
           {techTags.map((tag) => (
             <span
               key={tag}
-              className="px-4 py-2 rounded-full text-sm font-medium bg-[#1a1333] border border-white/5 text-[#a0a0b0] hover:text-white hover:border-[#ff6b9d]/30 transition-all duration-200"
+              className="px-4 py-2 rounded-full text-sm font-medium glass-card text-[#94a3b8] hover:text-[#00e5ff] hover:border-[#00e5ff]/20 transition-all duration-200"
             >
               {tag}
             </span>
@@ -204,7 +205,7 @@ export function About() {
 
         {/* Core Values */}
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-white mb-2">Core Values</h3>
+          <h3 className="text-2xl font-bold text-white">Core Values</h3>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
           {coreValues.map((value) => {
@@ -212,16 +213,16 @@ export function About() {
             return (
               <Card
                 key={value.title}
-                className="bg-[#1a1333] border-white/5 hover:border-white/10 transition-all duration-300 text-center"
+                className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300 text-center"
               >
                 <CardContent className="p-5 space-y-2">
-                  <div className="w-10 h-10 rounded-full bg-[#a855f7]/15 flex items-center justify-center mx-auto">
-                    <Icon className="w-5 h-5 text-[#a855f7]" />
+                  <div className="w-10 h-10 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto">
+                    <Icon className="w-5 h-5 text-[#64b5f6]" />
                   </div>
                   <h4 className="text-sm font-bold text-white">
                     {value.title}
                   </h4>
-                  <p className="text-xs text-[#a0a0b0]">{value.description}</p>
+                  <p className="text-xs text-[#94a3b8]">{value.description}</p>
                 </CardContent>
               </Card>
             );
@@ -230,11 +231,11 @@ export function About() {
 
         {/* My Journey Timeline */}
         <div className="text-center mb-10">
-          <h3 className="text-2xl font-bold text-white mb-2">My Journey</h3>
+          <h3 className="text-2xl font-bold text-white">My Journey</h3>
         </div>
         <div className="max-w-2xl mx-auto relative">
           {/* Timeline line */}
-          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#ff6b9d] via-[#a855f7] to-[#4dabf7]" />
+          <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#00e5ff] via-[#64b5f6] to-[#a78bfa]" />
 
           {journeyItems.map((item, index) => (
             <div
@@ -246,8 +247,8 @@ export function About() {
               }`}
             >
               {/* Timeline dot */}
-              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-[#1a1333] border-2 border-[#a855f7] flex items-center justify-center z-10">
-                <span className="text-xs font-bold text-[#a855f7]">
+              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full glass-card-solid border-2 border-[#00e5ff] flex items-center justify-center z-10">
+                <span className="text-xs font-bold text-[#00e5ff]">
                   {item.year}
                 </span>
               </div>
@@ -260,26 +261,17 @@ export function About() {
                     : "md:pl-8 md:ml-auto"
                 }`}
               >
-                <Card className="bg-[#1a1333] border-white/5">
+                <Card className="glass-card-solid">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-2 mb-1">
-                      {index % 2 !== 0 && (
-                        <span className="md:hidden text-xs font-bold text-[#a855f7]">
-                          {item.year}
-                        </span>
-                      )}
-                      {index % 2 === 0 && (
-                        <>
-                          <span className="md:hidden text-xs font-bold text-[#a855f7]">
-                            {item.year}
-                          </span>
-                        </>
-                      )}
+                      <span className="md:hidden text-xs font-bold text-[#00e5ff]">
+                        {item.year}
+                      </span>
                     </div>
                     <h4 className="text-sm font-bold text-white mb-1">
                       {item.title}
                     </h4>
-                    <p className="text-xs text-[#a0a0b0] leading-relaxed">
+                    <p className="text-xs text-[#94a3b8] leading-relaxed">
                       {item.description}
                     </p>
                   </CardContent>

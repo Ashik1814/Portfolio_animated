@@ -11,8 +11,6 @@ import {
   Cpu,
   Zap,
   Monitor,
-  Globe,
-  Lock,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -24,7 +22,7 @@ const degrees = [
     location: "City, State",
     period: "2019 - 2023",
     gpa: "8.5/10",
-    gpaColor: "#ff6b9d",
+    gpaColor: "#00e5ff",
     description:
       "Specialized in Software Engineering and Web Technologies. Completed coursework in Data Structures, Algorithms, Database Management, and Web Development.",
     achievements: [
@@ -53,63 +51,18 @@ const degrees = [
 ];
 
 const certifications = [
-  {
-    icon: Code2,
-    name: "Advanced React Development",
-    issuer: "Meta",
-    year: "2023",
-    color: "#a855f7",
-  },
-  {
-    icon: Palette,
-    name: "UI/UX Design Specialization",
-    issuer: "Google",
-    year: "2022",
-    color: "#ff6b9d",
-  },
-  {
-    icon: Bot,
-    name: "n8n Automation Expert",
-    issuer: "n8n",
-    year: "2024",
-    color: "#2dd4bf",
-  },
-  {
-    icon: Cpu,
-    name: "TypeScript Advanced",
-    issuer: "Microsoft",
-    year: "2023",
-    color: "#4dabf7",
-  },
-  {
-    icon: Zap,
-    name: "Web Performance Optimization",
-    issuer: "Google",
-    year: "2023",
-    color: "#fbbf24",
-  },
-  {
-    icon: Monitor,
-    name: "Responsive Web Design",
-    issuer: "freeCodeCamp",
-    year: "2021",
-    color: "#f97316",
-  },
+  { icon: Code2, name: "Advanced React Development", issuer: "Meta", year: "2023", color: "#a78bfa" },
+  { icon: Palette, name: "UI/UX Design Specialization", issuer: "Google", year: "2022", color: "#00e5ff" },
+  { icon: Bot, name: "n8n Automation Expert", issuer: "n8n", year: "2024", color: "#2dd4bf" },
+  { icon: Cpu, name: "TypeScript Advanced", issuer: "Microsoft", year: "2023", color: "#64b5f6" },
+  { icon: Zap, name: "Web Performance Optimization", issuer: "Google", year: "2023", color: "#fbbf24" },
+  { icon: Monitor, name: "Responsive Web Design", issuer: "freeCodeCamp", year: "2021", color: "#f97316" },
 ];
 
 const coursework = [
-  "Data Structures & Algorithms",
-  "Object-Oriented Programming",
-  "Database Management Systems",
-  "Web Development",
-  "Software Engineering",
-  "Operating Systems",
-  "Computer Networks",
-  "Machine Learning Basics",
-  "Mobile App Development",
-  "Cloud Computing",
-  "Cybersecurity Fundamentals",
-  "Human-Computer Interaction",
+  "Data Structures & Algorithms", "Object-Oriented Programming", "Database Management Systems", "Web Development",
+  "Software Engineering", "Operating Systems", "Computer Networks", "Machine Learning Basics",
+  "Mobile App Development", "Cloud Computing", "Cybersecurity Fundamentals", "Human-Computer Interaction",
 ];
 
 export function Education() {
@@ -118,15 +71,14 @@ export function Education() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="w-12 h-12 rounded-full bg-[#a855f7]/15 flex items-center justify-center mx-auto mb-4">
-            <GraduationCap className="w-6 h-6 text-[#a855f7]" />
+          <div className="w-12 h-12 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto mb-4">
+            <GraduationCap className="w-6 h-6 text-[#64b5f6]" />
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="gradient-text">Education</span>
+            <span className="gradient-text-cyan">Education</span>
           </h2>
-          <p className="text-[#a0a0b0] max-w-2xl mx-auto text-base">
-            My academic journey and continual learning path in computer science
-            and technology
+          <p className="text-[#94a3b8] max-w-2xl mx-auto text-base">
+            My academic journey and continual learning path in computer science and technology
           </p>
         </div>
 
@@ -135,47 +87,27 @@ export function Education() {
           {degrees.map((degree) => {
             const Icon = degree.icon;
             return (
-              <Card
-                key={degree.title}
-                className="bg-[#1a1333] border-white/5 hover:border-white/10 transition-all duration-300"
-              >
+              <Card key={degree.title} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300">
                 <CardContent className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#a855f7]/15 flex items-center justify-center shrink-0">
-                      <Icon className="w-6 h-6 text-[#a855f7]" />
+                    <div className="w-12 h-12 rounded-xl bg-[#64b5f6]/10 flex items-center justify-center shrink-0">
+                      <Icon className="w-6 h-6 text-[#64b5f6]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white mb-1">
-                        {degree.title}
-                      </h3>
-                      <p className="text-[#a0a0b0] text-sm">
-                        {degree.institution} &bull; {degree.location}
-                      </p>
+                      <h3 className="text-lg font-bold text-white mb-1">{degree.title}</h3>
+                      <p className="text-[#94a3b8] text-sm">{degree.institution} &bull; {degree.location}</p>
                       <div className="flex flex-wrap items-center gap-3 mt-2">
-                        <span className="text-sm text-[#a0a0b0]">
-                          {degree.period}
-                        </span>
-                        <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>
-                          GPA: {degree.gpa}
-                        </span>
+                        <span className="text-sm text-[#94a3b8]">{degree.period}</span>
+                        <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>GPA: {degree.gpa}</span>
                       </div>
                     </div>
                   </div>
-
-                  <p className="text-[#a0a0b0] text-sm leading-relaxed mb-4 ml-0 sm:ml-16">
-                    {degree.description}
-                  </p>
-
+                  <p className="text-[#94a3b8] text-sm leading-relaxed mb-4 ml-0 sm:ml-16">{degree.description}</p>
                   <div className="ml-0 sm:ml-16">
-                    <h4 className="text-sm font-semibold text-white mb-2">
-                      Key Achievements
-                    </h4>
+                    <h4 className="text-sm font-semibold text-white mb-2">Key Achievements</h4>
                     <ul className="space-y-1.5">
                       {degree.achievements.map((achievement) => (
-                        <li
-                          key={achievement}
-                          className="text-sm text-[#a0a0b0] flex items-start gap-2"
-                        >
+                        <li key={achievement} className="text-sm text-[#94a3b8] flex items-start gap-2">
                           <Award className="w-4 h-4 text-[#fbbf24] shrink-0 mt-0.5" />
                           {achievement}
                         </li>
@@ -190,32 +122,20 @@ export function Education() {
 
         {/* Certifications */}
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold">
-            <span className="gradient-text-purple-blue">Certifications</span>
-          </h3>
+          <h3 className="text-2xl font-bold"><span className="gradient-text-purple-blue">Certifications</span></h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
           {certifications.map((cert) => {
             const Icon = cert.icon;
             return (
-              <Card
-                key={cert.name}
-                className="bg-[#1a1333] border-white/5 hover:border-white/10 transition-all duration-300 group"
-              >
+              <Card key={cert.name} className="glass-card-solid hover:border-[#64b5f6]/15 transition-all duration-300 group">
                 <CardContent className="p-5 flex items-start gap-4">
-                  <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: `${cert.color}15` }}
-                  >
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${cert.color}12` }}>
                     <Icon className="w-5 h-5" style={{ color: cert.color }} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white mb-0.5">
-                      {cert.name}
-                    </h4>
-                    <p className="text-xs text-[#a0a0b0]">
-                      {cert.issuer} &bull; {cert.year}
-                    </p>
+                    <h4 className="text-sm font-bold text-white mb-0.5">{cert.name}</h4>
+                    <p className="text-xs text-[#94a3b8]">{cert.issuer} &bull; {cert.year}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -225,16 +145,11 @@ export function Education() {
 
         {/* Relevant Coursework */}
         <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold">
-            <span className="gradient-text-pink-blue">Relevant Coursework</span>
-          </h3>
+          <h3 className="text-2xl font-bold"><span className="gradient-text-pink-blue">Relevant Coursework</span></h3>
         </div>
         <div className="flex flex-wrap justify-center gap-3">
           {coursework.map((course) => (
-            <span
-              key={course}
-              className="px-4 py-2 rounded-lg text-sm bg-[#1a1333] border border-white/5 text-[#a0a0b0] hover:text-white hover:border-[#4dabf7]/30 transition-all duration-200 cursor-default"
-            >
+            <span key={course} className="px-4 py-2 rounded-lg text-sm glass-card text-[#94a3b8] hover:text-[#00e5ff] hover:border-[#00e5ff]/20 transition-all duration-200 cursor-default">
               {course}
             </span>
           ))}

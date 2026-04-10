@@ -43,7 +43,7 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0a0a1a]/90 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20"
+          ? "bg-[#06080f]/80 backdrop-blur-xl border-b border-[#1e3a5f]/30 shadow-lg shadow-black/30"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -124,7 +124,7 @@ export function Header() {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0a0a1a]/95 backdrop-blur-xl border-t border-white/5">
+        <div className="md:hidden bg-[#06080f]/95 backdrop-blur-xl border-t border-[#1e3a5f]/30">
           <nav className="flex flex-col py-2 px-4">
             {navLinks.map((link) => {
               const sectionId = link.href.replace("#", "");
@@ -147,7 +147,7 @@ export function Header() {
                 </a>
               );
             })}
-            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-white/5">
+            <div className="flex items-center gap-3 pt-4 mt-2 border-t border-[#1e3a5f]/30">
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-[#ffd54f]"
