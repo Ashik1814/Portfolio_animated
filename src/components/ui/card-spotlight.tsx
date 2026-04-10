@@ -131,6 +131,11 @@ export function CardSpotlight({
         style={{
           borderRadius: "calc(1rem - 1px)",
           border: "none",
+          // Override semi-transparent glass backgrounds with near-opaque fill
+          // so the spinning gradient only shows through the 1px border gap
+          background: isDark
+            ? "rgba(8, 5, 15, 0.92)"
+            : "rgba(248, 249, 252, 0.94)",
         }}
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setOpacity(1)}
