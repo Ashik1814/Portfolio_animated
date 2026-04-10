@@ -6,34 +6,9 @@ import {
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
+import { TechIcon } from "@/components/ui/tech-icon";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
-
-interface SkillBarProps {
-  name: string;
-  percentage: number;
-  color: string;
-}
-
-function SkillBar({ name, percentage, color }: SkillBarProps) {
-  return (
-    <div className="space-y-1.5">
-      <div className="flex justify-between items-center">
-        <span className="text-sm dark:text-white text-gray-900 font-medium">{name}</span>
-        <span className="text-xs dark:text-[#64748b] text-gray-500">{percentage}%</span>
-      </div>
-      <div className="h-2 dark:bg-[#0d1525] bg-gray-200 rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-700"
-          style={{
-            width: `${percentage}%`,
-            background: `linear-gradient(90deg, ${color}, ${color}99)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export function Skills() {
   const siteConfig = useContent((s) => s.siteConfig);
@@ -60,7 +35,7 @@ export function Skills() {
           </p>
         </div>
 
-        {/* Main Skill Categories */}
+        {/* Main Skill Categories — Logo + Name Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-16">
           {skillCategories.map((category) => {
             const Icon = getIcon(category.icon);
@@ -74,9 +49,22 @@ export function Skills() {
                     </MovingBorderIcon>
                     <h3 className="text-lg font-bold dark:text-white text-gray-900">{category.title}</h3>
                   </div>
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {category.skills.map((skill) => (
-                      <SkillBar key={skill.id} name={skill.name} percentage={skill.percentage} color={category.color} />
+                      <div
+                        key={skill.id}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl dark:bg-white/[0.04] bg-gray-50 dark:hover:bg-white/[0.08] hover:bg-gray-100 transition-colors duration-200 group"
+                      >
+                        <TechIcon
+                          name={skill.name}
+                          size={20}
+                          className="shrink-0 transition-colors duration-200"
+                          // We pass style via a wrapper approach below
+                        />
+                        <span className="text-sm font-medium dark:text-white text-gray-900 truncate group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200">
+                          {skill.name}
+                        </span>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -89,17 +77,16 @@ export function Skills() {
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold"><span className="gradient-text-purple-blue">Soft Skills</span></h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-16">
           {softSkills.map((skill) => {
             const Icon = getIcon(skill.icon);
             return (
               <CardSpotlight key={skill.id} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
-                <div className="p-4 space-y-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: `${skill.color}18` }}>
+                <div className="p-4 flex flex-col items-center gap-2">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${skill.color}18` }}>
                     <Icon className="w-5 h-5" style={{ color: skill.color }} />
                   </div>
-                  <h4 className="text-xs font-bold dark:text-white text-gray-900">{skill.name}</h4>
-                  <span className="text-lg font-bold" style={{ color: skill.color }}>{skill.percentage}%</span>
+                  <h4 className="text-sm font-bold dark:text-white text-gray-900">{skill.name}</h4>
                 </div>
               </CardSpotlight>
             );
@@ -112,14 +99,15 @@ export function Skills() {
         </div>
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {additionalTech.map((tech) => (
-            <span key={tech.id} className="px-4 py-2 rounded-full text-sm glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default">
+            <span key={tech.id} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default">
+              <TechIcon name={tech.name} size={16} />
               {tech.name}
             </span>
           ))}
         </div>
 
         {/* Currently Learning */}
-        <div className="max-w-md mx-auto">
+        <div className="max-w-lg mx-auto">
           <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-2">
               <MovingBorderIcon borderRadius="0.375rem" className="w-7 h-7" duration={5}>
@@ -130,10 +118,18 @@ export function Skills() {
             </div>
           </div>
           <CardSpotlight className="glass-card-solid">
-            <div className="p-6 space-y-4">
-              {currentlyLearning.map((item) => (
-                <SkillBar key={item.id} name={item.name} percentage={item.percentage} color={item.color} />
-              ))}
+            <div className="p-6">
+              <div className="flex flex-wrap justify-center gap-4">
+                {currentlyLearning.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-2.5 px-4 py-3 rounded-xl dark:bg-white/[0.04] bg-gray-50 transition-colors duration-200"
+                  >
+                    <TechIcon name={item.name} size={22} />
+                    <span className="text-sm font-medium dark:text-white text-gray-900">{item.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </CardSpotlight>
         </div>

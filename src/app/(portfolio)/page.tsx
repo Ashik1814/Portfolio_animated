@@ -3,6 +3,7 @@
 import { Hero } from "@/components/portfolio/hero";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { TechIcon } from "@/components/ui/tech-icon";
 import {
   ArrowRight,
 } from "lucide-react";
@@ -116,26 +117,16 @@ export default function Home() {
                       {category.title}
                     </h3>
                   </div>
-                  <div className="space-y-4">
-                    {category.skills.slice(0, 2).map((skill) => (
-                      <div key={skill.id}>
-                        <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-sm font-medium dark:text-white text-gray-900">
-                            {skill.name}
-                          </span>
-                          <span className="text-xs font-semibold" style={{ color: category.color }}>
-                            {skill.percentage}%
-                          </span>
-                        </div>
-                        <div className="w-full h-2 dark:bg-[#1e293b] bg-gray-200 rounded-full overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-700"
-                            style={{
-                              width: `${skill.percentage}%`,
-                              background: `linear-gradient(90deg, ${category.color}, ${category.color}88)`,
-                            }}
-                          />
-                        </div>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    {category.skills.map((skill) => (
+                      <div
+                        key={skill.id}
+                        className="flex items-center gap-2 px-2.5 py-2 rounded-lg dark:bg-white/[0.04] bg-gray-50 dark:hover:bg-white/[0.08] hover:bg-gray-100 transition-colors duration-200 group"
+                      >
+                        <TechIcon name={skill.name} size={18} className="shrink-0" />
+                        <span className="text-xs font-medium dark:text-white text-gray-900 truncate group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200">
+                          {skill.name}
+                        </span>
                       </div>
                     ))}
                   </div>
