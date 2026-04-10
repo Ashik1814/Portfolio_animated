@@ -114,7 +114,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
-    // Custom shader material for variable point sizes
+    // Custom shader material for variable point sizes with glow
     const material = new THREE.ShaderMaterial({
       uniforms: {
         uPixelRatio: { value: renderer.getPixelRatio() },
@@ -133,16 +133,30 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       fragmentShader: `
         varying vec3 vColor;
         void main() {
-          // Soft circle shape
           float d = length(gl_PointCoord - vec2(0.5));
           if (d > 0.5) discard;
-          float alpha = 1.0 - smoothstep(0.3, 0.5, d);
-          gl_FragColor = vec4(vColor, alpha);
+
+          // Bright solid core
+          float core = 1.0 - smoothstep(0.0, 0.15, d);
+          // Soft inner glow
+          float innerGlow = 1.0 - smoothstep(0.05, 0.35, d);
+          // Wide outer glow halo
+          float outerGlow = 1.0 - smoothstep(0.1, 0.5, d);
+
+          // Compose: bright core + soft glow falloff
+          vec3 coreColor = vColor * 1.8 + vec3(0.3); // overbright center
+          vec3 glowColor = vColor * 1.2;
+
+          vec3 finalColor = mix(glowColor, coreColor, core);
+          float alpha = innerGlow * 0.6 + outerGlow * 0.4;
+
+          gl_FragColor = vec4(finalColor, alpha);
         }
       `,
       transparent: true,
       vertexColors: true,
       depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
 
     const points = new THREE.Points(geometry, material);
