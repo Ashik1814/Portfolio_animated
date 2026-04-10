@@ -73,11 +73,24 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     const geometry = new THREE.BufferGeometry();
     const positions: number[] = [];
     const colors: number[] = [];
+    const sizes: number[] = [];
 
-    // Dark mode base colors
+    // Dark mode: uniform muted magenta base
     const darkBaseR = 0.55, darkBaseG = 0.25, darkBaseB = 0.65;
-    // Light mode base colors (muted blue-gray)
-    const lightBaseR = 0.45, lightBaseG = 0.50, lightBaseB = 0.65;
+
+    // Light mode: vivid RGB gradient palette
+    // Flowing rainbow gradient across the grid:
+    //   Corner A (0,0) = vivid violet    rgb(139, 92, 246)  → #8b5cf6
+    //   Corner B (1,0) = hot pink        rgb(236, 72, 153)  → #ec4899
+    //   Corner C (0,1) = electric cyan   rgb(6, 182, 212)   → #06b6d4
+    //   Corner D (1,1) = emerald green   rgb(16, 185, 129)  → #10b981
+    //   Plus an intermediate orange-amber  rgb(245, 158, 11) → #f59e0b
+    const lightPalette = {
+      aR: 139 / 255, aG: 92 / 255, aB: 246 / 255,   // violet
+      bR: 236 / 255, bG: 72 / 255, bB: 153 / 255,    // hot pink
+      cR: 6 / 255,   cG: 182 / 255, cB: 212 / 255,   // cyan
+      dR: 16 / 255,  dG: 185 / 255, dB: 129 / 255,   // emerald
+    };
 
     let idx = 0;
     for (let ix = 0; ix < AMOUNTX; ix++) {
@@ -89,6 +102,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
         baseX[idx] = x;
         baseZ[idx] = z;
         colors.push(darkBaseR, darkBaseG, darkBaseB);
+        sizes.push(8); // base size
         idx++;
       }
     }
@@ -98,13 +112,37 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       new THREE.Float32BufferAttribute(positions, 3),
     );
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    geometry.setAttribute('size', new THREE.Float32BufferAttribute(sizes, 1));
 
-    const material = new THREE.PointsMaterial({
-      size: 8,
-      vertexColors: true,
+    // Custom shader material for variable point sizes
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uPixelRatio: { value: renderer.getPixelRatio() },
+      },
+      vertexShader: `
+        attribute float size;
+        varying vec3 vColor;
+        uniform float uPixelRatio;
+        void main() {
+          vColor = color;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size * uPixelRatio * (300.0 / -mvPosition.z);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        void main() {
+          // Soft circle shape
+          float d = length(gl_PointCoord - vec2(0.5));
+          if (d > 0.5) discard;
+          float alpha = 1.0 - smoothstep(0.3, 0.5, d);
+          gl_FragColor = vec4(vColor, alpha);
+        }
+      `,
       transparent: true,
-      opacity: 0.7,
-      sizeAttenuation: true,
+      vertexColors: true,
+      depthWrite: false,
     });
 
     const points = new THREE.Points(geometry, material);
@@ -113,11 +151,37 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     // Raycaster for accurate mouse-to-world mapping
     const raycaster = new THREE.Raycaster();
     const mouseNdc = new THREE.Vector2();
-    const mousePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0); // Y=0 plane
+    const mousePlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
     const mouseWorldPos = new THREE.Vector3(-9999, 0, -9999);
 
     let count = 0;
     let animationId: number;
+
+    // Helper: bilinear interpolation between 4 palette corners
+    function lightColorAt(
+      fx: number, // 0..1 along X axis
+      fy: number, // 0..1 along Y axis
+      timeShift: number, // animated shift for flowing effect
+    ): [number, number, number] {
+      // Shift the gradient coordinates over time for a flowing effect
+      const sfx = (fx + Math.sin(timeShift) * 0.2 + 1) % 1;
+      const sfy = (fy + Math.cos(timeShift * 0.7) * 0.15 + 1) % 1;
+
+      // Bilinear interpolation across 4 corners
+      const r = lightPalette.aR * (1 - sfx) * (1 - sfy)
+              + lightPalette.bR * sfx * (1 - sfy)
+              + lightPalette.cR * (1 - sfx) * sfy
+              + lightPalette.dR * sfx * sfy;
+      const g = lightPalette.aG * (1 - sfx) * (1 - sfy)
+              + lightPalette.bG * sfx * (1 - sfy)
+              + lightPalette.cG * (1 - sfx) * sfy
+              + lightPalette.dG * sfx * sfy;
+      const b = lightPalette.aB * (1 - sfx) * (1 - sfy)
+              + lightPalette.bB * sfx * (1 - sfy)
+              + lightPalette.cB * (1 - sfx) * sfy
+              + lightPalette.dB * sfx * sfy;
+      return [r, g, b];
+    }
 
     // Animation function
     const animate = () => {
@@ -127,20 +191,21 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       const posArr = posAttr.array as Float32Array;
       const colAttr = geometry.attributes.color;
       const colArr = colAttr.array as Float32Array;
+      const sizeAttr = geometry.attributes.size;
+      const sizeArr = sizeAttr.array as Float32Array;
 
-      // Determine current theme colors
+      // Determine current theme
       const isDark = themeRef.current === 'dark';
       const fogColor = isDark ? 0x08050f : 0xf8f9fc;
       scene.fog = new THREE.Fog(fogColor, 2000, 8000);
 
-      const baseR = isDark ? darkBaseR : lightBaseR;
-      const baseG = isDark ? darkBaseG : lightBaseG;
-      const baseB = isDark ? darkBaseB : lightBaseB;
+      // Dark mode base size, light mode gets bigger particles
+      const baseSize = isDark ? 8 : 12;
 
-      // Light mode: near-cursor color shifts to deeper blue
-      const highlightR = isDark ? 1.0 : 0.2;
-      const highlightG = isDark ? 0.45 : 0.55;
-      const highlightB = isDark ? 1.0 : 0.85;
+      // Light mode highlight: shift to bright warm gold near cursor
+      const highlightR = isDark ? 1.0 : 1.0;
+      const highlightG = isDark ? 0.45 : 0.92;
+      const highlightB = isDark ? 1.0 : 0.6;
 
       // Convert mouse screen position to world coordinates using raycasting
       const mouse = mouseRef.current;
@@ -180,6 +245,22 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
           const dz = wz - mwz;
           const dist = Math.sqrt(dx * dx + dz * dz);
 
+          // Determine base color for this particle
+          let bR: number, bG: number, bB: number;
+          if (isDark) {
+            bR = darkBaseR;
+            bG = darkBaseG;
+            bB = darkBaseB;
+          } else {
+            // Light mode: each particle gets a vivid gradient color based on its grid position
+            const fx = ix / (AMOUNTX - 1);
+            const fy = iy / (AMOUNTY - 1);
+            [bR, bG, bB] = lightColorAt(fx, fy, count * 0.08);
+          }
+
+          // Current target size
+          let targetSize = baseSize;
+
           // Mouse repulsion force
           if (dist < MOUSE_RADIUS && dist > 1) {
             const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
@@ -194,17 +275,23 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
             // Push upward
             velY[i] += forceSq * MOUSE_UP_FORCE;
 
-            // Brighten dots near mouse
+            // Brighten dots near mouse — lerp toward highlight color
             const t = forceSq;
-            colArr[index] = baseR + t * (highlightR - baseR);
-            colArr[index + 1] = baseG + t * (highlightG - baseG);
-            colArr[index + 2] = baseB + t * (highlightB - baseB);
+            colArr[index] = bR + t * (highlightR - bR);
+            colArr[index + 1] = bG + t * (highlightG - bG);
+            colArr[index + 2] = bB + t * (highlightB - bB);
+
+            // Grow dots near mouse
+            targetSize = baseSize + forceSq * (isDark ? 6 : 10);
           } else {
             // Smoothly fade back to base color
-            colArr[index] += (baseR - colArr[index]) * 0.06;
-            colArr[index + 1] += (baseG - colArr[index + 1]) * 0.06;
-            colArr[index + 2] += (baseB - colArr[index + 2]) * 0.06;
+            colArr[index] += (bR - colArr[index]) * 0.06;
+            colArr[index + 1] += (bG - colArr[index + 1]) * 0.06;
+            colArr[index + 2] += (bB - colArr[index + 2]) * 0.06;
           }
+
+          // Smoothly interpolate size
+          sizeArr[i] += (targetSize - sizeArr[i]) * 0.1;
 
           // Spring force to return displacement to zero
           velX[i] += -dispX[i] * RETURN_FORCE;
@@ -232,6 +319,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
       posAttr.needsUpdate = true;
       colAttr.needsUpdate = true;
+      sizeAttr.needsUpdate = true;
 
       renderer.render(scene, camera);
       count += 0.1;
@@ -253,6 +341,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      material.uniforms.uPixelRatio.value = renderer.getPixelRatio();
     };
 
     window.addEventListener('resize', handleResize);
