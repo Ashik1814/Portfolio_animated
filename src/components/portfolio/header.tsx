@@ -83,23 +83,20 @@ export function Header() {
           </a>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-0.5">
+          <nav className="hidden md:flex items-center gap-1.5">
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                  className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 border ${
                     active
-                      ? "dark:text-[#00e5ff] text-[#00a8cc] dark:bg-[#00e5ff]/8 bg-[#00a8cc]/8"
-                      : "dark:text-[#94a3b8] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5"
+                      ? "dark:text-[#00e5ff] text-[#00a8cc] dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:bg-[#00e5ff]/6 bg-[#00a8cc]/6 dark:shadow-[0_0_12px_rgba(0,229,255,0.1)] shadow-[0_0_12px_rgba(0,168,204,0.08)]"
+                      : "dark:text-[#94a3b8] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
                   }`}
                 >
                   {link.label}
-                  {active && (
-                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full dark:bg-[#00e5ff] bg-[#00a8cc]" />
-                  )}
                 </a>
               );
             })}
@@ -156,17 +153,14 @@ export function Header() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className={`py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-3 ${
+                  className={`py-2.5 px-4 text-sm font-medium rounded-full transition-all duration-200 flex items-center border ${
                     active
-                      ? "dark:text-[#00e5ff] text-[#00a8cc] dark:bg-[#00e5ff]/8 bg-[#00a8cc]/8"
-                      : "dark:text-[#94a3b8] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5"
+                      ? "dark:text-[#00e5ff] text-[#00a8cc] dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:bg-[#00e5ff]/6 bg-[#00a8cc]/6 dark:shadow-[0_0_12px_rgba(0,229,255,0.1)] shadow-[0_0_12px_rgba(0,168,204,0.08)]"
+                      : "dark:text-[#94a3b8] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
-                  {active && (
-                    <span className="ml-auto w-1.5 h-1.5 rounded-full dark:bg-[#00e5ff] bg-[#00a8cc]" />
-                  )}
                 </a>
               );
             })}
