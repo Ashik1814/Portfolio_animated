@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowRight, Briefcase, Github, Linkedin, Twitter, MessagesSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 
 export function Hero() {
   return (
@@ -37,24 +37,27 @@ export function Hero() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button
+              <AnimatedBorderButton
                 size="lg"
                 className="bg-[#00e5ff] dark:bg-[#00e5ff] hover:bg-[#00c2e5] dark:hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-medium rounded-full px-8 shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20"
                 asChild
+                gradientVia="#00e5ff"
+                gradientTo="#64b5f6"
               >
                 <a href="#contact">
                   Get In Touch
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
-              </Button>
-              <Button
+              </AnimatedBorderButton>
+              <AnimatedBorderButton
                 size="lg"
                 variant="outline"
                 className="dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/10 hover:bg-[#00a8cc]/10 font-medium rounded-full px-8"
-                asChild
+                gradientVia="#00e5ff"
+                gradientTo="#64b5f6"
               >
                 <a href="#projects">View Projects</a>
-              </Button>
+              </AnimatedBorderButton>
             </div>
 
             <div className="flex items-center gap-4 pt-2">

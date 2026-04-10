@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X, Download, Sun, Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { useTheme } from "next-themes";
 
 const navLinks = [
@@ -110,13 +110,13 @@ export function Header() {
             </button>
 
             {/* CV Download Button */}
-            <Button
+            <AnimatedBorderButton
               size="sm"
               className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#d946ef]/20 transition-all duration-200 hover:scale-105"
             >
               <Download className="w-4 h-4" />
               CV
-            </Button>
+            </AnimatedBorderButton>
           </div>
 
           {/* Mobile menu button */}
@@ -165,13 +165,13 @@ export function Header() {
               >
                 {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
               </button>
-              <Button
+              <AnimatedBorderButton
                 size="sm"
                 className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-4 gap-1.5 flex-1"
               >
                 <Download className="w-4 h-4" />
                 Download CV
-              </Button>
+              </AnimatedBorderButton>
             </div>
           </nav>
         </div>

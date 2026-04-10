@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 
 const contactCards = [
   { icon: Mail, label: "Email", value: "hello@ashik.dev", href: "mailto:hello@ashik.dev" },
@@ -109,10 +109,15 @@ export function Contact() {
                   <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Message</label>
                   <Textarea placeholder="Tell me about your project..." rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg resize-none" />
                 </div>
-                <Button type="submit" className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200">
+                <AnimatedBorderButton
+                  type="submit"
+                  className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200"
+                  gradientVia="#00e5ff"
+                  gradientTo="#a78bfa"
+                >
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
-                </Button>
+                </AnimatedBorderButton>
               </form>
             </div>
           </div>

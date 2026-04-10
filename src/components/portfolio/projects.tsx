@@ -14,7 +14,9 @@ import {
   ExternalLink,
   Github,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const filters = ["All", "Development", "Design", "Automation"];
 
@@ -152,6 +154,57 @@ const projects: {
   },
 ];
 
+/** Animated border filter button */
+function AnimatedFilterButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300",
+        active
+          ? "bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] dark:text-[#06080f] text-white shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20 border-0"
+          : "bg-transparent dark:border-[#64b5f6]/30 border-[#00a8cc]/30 border dark:text-[#64b5f6] text-[#00a8cc] dark:hover:bg-[#64b5f6]/10 hover:bg-[#00a8cc]/10 dark:hover:border-[#64b5f6]/50 hover:border-[#00a8cc]/50"
+      )}
+    >
+      {/* Animated border overlay - only show for inactive (outline) buttons */}
+      {!active && (
+        <div
+          className={cn(
+            "-inset-px pointer-events-none absolute rounded-[inherit] border-2 border-transparent border-inset [mask-clip:padding-box,border-box]",
+            "[mask-composite:intersect] [mask-image:linear-gradient(transparent,transparent),linear-gradient(#000,#000)]"
+          )}
+        >
+          <motion.div
+            className="absolute aspect-square"
+            style={{
+              width: 20,
+              background: "linear-gradient(to right, transparent, #00e5ff, #64b5f6)",
+              offsetPath: "rect(0 auto auto 0 round 20px)",
+            }}
+            animate={{
+              offsetDistance: ["0%", "100%"],
+            }}
+            transition={{
+              repeat: Number.POSITIVE_INFINITY,
+              duration: 5,
+              ease: "linear",
+            }}
+          />
+        </div>
+      )}
+      {children}
+    </button>
+  );
+}
+
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -173,17 +226,13 @@ export function Projects() {
         {/* Filter Buttons */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {filters.map((filter) => (
-            <button
+            <AnimatedFilterButton
               key={filter}
+              active={activeFilter === filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeFilter === filter
-                  ? "bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] dark:text-[#06080f] text-white shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20 border-0"
-                  : "bg-transparent dark:border-[#64b5f6]/30 border-[#00a8cc]/30 dark:text-[#64b5f6] text-[#00a8cc] dark:hover:bg-[#64b5f6]/10 hover:bg-[#00a8cc]/10 dark:hover:border-[#64b5f6]/50 hover:border-[#00a8cc]/50"
-              }`}
             >
               {filter}
-            </button>
+            </AnimatedFilterButton>
           ))}
         </div>
 
@@ -218,14 +267,26 @@ export function Projects() {
 
                   {/* Action Buttons */}
                   <div className="flex gap-3 pt-3">
-                    <Button size="sm" className="flex-1 dark:bg-white bg-gray-900 dark:text-[#06080f] text-white dark:hover:bg-white/90 hover:bg-gray-800 font-medium text-xs rounded-md h-9" style={{ color: project.accentColor }}>
+                    <AnimatedBorderButton
+                      size="sm"
+                      className="flex-1 dark:bg-white bg-gray-900 dark:text-[#06080f] text-white dark:hover:bg-white/90 hover:bg-gray-800 font-medium text-xs rounded-md h-9"
+                      style={{ color: project.accentColor }}
+                      gradientVia={project.accentColor}
+                      gradientTo={project.accentColor}
+                    >
                       <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
                       Live Demo
-                    </Button>
-                    <Button size="sm" variant="outline" className="flex-1 dark:border-white/20 border-gray-300 dark:text-white text-gray-900 dark:hover:bg-white hover:bg-gray-100 dark:hover:text-[#06080f] hover:text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-300">
+                    </AnimatedBorderButton>
+                    <AnimatedBorderButton
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 dark:border-white/20 border-gray-300 dark:text-white text-gray-900 dark:hover:bg-white hover:bg-gray-100 dark:hover:text-[#06080f] hover:text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-300"
+                      gradientVia="#a78bfa"
+                      gradientTo="#64b5f6"
+                    >
                       <Github className="w-3.5 h-3.5 mr-1.5" />
                       View Code
-                    </Button>
+                    </AnimatedBorderButton>
                   </div>
                 </div>
               </div>
@@ -235,9 +296,15 @@ export function Projects() {
 
         {/* View All CTA */}
         <div className="text-center mt-14">
-          <Button size="lg" variant="outline" className="dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/10 hover:bg-[#00a8cc]/10 font-medium rounded-full px-8 transition-all duration-300">
+          <AnimatedBorderButton
+            size="lg"
+            variant="outline"
+            className="dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/10 hover:bg-[#00a8cc]/10 font-medium rounded-full px-8 transition-all duration-300"
+            gradientVia="#00e5ff"
+            gradientTo="#64b5f6"
+          >
             View All Projects
-          </Button>
+          </AnimatedBorderButton>
         </div>
       </div>
     </section>
