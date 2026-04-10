@@ -72,10 +72,9 @@ export function Education() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <MovingBorderIcon borderRadius="9999px" className="w-12 h-12 mx-auto mb-4" duration={5}>
-            <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
-            <GraduationCap className="w-6 h-6 text-[#64b5f6] relative" />
-          </MovingBorderIcon>
+          <div className="w-12 h-12 rounded-full bg-[#64b5f6]/15 flex items-center justify-center mx-auto mb-4">
+            <GraduationCap className="w-6 h-6 text-[#64b5f6]" />
+          </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Education</span>
           </h2>
