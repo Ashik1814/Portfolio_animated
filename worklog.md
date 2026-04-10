@@ -143,3 +143,25 @@ Stage Summary:
 - Header color scheme fully transitioned from cyan/blue to magenta/pink nebula theme
 - All gradients, shadows, borders, text colors, and backgrounds updated consistently
 - Desktop and mobile views both updated with matching color scheme
+
+---
+Task ID: 6
+Agent: Main Agent
+Task: Add moving border effect to all cards and icons
+
+Work Log:
+- Created CardSpotlight component with moving border: two spinning conic-gradient layers (main arc + accent arc) rotating in opposite directions
+- Added card-border-rotate keyframe animation to globals.css
+- Applied CardSpotlight to all cards across: projects (9 cards), skills (3 category + 8 soft skill + 1 learning), about (3 skill + 1 approach + 4 core value + 5 journey), education (2 degree + 6 certification), contact (6 social + 1 form)
+- Fixed bright gradient bleed through semi-transparent card backgrounds by adding opaque inner background (92-94% opacity)
+- Created MovingBorderIcon component for icon-sized moving borders with smaller gradient arcs and faster rotation (4s vs 6s)
+- Applied MovingBorderIcon to: hero social icons (4), header theme toggle (2), header mobile menu (1), about skill icons (3 + 1 + 4), skills section header (1), skills category icons (3), skills soft skill icons (8), education section header (1), education degree icons (2), education certification icons (6), contact social card icons (6), footer social icons (4)
+- All icons inside cards use colored overlay divs (absolute inset-0) on top of opaque inner background for proper tinting
+- Lint passes, dev server compiles successfully
+
+Stage Summary:
+- Moving border effect on all ~35 cards via CardSpotlight (spinning conic-gradient border)
+- Moving border effect on ~45 icons via MovingBorderIcon (smaller, faster gradient arcs)
+- Mouse-tracking spotlight preserved on all cards
+- Theme-aware gradients (neon cyan/purple/teal in dark, deeper tones in light)
+- Near-opaque inner backgrounds prevent gradient bleed inside cards

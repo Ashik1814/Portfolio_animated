@@ -14,6 +14,7 @@ import {
   Award,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 const skills = [
   {
@@ -137,15 +138,13 @@ export function About() {
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group"
               >
                 <div className="p-6 space-y-4">
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: `${skill.color}12` }}
-                  >
+                  <MovingBorderIcon borderRadius="0.75rem" className="w-12 h-12" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${skill.color}18` }} />
                     <Icon
-                      className="w-6 h-6"
+                      className="w-6 h-6 relative"
                       style={{ color: skill.color }}
                     />
-                  </div>
+                  </MovingBorderIcon>
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">
                     {skill.title}
                   </h3>
@@ -172,9 +171,10 @@ export function About() {
         {/* My Approach */}
         <CardSpotlight className="glass-card-solid mb-12">
           <div className="p-8 text-center max-w-3xl mx-auto">
-            <div className="w-12 h-12 rounded-full dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center mx-auto mb-4">
-              <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
-            </div>
+            <MovingBorderIcon borderRadius="9999px" className="w-12 h-12 mx-auto mb-4" duration={5}>
+              <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15" />
+              <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc] relative" />
+            </MovingBorderIcon>
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-4">My Approach</h3>
             <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4">
               I believe that great digital products are born at the intersection
@@ -216,9 +216,10 @@ export function About() {
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center"
               >
                 <div className="p-5 space-y-2">
-                  <div className="w-10 h-10 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto">
-                    <Icon className="w-5 h-5 text-[#64b5f6]" />
-                  </div>
+                  <MovingBorderIcon borderRadius="9999px" className="w-10 h-10 mx-auto" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
+                    <Icon className="w-5 h-5 text-[#64b5f6] relative" />
+                  </MovingBorderIcon>
                   <h4 className="text-sm font-bold dark:text-white text-gray-900">
                     {value.title}
                   </h4>
@@ -247,11 +248,12 @@ export function About() {
               }`}
             >
               {/* Timeline dot */}
-              <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 rounded-full glass-card-solid border-2 border-[#00e5ff] flex items-center justify-center z-10">
-                <span className="text-xs font-bold dark:text-[#00e5ff] text-[#00a8cc]">
+              <MovingBorderIcon borderRadius="9999px" className="absolute left-6 md:left-1/2 -translate-x-1/2 w-10 h-10 z-10" duration={5}>
+                <div className="absolute inset-0 rounded-[inherit] dark:bg-[#08050f] bg-[#f8f9fc]" />
+                <span className="text-xs font-bold dark:text-[#00e5ff] text-[#00a8cc] relative">
                   {item.year}
                 </span>
-              </div>
+              </MovingBorderIcon>
 
               {/* Content */}
               <div

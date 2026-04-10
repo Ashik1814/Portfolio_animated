@@ -16,6 +16,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 interface SkillBarProps {
   name: string;
@@ -111,9 +112,10 @@ export function Skills() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="w-12 h-12 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto mb-4">
-            <Cog className="w-6 h-6 text-[#64b5f6]" />
-          </div>
+          <MovingBorderIcon borderRadius="9999px" className="w-12 h-12 mx-auto mb-4" duration={5}>
+            <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
+            <Cog className="w-6 h-6 text-[#64b5f6] relative" />
+          </MovingBorderIcon>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Skills & Expertise</span>
           </h2>
@@ -131,9 +133,10 @@ export function Skills() {
               <CardSpotlight key={category.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
                 <div className="p-6 space-y-5">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${category.color}12` }}>
-                      <Icon className="w-5 h-5" style={{ color: category.color }} />
-                    </div>
+                    <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10" duration={5}>
+                      <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${category.color}18` }} />
+                      <Icon className="w-5 h-5 relative" style={{ color: category.color }} />
+                    </MovingBorderIcon>
                     <h3 className="text-lg font-bold dark:text-white text-gray-900">{category.title}</h3>
                   </div>
                   <div className="space-y-3">
@@ -157,9 +160,10 @@ export function Skills() {
             return (
               <CardSpotlight key={skill.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
                 <div className="p-4 space-y-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto" style={{ backgroundColor: `${skill.color}12` }}>
-                    <Icon className="w-5 h-5" style={{ color: skill.color }} />
-                  </div>
+                  <MovingBorderIcon borderRadius="9999px" className="w-10 h-10 mx-auto" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${skill.color}18` }} />
+                    <Icon className="w-5 h-5 relative" style={{ color: skill.color }} />
+                  </MovingBorderIcon>
                   <h4 className="text-xs font-bold dark:text-white text-gray-900">{skill.name}</h4>
                   <span className="text-lg font-bold" style={{ color: skill.color }}>{skill.percentage}%</span>
                 </div>
@@ -184,7 +188,10 @@ export function Skills() {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
             <div className="flex items-center justify-center gap-2">
-              <BookOpen className="w-5 h-5 text-[#64b5f6]" />
+              <MovingBorderIcon borderRadius="0.375rem" className="w-7 h-7" duration={5}>
+                <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
+                <BookOpen className="w-4 h-4 text-[#64b5f6] relative" />
+              </MovingBorderIcon>
               <h3 className="text-xl font-bold dark:text-white text-gray-900">Currently Learning</h3>
             </div>
           </div>

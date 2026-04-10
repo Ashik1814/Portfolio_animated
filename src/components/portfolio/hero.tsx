@@ -2,6 +2,7 @@
 
 import { ArrowRight, Briefcase, Github, Linkedin, Twitter, MessagesSquare } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 export function Hero() {
   return (
@@ -74,9 +75,11 @@ export function Hero() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-9 h-9 rounded-full border dark:border-[#64b5f6]/15 border-gray-300 dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/40 hover:border-[#00a8cc]/40 transition-all duration-200"
+                    className="group"
                   >
-                    <Icon className="w-4 h-4 mx-auto" />
+                    <MovingBorderIcon borderRadius="9999px" className="w-9 h-9">
+                      <Icon className="w-4 h-4 dark:text-[#64748b] text-gray-500 dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200" />
+                    </MovingBorderIcon>
                   </a>
                 ))}
               </div>
@@ -123,27 +126,30 @@ export function Hero() {
               {/* Floating stat badges */}
               <div className="absolute -left-4 top-1/4 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '3s' }}>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center">
-                    <span className="text-sm font-bold dark:text-[#00e5ff] text-[#00a8cc]">50+</span>
-                  </div>
+                  <MovingBorderIcon borderRadius="0.5rem" className="w-8 h-8" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10" />
+                    <span className="text-sm font-bold dark:text-[#00e5ff] text-[#00a8cc] relative">50+</span>
+                  </MovingBorderIcon>
                   <span className="text-xs dark:text-[#94a3b8] text-gray-600 whitespace-nowrap">Projects</span>
                 </div>
               </div>
 
               <div className="absolute -right-4 top-1/2 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#64b5f6]/10 flex items-center justify-center">
-                    <span className="text-sm font-bold text-[#64b5f6]">30+</span>
-                  </div>
+                  <MovingBorderIcon borderRadius="0.5rem" className="w-8 h-8" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/10" />
+                    <span className="text-sm font-bold text-[#64b5f6] relative">30+</span>
+                  </MovingBorderIcon>
                   <span className="text-xs dark:text-[#94a3b8] text-gray-600 whitespace-nowrap">Clients</span>
                 </div>
               </div>
 
               <div className="absolute -left-2 bottom-1/4 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#2dd4bf]/10 flex items-center justify-center">
-                    <span className="text-sm font-bold text-[#2dd4bf]">4+</span>
-                  </div>
+                  <MovingBorderIcon borderRadius="0.5rem" className="w-8 h-8" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit] bg-[#2dd4bf]/10" />
+                    <span className="text-sm font-bold text-[#2dd4bf] relative">4+</span>
+                  </MovingBorderIcon>
                   <span className="text-xs dark:text-[#94a3b8] text-gray-600 whitespace-nowrap">Years</span>
                 </div>
               </div>

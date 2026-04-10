@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 import { useTheme } from "next-themes";
 
 const navLinks = [
@@ -99,14 +100,18 @@ export function Header() {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="w-9 h-9 rounded-full dark:bg-transparent bg-gray-100 dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#fbbf24] text-amber-500 hover:dark:bg-white/10 hover:bg-gray-200 transition-all duration-200"
               aria-label="Toggle theme"
+              className="group"
             >
-              {mounted && (theme === "dark" ? (
-                <Sun className="w-4 h-4" />
-              ) : (
-                <Moon className="w-4 h-4" />
-              ))}
+              <MovingBorderIcon borderRadius="9999px" className="w-9 h-9">
+                <span className="dark:text-[#fbbf24] text-amber-500">
+                  {mounted && (theme === "dark" ? (
+                    <Sun className="w-4 h-4" />
+                  ) : (
+                    <Moon className="w-4 h-4" />
+                  ))}
+                </span>
+              </MovingBorderIcon>
             </button>
 
             {/* CV Download Button */}
@@ -121,14 +126,18 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden w-9 h-9 rounded-lg dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6] hover:border-[#f472b6]/40 transition-all duration-200"
+            className="md:hidden group"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
+            <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9">
+              <span className="dark:text-[#b0b0b0] text-gray-600 group-hover:text-[#f472b6] transition-colors duration-200">
+                {mobileMenuOpen ? (
+                  <X className="w-5 h-5" />
+                ) : (
+                  <Menu className="w-5 h-5" />
+                )}
+              </span>
+            </MovingBorderIcon>
           </button>
         </div>
       </div>
@@ -161,9 +170,13 @@ export function Header() {
             <div className="flex items-center gap-3 pt-4 mt-2 dark:border-t-[#3b1a5e]/30 border-t-gray-200">
               <button
                 onClick={toggleTheme}
-                className="w-9 h-9 rounded-full dark:border-white/20 border-gray-300 border flex items-center justify-center dark:text-[#fbbf24] text-amber-500"
+                className="group"
               >
-                {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+                <MovingBorderIcon borderRadius="9999px" className="w-9 h-9">
+                  <span className="dark:text-[#fbbf24] text-amber-500">
+                    {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
+                  </span>
+                </MovingBorderIcon>
               </button>
               <AnimatedBorderButton
                 size="sm"

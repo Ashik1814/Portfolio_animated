@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 const contactCards = [
   { icon: Mail, label: "Email", value: "hello@ashik.dev", href: "mailto:hello@ashik.dev" },
@@ -76,9 +77,10 @@ export function Contact() {
                     <a key={card.label} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined} className="group">
                       <CardSpotlight className="p-4 glass-card-solid transition-all duration-200">
                         <div className="flex items-start gap-3">
-                          <div className="w-9 h-9 rounded-lg dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center shrink-0 dark:group-hover:bg-[#00e5ff]/15 group-hover:bg-[#00a8cc]/15 transition-colors">
-                            <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
-                          </div>
+                          <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9 shrink-0" duration={5}>
+                            <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15 dark:group-hover:bg-[#00e5ff]/25 group-hover:bg-[#00a8cc]/25 transition-colors" />
+                            <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
+                          </MovingBorderIcon>
                           <div className="min-w-0">
                             <p className="text-xs dark:text-[#64748b] text-gray-500 mb-0.5">{card.label}</p>
                             <p className="text-sm font-medium dark:text-white text-gray-900 truncate dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors">{card.value}</p>
@@ -90,7 +92,10 @@ export function Contact() {
                 })}
               </div>
               <div className="flex items-center gap-2 pt-3">
-                <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
+                <MovingBorderIcon borderRadius="0.375rem" className="w-7 h-7" duration={5}>
+                  <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15" />
+                  <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
+                </MovingBorderIcon>
                 <span className="text-sm dark:text-[#94a3b8] text-gray-600">Available for remote work worldwide</span>
               </div>
             </div>
@@ -156,8 +161,10 @@ export function Contact() {
                 {footerSocials.map((social) => {
                   const Icon = social.icon;
                   return (
-                    <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-9 h-9 rounded-lg dark:border-[#1e3a5f]/50 border-gray-300 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/30 hover:border-[#00a8cc]/30 dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-200">
-                      <Icon className="w-4 h-4" />
+                    <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="group">
+                      <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9">
+                        <Icon className="w-4 h-4 dark:text-[#64748b] text-gray-500 dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200" />
+                      </MovingBorderIcon>
                     </a>
                   );
                 })}

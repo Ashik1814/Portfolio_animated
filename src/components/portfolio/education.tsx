@@ -13,6 +13,7 @@ import {
   Monitor,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
+import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 const degrees = [
   {
@@ -71,9 +72,10 @@ export function Education() {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="w-12 h-12 rounded-full bg-[#64b5f6]/10 flex items-center justify-center mx-auto mb-4">
-            <GraduationCap className="w-6 h-6 text-[#64b5f6]" />
-          </div>
+          <MovingBorderIcon borderRadius="9999px" className="w-12 h-12 mx-auto mb-4" duration={5}>
+            <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
+            <GraduationCap className="w-6 h-6 text-[#64b5f6] relative" />
+          </MovingBorderIcon>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Education</span>
           </h2>
@@ -90,9 +92,10 @@ export function Education() {
               <CardSpotlight key={degree.title} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
                 <div className="p-6 sm:p-8">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#64b5f6]/10 flex items-center justify-center shrink-0">
-                      <Icon className="w-6 h-6 text-[#64b5f6]" />
-                    </div>
+                    <MovingBorderIcon borderRadius="0.75rem" className="w-12 h-12 shrink-0" duration={5}>
+                      <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
+                      <Icon className="w-6 h-6 text-[#64b5f6] relative" />
+                    </MovingBorderIcon>
                     <div className="flex-1">
                       <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-1">{degree.title}</h3>
                       <p className="dark:text-[#94a3b8] text-gray-600 text-sm">{degree.institution} &bull; {degree.location}</p>
@@ -130,9 +133,10 @@ export function Education() {
             return (
               <CardSpotlight key={cert.name} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group">
                 <div className="p-5 flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: `${cert.color}12` }}>
-                    <Icon className="w-5 h-5" style={{ color: cert.color }} />
-                  </div>
+                  <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10 shrink-0" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${cert.color}18` }} />
+                    <Icon className="w-5 h-5 relative" style={{ color: cert.color }} />
+                  </MovingBorderIcon>
                   <div>
                     <h4 className="text-sm font-bold dark:text-white text-gray-900 mb-0.5">{cert.name}</h4>
                     <p className="text-xs dark:text-[#94a3b8] text-gray-600">{cert.issuer} &bull; {cert.year}</p>
