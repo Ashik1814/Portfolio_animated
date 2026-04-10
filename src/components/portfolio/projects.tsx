@@ -14,92 +14,150 @@ import {
   ExternalLink,
   Github,
 } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const filters = ["All", "Development", "Design", "Automation"];
 
-const projects = [
+interface TagConfig {
+  name: string;
+  bg: string;
+  text: string;
+}
+
+const projects: {
+  icon: typeof ShoppingBag;
+  title: string;
+  description: string;
+  tags: TagConfig[];
+  category: string;
+  gradient: string;
+  accentColor: string;
+}[] = [
   {
     icon: ShoppingBag,
     title: "E-Commerce Platform",
     description:
-      "A modern e-commerce solution with seamless user experience, real-time inventory management, and integrated payments.",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
+      "Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.",
+    tags: [
+      { name: "React", bg: "bg-blue-500/20", text: "text-blue-300" },
+      { name: "Node.js", bg: "bg-green-500/20", text: "text-green-300" },
+      { name: "MongoDB", bg: "bg-yellow-500/20", text: "text-yellow-300" },
+    ],
     category: "Development",
-    gradient: "from-[#ff6b9d] to-[#a855f7]",
+    gradient: "from-[#ff6b6b] to-[#ff8e53]",
+    accentColor: "#ff6b6b",
   },
   {
     icon: Palette,
     title: "Design System",
     description:
-      "Comprehensive component library with guidelines, documentation, and accessibility features. Created for a future design system.",
-    tags: ["Figma", "Storybook", "CSS Variables"],
+      "Comprehensive component library with guidelines, documentation, and accessibility standards.",
+    tags: [
+      { name: "Figma", bg: "bg-purple-500/20", text: "text-purple-300" },
+      { name: "Storybook", bg: "bg-orange-500/20", text: "text-orange-300" },
+      { name: "Sketch", bg: "bg-pink-500/20", text: "text-pink-300" },
+    ],
     category: "Design",
-    gradient: "from-[#a855f7] to-[#4dabf7]",
+    gradient: "from-[#667eea] to-[#764ba2]",
+    accentColor: "#667eea",
   },
   {
     icon: Zap,
     title: "Workflow Automation System",
     description:
-      "Automated business processes reducing manual work by 80% using custom integrations. Connected multiple tools and platforms.",
-    tags: ["Python", "Zapier", "AWS Lambda"],
+      "Automated business processes reducing manual work by 80% using AI and custom integrations.",
+    tags: [
+      { name: "Python", bg: "bg-yellow-500/20", text: "text-yellow-200" },
+      { name: "Airflow", bg: "bg-blue-500/20", text: "text-blue-300" },
+      { name: "AWS", bg: "bg-orange-500/20", text: "text-orange-300" },
+    ],
     category: "Automation",
-    gradient: "from-[#2dd4bf] to-[#4dabf7]",
+    gradient: "from-[#f093fb] to-[#f5576c]",
+    accentColor: "#f093fb",
   },
   {
     icon: BarChart3,
     title: "SaaS Analytics Dashboard",
     description:
-      "Real-time analytics dashboard with data visualization and customizable reporting features. Designed for tracking KPIs.",
-    tags: ["React", "D3.js", "PostgreSQL"],
+      "Real-time analytics dashboard with data visualization and customizable reporting features.",
+    tags: [
+      { name: "React", bg: "bg-blue-500/20", text: "text-blue-300" },
+      { name: "D3.js", bg: "bg-orange-500/20", text: "text-orange-300" },
+      { name: "PostgreSQL", bg: "bg-sky-500/20", text: "text-sky-300" },
+    ],
     category: "Development",
-    gradient: "from-[#4dabf7] to-[#a855f7]",
+    gradient: "from-[#4facfe] to-[#00f2fe]",
+    accentColor: "#4facfe",
   },
   {
     icon: Smartphone,
     title: "Mobile App Design",
     description:
-      "User-centered mobile application design with intuitive navigation and modern aesthetics. Conducted user research and usability testing.",
-    tags: ["Figma", "Adobe XD", "UserTesting"],
+      "User-centered mobile application with intuitive navigation and modern aesthetics.",
+    tags: [
+      { name: "Figma", bg: "bg-purple-500/20", text: "text-purple-300" },
+      { name: "Prototyping", bg: "bg-pink-500/20", text: "text-pink-300" },
+      { name: "User Research", bg: "bg-green-500/20", text: "text-green-300" },
+    ],
     category: "Design",
-    gradient: "from-[#ff6b9d] to-[#fbbf24]",
+    gradient: "from-[#43e97b] to-[#38f9d7]",
+    accentColor: "#43e97b",
   },
   {
     icon: Bot,
     title: "AI Integration Tool",
     description:
-      "Seamless integration of AI capabilities into existing workflows using automation platforms. Built custom solutions for clients.",
-    tags: ["Python", "TensorFlow", "AWS"],
+      "Seamless integration of AI capabilities into existing platforms with custom solutions.",
+    tags: [
+      { name: "Python", bg: "bg-yellow-500/20", text: "text-yellow-200" },
+      { name: "TensorFlow", bg: "bg-orange-500/20", text: "text-orange-300" },
+      { name: "API", bg: "bg-purple-500/20", text: "text-purple-300" },
+    ],
     category: "Automation",
-    gradient: "from-[#a855f7] to-[#2dd4bf]",
+    gradient: "from-[#fa709a] to-[#fee140]",
+    accentColor: "#fa709a",
   },
   {
     icon: Briefcase,
     title: "Portfolio Website",
     description:
-      "Modern portfolio website with glassmorphism effects, smooth animations, and responsive design. Built with React and Tailwind CSS.",
-    tags: ["React", "Tailwind CSS", "Framer Motion"],
+      "Modern portfolio website with glassmorphism effects, smooth animations, and responsive design.",
+    tags: [
+      { name: "React", bg: "bg-blue-500/20", text: "text-blue-300" },
+      { name: "Tailwind CSS", bg: "bg-teal-500/20", text: "text-teal-300" },
+      { name: "Framer", bg: "bg-purple-500/20", text: "text-purple-300" },
+    ],
     category: "Development",
-    gradient: "from-[#ff6b9d] to-[#4dabf7]",
+    gradient: "from-[#30cfd0] to-[#330867]",
+    accentColor: "#30cfd0",
   },
   {
     icon: Utensils,
     title: "Restaurant Landing Page",
     description:
-      "Beautiful landing page for a restaurant with online ordering, menu showcase, and gallery. Focus on visual appeal and conversion optimization.",
-    tags: ["Next.js", "Sanity", "Framer"],
+      "Beautiful landing page for a restaurant with online ordering, menu display, and gallery.",
+    tags: [
+      { name: "Next.js", bg: "bg-gray-500/20", text: "text-gray-200" },
+      { name: "Tailwind CSS", bg: "bg-teal-500/20", text: "text-teal-300" },
+      { name: "Figma", bg: "bg-purple-500/20", text: "text-purple-300" },
+    ],
     category: "Design",
-    gradient: "from-[#fbbf24] to-[#ff6b9d]",
+    gradient: "from-[#a8edea] to-[#fed6e3]",
+    accentColor: "#a8edea",
   },
   {
     icon: CheckSquare,
     title: "Task Management App",
     description:
-      "Productivity app with Kanban boards, task lists, and team collaboration features. Built for remote teams and agile workflows.",
-    tags: ["Vue.js", "Firebase", "Tailwind CSS"],
+      "Productivity app with kanban boards, task lists, and team collaboration features.",
+    tags: [
+      { name: "Vue.js", bg: "bg-green-500/20", text: "text-green-300" },
+      { name: "Firebase", bg: "bg-orange-500/20", text: "text-orange-300" },
+      { name: "PWA", bg: "bg-yellow-500/20", text: "text-yellow-200" },
+    ],
     category: "Development",
-    gradient: "from-[#2dd4bf] to-[#a855f7]",
+    gradient: "from-[#ffecd2] to-[#fcb69f]",
+    accentColor: "#fcb69f",
   },
 ];
 
@@ -119,7 +177,7 @@ export function Projects() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text">Featured Projects</span>
           </h2>
-          <p className="text-[#a0a0b0] max-w-2xl mx-auto text-base">
+          <p className="text-[#a0a0b0] max-w-2xl mx-auto text-base leading-relaxed">
             A collection of my recent work showcasing expertise in design,
             development, and automation. Each project represents a unique
             challenge and learning opportunity.
@@ -127,15 +185,15 @@ export function Projects() {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {filters.map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeFilter === filter
-                  ? "bg-gradient-to-r from-[#ff6b9d] to-[#a855f7] text-white shadow-lg shadow-[#ff6b9d]/20"
-                  : "bg-[#1a1333] border border-white/5 text-[#a0a0b0] hover:text-white hover:border-white/10"
+                  ? "bg-gradient-to-r from-[#ff6b9d] to-[#a855f7] text-white shadow-lg shadow-[#ff6b9d]/25 border-0"
+                  : "bg-transparent border border-[#a855f7]/40 text-[#a855f7] hover:bg-[#a855f7]/10 hover:border-[#a855f7]/60"
               }`}
             >
               {filter}
@@ -144,69 +202,78 @@ export function Projects() {
         </div>
 
         {/* Project Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => {
             const Icon = project.icon;
             return (
-              <Card
+              <div
                 key={project.title}
-                className="bg-[#1a1333] border-white/5 hover:border-white/10 transition-all duration-300 group overflow-hidden"
+                className="group bg-[#1a1333] border border-white/5 rounded-xl overflow-hidden shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/40 hover:border-white/10"
               >
-                {/* Gradient Header */}
+                {/* Gradient Banner */}
                 <div
                   className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}
                 >
-                  <Icon className="w-12 h-12 text-white/90" />
+                  <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                  {/* Subtle overlay on hover */}
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                 </div>
-                <CardContent className="p-5 space-y-3">
-                  <h3 className="text-base font-bold text-white">
+
+                {/* Card Body */}
+                <div className="p-5 space-y-3">
+                  {/* Title */}
+                  <h3 className="text-lg font-bold text-white">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-[#a0a0b0] leading-relaxed line-clamp-3">
+
+                  {/* Description */}
+                  <p className="text-sm text-white/60 leading-relaxed line-clamp-2">
                     {project.description}
                   </p>
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
+
+                  {/* Tech Tags */}
+                  <div className="flex flex-wrap gap-2 pt-1">
                     {project.tags.map((tag) => (
                       <span
-                        key={tag}
-                        className="px-2.5 py-1 rounded-md text-xs bg-[#2a1f45] text-[#a0a0b0]"
+                        key={tag.name}
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${tag.bg} ${tag.text}`}
                       >
-                        {tag}
+                        {tag.name}
                       </span>
                     ))}
                   </div>
-                  {/* Actions */}
-                  <div className="flex gap-3 pt-2">
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-3">
                     <Button
                       size="sm"
-                      className="flex-1 bg-[#2a1f45] hover:bg-[#3a2f55] text-white text-xs rounded-lg"
+                      className="flex-1 bg-white text-[#1a1333] hover:bg-white/90 font-medium text-xs rounded-md h-9"
+                      style={{ color: project.accentColor }}
                     >
-                      <ExternalLink className="w-3 h-3 mr-1.5" />
-                      View Project
+                      <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                      Live Demo
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex-1 border-white/10 text-[#a0a0b0] hover:text-white hover:border-white/20 text-xs rounded-lg"
+                      className="flex-1 border-white/20 text-white hover:bg-white hover:text-[#1a1333] font-medium text-xs rounded-md h-9 transition-all duration-300"
                     >
-                      <Github className="w-3 h-3 mr-1.5" />
-                      GitHub
+                      <Github className="w-3.5 h-3.5 mr-1.5" />
+                      View Code
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             );
           })}
         </div>
 
         {/* View All CTA */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-14">
           <Button
             size="lg"
             variant="outline"
-            className="border-[#ff6b9d]/30 text-[#ff6b9d] hover:bg-[#ff6b9d]/10 font-medium rounded-full px-8"
+            className="border-[#ff6b9d]/30 text-[#ff6b9d] hover:bg-[#ff6b9d]/10 font-medium rounded-full px-8 transition-all duration-300"
           >
             View All Projects
           </Button>
