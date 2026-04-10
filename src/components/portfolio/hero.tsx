@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Briefcase, Github, Linkedin, Twitter, MessagesSquare } from "lucide-react";
+import { ArrowRight, Github, Linkedin, Twitter, MessagesSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -85,34 +85,78 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right Content - Decorative Card */}
-          <div className="hidden lg:flex justify-center">
+          {/* Right Content - Profile Image + Stats */}
+          <div className="flex justify-center lg:justify-end">
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-[#ff6b9d]/20 via-[#a855f7]/20 to-[#4dabf7]/20 rounded-3xl blur-xl" />
-              <div className="relative glass-card p-8 w-80 space-y-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#ff6b9d] to-[#a855f7] flex items-center justify-center">
-                  <Briefcase className="w-8 h-8 text-white" />
+              {/* Outer glow ring */}
+              <div className="absolute -inset-8 bg-gradient-to-r from-[#ff6b9d]/20 via-[#a855f7]/20 to-[#4dabf7]/20 rounded-full blur-2xl" />
+
+              {/* Rotating gradient border ring */}
+              <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full p-1 bg-gradient-to-br from-[#ff6b9d] via-[#a855f7] to-[#4dabf7]">
+                {/* Inner dark circle */}
+                <div className="w-full h-full rounded-full bg-[#0f0a1e] flex items-center justify-center overflow-hidden p-1">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-[#1a1333] to-[#2a1f45] flex items-center justify-center overflow-hidden">
+                    {/*
+                      ============================================
+                      👤 YOUR PROFILE IMAGE GOES HERE
+                      ============================================
+                      Replace the placeholder below with your image.
+                      Option 1: Place your image at /public/profile.jpg
+                                and use: <img src="/profile.jpg" alt="Profile" className="w-full h-full object-cover" />
+                      Option 2: Import from next/image:
+                                <Image src="/profile.jpg" alt="Profile" fill className="object-cover" />
+                    */}
+                    <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
+                      <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#ff6b9d]/20 to-[#a855f7]/20 flex items-center justify-center">
+                        <svg
+                          className="w-10 h-10 text-[#a0a0b0]/50"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                      </div>
+                      <p className="text-xs text-[#a0a0b0]/50 leading-relaxed">
+                        Add your photo<br />at <code className="text-[#ff6b9d]/60">/public/profile.jpg</code>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-white">
-                  Let&apos;s Build Together
-                </h3>
-                <p className="text-[#a0a0b0] text-sm leading-relaxed">
-                  Ready to bring your ideas to life? I specialize in creating
-                  digital products that are both beautiful and functional.
-                </p>
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="text-center p-3 rounded-xl bg-[#ff6b9d]/10 border border-[#ff6b9d]/20">
-                    <div className="text-lg font-bold text-[#ff6b9d]">50+</div>
-                    <div className="text-xs text-[#a0a0b0]">Projects</div>
+              </div>
+
+              {/* Floating stat badges */}
+              <div className="absolute -left-4 top-1/4 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '3s' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#ff6b9d]/15 flex items-center justify-center">
+                    <span className="text-sm font-bold text-[#ff6b9d]">50+</span>
                   </div>
-                  <div className="text-center p-3 rounded-xl bg-[#4dabf7]/10 border border-[#4dabf7]/20">
-                    <div className="text-lg font-bold text-[#4dabf7]">30+</div>
-                    <div className="text-xs text-[#a0a0b0]">Clients</div>
+                  <span className="text-xs text-[#a0a0b0] whitespace-nowrap">Projects</span>
+                </div>
+              </div>
+
+              <div className="absolute -right-4 top-1/2 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#4dabf7]/15 flex items-center justify-center">
+                    <span className="text-sm font-bold text-[#4dabf7]">30+</span>
                   </div>
-                  <div className="text-center p-3 rounded-xl bg-[#2dd4bf]/10 border border-[#2dd4bf]/20">
-                    <div className="text-lg font-bold text-[#2dd4bf]">4+</div>
-                    <div className="text-xs text-[#a0a0b0]">Years</div>
+                  <span className="text-xs text-[#a0a0b0] whitespace-nowrap">Clients</span>
+                </div>
+              </div>
+
+              <div className="absolute -left-2 bottom-1/4 glass-card px-4 py-3 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#2dd4bf]/15 flex items-center justify-center">
+                    <span className="text-sm font-bold text-[#2dd4bf]">4+</span>
                   </div>
+                  <span className="text-xs text-[#a0a0b0] whitespace-nowrap">Years</span>
+                </div>
+              </div>
+
+              {/* Available badge */}
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 glass-card px-4 py-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-[#2dd4bf] rounded-full animate-pulse" />
+                  <span className="text-xs font-medium text-[#2dd4bf]">Available for work</span>
                 </div>
               </div>
             </div>
