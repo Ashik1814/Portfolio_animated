@@ -24,7 +24,7 @@ import {
   SiFramer,
   SiApacheairflow,
   SiHtml5,
-  SiCss3,
+  SiCss,
 } from "react-icons/si";
 import {
   Paintbrush,
@@ -71,7 +71,7 @@ const brandIconMap: Record<string, IconType> = {
   nodejs: SiNodedotjs,
   "html/css": SiHtml5,
   html: SiHtml5,
-  css: SiCss3,
+  css: SiCss,
   vue: SiVuedotjs,
   "vue.js": SiVuedotjs,
   vuejs: SiVuedotjs,
