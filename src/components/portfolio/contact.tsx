@@ -18,8 +18,8 @@ import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 
 const contactCards = [
-  { icon: Mail, label: "Email", value: "hello@ashik.dev", href: "mailto:hello@ashik.dev" },
-  { icon: Github, label: "GitHub", value: "@ashik-rahman", href: "https://github.com" },
+  { icon: Mail, label: "Email", value: "hello@alchemist.io", href: "mailto:hello@alchemist.io" },
+  { icon: Github, label: "GitHub", value: "@alchemist", href: "https://github.com" },
   { icon: Linkedin, label: "LinkedIn", value: "Connect with me", href: "https://linkedin.com" },
   { icon: Youtube, label: "YouTube", value: "Subscribe", href: "https://youtube.com" },
   { icon: MessageCircle, label: "WhatsApp", value: "Chat with me", href: "https://wa.me/1234567890" },
@@ -137,10 +137,10 @@ export function Contact() {
             {/* Left - Logo & Copyright */}
             <div className="space-y-3">
               <a href="#home" className="text-lg font-bold inline-block hover:scale-105 transition-transform duration-200">
-                <span className="text-[#64b5f6]">Ashik</span><span className="dark:text-white text-gray-900">.dev</span>
+                <span className="text-[#64b5f6]">Alchemist</span><span className="dark:text-white text-gray-900">.io</span>
               </a>
               <p className="text-sm dark:text-[#475569] text-gray-500 leading-relaxed max-w-xs">
-                &copy; {new Date().getFullYear()} Md. Ashikur Rahman Ashik. All rights reserved.
+                &copy; {new Date().getFullYear()} Alchemist. All rights reserved.
               </p>
             </div>
 

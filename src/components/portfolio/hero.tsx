@@ -23,7 +23,7 @@ export function Hero() {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight dark:text-white text-gray-900">
               Hi, I&apos;m{" "}
-              <span className="gradient-text-cyan">Ashik</span>
+              <span className="gradient-text-cyan">Alchemist</span>
             </h1>
 
             <p className="text-lg text-[#64b5f6] font-medium">
@@ -103,7 +103,7 @@ export function Hero() {
                       ============================================
                       Place your image at /public/profile.jpg
                       Then replace the placeholder below with:
-                      <img src="/profile.jpg" alt="Ashik" className="w-full h-full object-cover rounded-full" />
+                      <img src="/profile.jpg" alt="Alchemist" className="w-full h-full object-cover rounded-full" />
                     */}
                     <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
                       <div className="w-20 h-20 rounded-full dark:bg-gradient-to-br dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 bg-gradient-to-br from-[#00a8cc]/10 to-[#64b5f6]/10 flex items-center justify-center">

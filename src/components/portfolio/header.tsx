@@ -66,8 +66,8 @@ export function Header() {
             href="#home"
             className="text-xl font-bold transition-all duration-200 hover:scale-105"
           >
-            <span className="text-[#f472b6]">Ashik</span>
-            <span className="dark:text-white text-gray-900">.dev</span>
+            <span className="text-[#f472b6]">Alchemist</span>
+            <span className="dark:text-white text-gray-900">.io</span>
           </a>
 
           {/* Desktop Nav - Centered */}
