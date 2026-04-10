@@ -176,12 +176,11 @@ export function Projects() {
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
-              className={`rainbow-border rainbow-border-full dark:bg-[#08050f] bg-white font-medium transition-all duration-300 ${
+              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 activeFilter === filter
-                  ? "dark:text-white text-gray-900 font-bold"
-                  : "dark:text-[#94a3b8] text-gray-600 font-medium"
+                  ? "bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] dark:text-[#06080f] text-white shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20 border-0"
+                  : "bg-transparent dark:border-[#64b5f6]/30 border-[#00a8cc]/30 dark:text-[#64b5f6] text-[#00a8cc] dark:hover:bg-[#64b5f6]/10 hover:bg-[#00a8cc]/10 dark:hover:border-[#64b5f6]/50 hover:border-[#00a8cc]/50"
               }`}
-              style={{ padding: '0.625rem 1.5rem' }}
             >
               {filter}
             </button>
@@ -219,11 +218,11 @@ export function Projects() {
 
                   {/* Action Buttons */}
                   <div className="flex gap-3 pt-3">
-                    <Button size="sm" className="flex-1 rainbow-border rainbow-border-xl dark:bg-[#08050f] bg-white dark:text-white text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-200 hover:scale-[1.02]" style={{ color: project.accentColor }}>
+                    <Button size="sm" className="flex-1 dark:bg-white bg-gray-900 dark:text-[#06080f] text-white dark:hover:bg-white/90 hover:bg-gray-800 font-medium text-xs rounded-md h-9" style={{ color: project.accentColor }}>
                       <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
                       Live Demo
                     </Button>
-                    <Button size="sm" className="flex-1 rainbow-border rainbow-border-xl dark:bg-[#08050f] bg-white dark:text-white text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-200 hover:scale-[1.02]">
+                    <Button size="sm" variant="outline" className="flex-1 dark:border-white/20 border-gray-300 dark:text-white text-gray-900 dark:hover:bg-white hover:bg-gray-100 dark:hover:text-[#06080f] hover:text-gray-900 font-medium text-xs rounded-md h-9 transition-all duration-300">
                       <Github className="w-3.5 h-3.5 mr-1.5" />
                       View Code
                     </Button>
@@ -236,7 +235,7 @@ export function Projects() {
 
         {/* View All CTA */}
         <div className="text-center mt-14">
-          <Button size="lg" className="rainbow-border rainbow-border-full dark:bg-[#08050f] bg-white dark:text-white text-gray-900 font-bold rounded-full px-8 transition-all duration-300 hover:scale-105">
+          <Button size="lg" variant="outline" className="dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/10 hover:bg-[#00a8cc]/10 font-medium rounded-full px-8 transition-all duration-300">
             View All Projects
           </Button>
         </div>

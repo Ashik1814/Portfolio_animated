@@ -112,7 +112,7 @@ export function Header() {
             {/* CV Download Button */}
             <Button
               size="sm"
-              className="rainbow-border rainbow-border-full dark:bg-[#08050f] bg-white dark:text-white text-gray-900 font-semibold rounded-full px-5 gap-1.5 transition-all duration-200 hover:scale-105"
+              className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg shadow-[#d946ef]/20 transition-all duration-200 hover:scale-105"
             >
               <Download className="w-4 h-4" />
               CV
@@ -167,7 +167,7 @@ export function Header() {
               </button>
               <Button
                 size="sm"
-                className="rainbow-border rainbow-border-full dark:bg-[#08050f] bg-white dark:text-white text-gray-900 font-semibold rounded-full px-4 gap-1.5 flex-1"
+                className="bg-gradient-to-r from-[#d946ef] to-[#f472b6] hover:from-[#c026d3] hover:to-[#e879a8] dark:text-[#0a0a1a] text-white font-semibold rounded-full px-4 gap-1.5 flex-1"
               >
                 <Download className="w-4 h-4" />
                 Download CV

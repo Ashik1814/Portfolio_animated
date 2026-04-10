@@ -255,60 +255,6 @@
   box-shadow: 0 0 20px rgba(167, 139, 250, 0.12);
 }
 
-/* ===== Rainbow Border Button ===== */
-.rainbow-border {
-  position: relative;
-  z-index: 0;
-  border: none !important;
-  overflow: visible;
-}
-
-.rainbow-border::before,
-.rainbow-border::after {
-  content: '';
-  position: absolute;
-  left: -2px;
-  top: -2px;
-  border-radius: inherit;
-  background: linear-gradient(
-    45deg,
-    #fb0094, #0000ff, #00ff00, #ffff00, #ff0000,
-    #fb0094, #0000ff, #00ff00, #ffff00, #ff0000
-  );
-  background-size: 400%;
-  width: calc(100% + 4px);
-  height: calc(100% + 4px);
-  z-index: -2;
-  animation: rainbow 20s linear infinite;
-}
-
-.rainbow-border::after {
-  filter: blur(50px);
-  z-index: -3;
-  opacity: 0.6;
-}
-
-@keyframes rainbow {
-  0% { background-position: 0 0; }
-  50% { background-position: 400% 0; }
-  100% { background-position: 0 0; }
-}
-
-/* Rainbow border with rounded-xl for primary actions */
-.rainbow-border-xl {
-  border-radius: 0.75rem;
-}
-
-/* Rainbow border with rounded-full for pill buttons */
-.rainbow-border-full {
-  border-radius: 9999px;
-}
-
-.rainbow-border-full::before,
-.rainbow-border-full::after {
-  border-radius: 9999px;
-}
-
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
