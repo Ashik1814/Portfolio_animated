@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { useIsDark } from "@/hooks/use-is-dark";
 
 interface CardSpotlightProps extends React.ComponentProps<"div"> {
   /** Spotlight radius in px. Defaults to 350. */
@@ -29,16 +30,7 @@ export function CardSpotlight({
   const divRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);
-  const [isDark, setIsDark] = useState(true);
-
-  // Track theme
-  useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
-    check();
-    const observer = new MutationObserver(check);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
+  const isDark = useIsDark();
 
   const spotlightColor = color ?? (isDark ? "rgba(0,229,255,0.12)" : "rgba(0,168,204,0.08)");
   const spotlightColorLight = colorLight ?? "rgba(0,168,204,0.08)";

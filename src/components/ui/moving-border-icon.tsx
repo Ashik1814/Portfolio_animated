@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useIsDark } from "@/hooks/use-is-dark";
 
 interface MovingBorderIconProps extends React.ComponentProps<"div"> {
   /** Border radius CSS value. Defaults to "9999px" (circle). */
@@ -20,16 +20,7 @@ export function MovingBorderIcon({
   innerBackground,
   ...props
 }: MovingBorderIconProps) {
-  const [isDark, setIsDark] = useState(true);
-
-  // Track theme
-  useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
-    check();
-    const observer = new MutationObserver(check);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
+  const isDark = useIsDark();
 
   const bg = innerBackground ?? (isDark ? "rgba(8, 5, 15, 0.92)" : "rgba(248, 249, 252, 0.94)");
 

@@ -1,21 +1,12 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Header } from "@/components/portfolio/header";
-import { Footer } from "@/components/portfolio/footer";
-import { DottedSurface } from "@/components/ui/dotted-surface";
 
+/**
+ * Thin wrapper for sub-pages.
+ * The persistent shell (DottedSurface, Header, Footer) lives in AppShell at layout level,
+ * so this just renders children directly.
+ */
 export function PageShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="min-h-screen flex flex-col relative">
-      <DottedSurface />
-      <div className="relative z-10">
-        <Header />
-        <main className="flex-1 pt-16">{children}</main>
-      </div>
-      <div className="relative z-10 mt-auto">
-        <Footer />
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 }
