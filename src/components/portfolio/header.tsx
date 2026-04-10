@@ -17,7 +17,6 @@ const navLinks = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -30,17 +29,6 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
-
-      const sections = navLinks.map((link) => link.href.replace("#", ""));
-      const scrollPosition = window.scrollY + 100;
-
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i]);
-        if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(sections[i]);
-          break;
-        }
-      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -72,27 +60,15 @@ export function Header() {
 
           {/* Desktop Nav - Centered */}
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const sectionId = link.href.replace("#", "");
-              const isActive = activeSection === sectionId;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md ${
-                    isActive
-                      ? "text-[#f472b6]"
-                      : "dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6]"
-                  }`}
-                >
-                  {link.label}
-                  {/* Active underline */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 bg-[#f472b6] rounded-full" />
-                  )}
-                </a>
-              );
-            })}
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-md dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6]"
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
 
           {/* Right Actions */}
@@ -146,27 +122,16 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden dark:bg-[#08050f]/50 bg-white/70 backdrop-blur-xl dark:border-t-[#d946ef]/10 border-t-gray-200/50">
           <nav className="flex flex-col py-2 px-4">
-            {navLinks.map((link) => {
-              const sectionId = link.href.replace("#", "");
-              const isActive = activeSection === sectionId;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className={`py-3 px-3 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-3 ${
-                    isActive
-                      ? "text-[#f472b6] dark:bg-[#f472b6]/5 bg-[#f472b6]/5"
-                      : "dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6] hover:bg-[#f472b6]/5"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                  {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#f472b6] ml-auto" />
-                  )}
-                </a>
-              );
-            })}
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="py-3 px-3 text-sm font-medium rounded-lg transition-colors duration-200 flex items-center gap-3 dark:text-[#b0b0b0] text-gray-600 hover:text-[#f472b6] hover:bg-[#f472b6]/5"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            ))}
             <div className="flex items-center gap-3 pt-4 mt-2 dark:border-t-[#3b1a5e]/30 border-t-gray-200">
               <button
                 onClick={toggleTheme}
