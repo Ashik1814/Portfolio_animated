@@ -17,6 +17,9 @@ import {
   BarChart3,
   FileCode,
   Layers,
+  MapPin,
+  Calendar,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
@@ -62,9 +65,10 @@ export function Education() {
   return (
     <section id="education" className="py-20 section-padding">
       <div className="max-w-7xl mx-auto">
+        {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="w-12 h-12 rounded-full bg-[#64b5f6]/15 flex items-center justify-center mx-auto mb-4">
-            <GraduationCap className="w-6 h-6 text-[#64b5f6]" />
+          <div className="w-14 h-14 rounded-full bg-[#64b5f6]/15 flex items-center justify-center mx-auto mb-4">
+            <GraduationCap className="w-7 h-7 text-[#64b5f6]" />
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Education</span>
@@ -74,59 +78,92 @@ export function Education() {
           </p>
         </div>
 
-        {/* Degree Cards */}
-        <div className="space-y-6 mb-16">
-          {degrees.map((degree) => {
-            const Icon = getIcon(degree.icon);
-            const achievementList = degree.achievements ? degree.achievements.split(',').filter(Boolean) : [];
-            return (
-              <CardSpotlight key={degree.id} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
-                <div className="p-6 sm:p-8">
-                  <div className="flex items-start gap-4 mb-4">
-                    <MovingBorderIcon borderRadius="0.75rem" className="w-12 h-12 shrink-0" duration={5}>
-                      <div className="absolute inset-0 rounded-[inherit] bg-[#64b5f6]/15" />
-                      <Icon className="w-6 h-6 text-[#64b5f6] relative" />
-                    </MovingBorderIcon>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-1">{degree.title}</h3>
-                      <p className="dark:text-[#94a3b8] text-gray-600 text-sm">{degree.institution}{degree.location ? ` • ${degree.location}` : ''}</p>
-                      <div className="flex flex-wrap items-center gap-3 mt-2">
-                        <span className="text-sm dark:text-[#94a3b8] text-gray-600">{degree.period}</span>
-                        <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>GPA: {degree.gpa}</span>
+        {/* Degree Cards — Timeline style */}
+        <div className="relative max-w-4xl mx-auto mb-20">
+          {/* Vertical timeline line */}
+          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#00e5ff] via-[#64b5f6] to-[#a78bfa]" />
+
+          <div className="space-y-8">
+            {degrees.map((degree, index) => {
+              const Icon = getIcon(degree.icon);
+              const achievementList = degree.achievements ? degree.achievements.split(',').filter(Boolean) : [];
+              const colors = ["#00e5ff", "#2dd4bf", "#a78bfa"];
+              const accentColor = colors[index % colors.length];
+
+              return (
+                <div key={degree.id} className="relative flex gap-5 sm:gap-7">
+                  {/* Timeline dot */}
+                  <MovingBorderIcon borderRadius="9999px" className="absolute left-6 sm:left-8 -translate-x-1/2 w-12 h-12 sm:w-14 sm:h-14 z-10 shrink-0" duration={5}>
+                    <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${accentColor}18` }} />
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 relative" style={{ color: accentColor }} />
+                  </MovingBorderIcon>
+
+                  {/* Card */}
+                  <CardSpotlight className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 flex-1 ml-16 sm:ml-20">
+                    <div className="p-5 sm:p-7 space-y-4">
+                      {/* Title row */}
+                      <div>
+                        <h3 className="text-lg sm:text-xl font-bold dark:text-white text-gray-900 mb-2">
+                          {degree.title}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                          <span className="flex items-center gap-1.5 text-sm dark:text-[#94a3b8] text-gray-600">
+                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                            {degree.institution}{degree.location ? ` • ${degree.location}` : ''}
+                          </span>
+                        </div>
                       </div>
+
+                      {/* Meta chips */}
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium dark:bg-white/[0.05] bg-gray-100 dark:text-[#94a3b8] text-gray-600">
+                          <Calendar className="w-3.5 h-3.5" />
+                          {degree.period}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
+                          <TrendingUp className="w-3.5 h-3.5" />
+                          GPA: {degree.gpa}
+                        </span>
+                      </div>
+
+                      {/* Description */}
+                      <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed">
+                        {degree.description}
+                      </p>
+
+                      {/* Achievements */}
+                      {achievementList.length > 0 && (
+                        <div>
+                          <h4 className="text-sm font-semibold dark:text-white text-gray-900 mb-2.5">Key Achievements</h4>
+                          <div className="grid sm:grid-cols-2 gap-2">
+                            {achievementList.map((achievement, i) => (
+                              <div key={i} className="flex items-start gap-2 text-sm dark:text-[#94a3b8] text-gray-600">
+                                <Award className="w-4 h-4 text-[#fbbf24] shrink-0 mt-0.5" />
+                                <span>{achievement.trim()}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4 ml-0 sm:ml-16">{degree.description}</p>
-                  {achievementList.length > 0 && (
-                    <div className="ml-0 sm:ml-16">
-                      <h4 className="text-sm font-semibold dark:text-white text-gray-900 mb-2">Key Achievements</h4>
-                      <ul className="space-y-1.5">
-                        {achievementList.map((achievement, i) => (
-                          <li key={i} className="text-sm dark:text-[#94a3b8] text-gray-600 flex items-start gap-2">
-                            <Award className="w-4 h-4 text-[#fbbf24] shrink-0 mt-0.5" />
-                            {achievement.trim()}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                  </CardSpotlight>
                 </div>
-              </CardSpotlight>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Certifications */}
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold"><span className="gradient-text-purple-blue">Certifications</span></h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-20">
           {certifications.map((cert) => {
             const Icon = getIcon(cert.icon);
             return (
               <CardSpotlight key={cert.id} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 group">
                 <div className="p-5 flex items-start gap-4">
-                  <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10 shrink-0" duration={5}>
+                  <MovingBorderIcon borderRadius="0.5rem" className="w-12 h-12 shrink-0" duration={5}>
                     <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${cert.color}18` }} />
                     <Icon className="w-5 h-5 relative" style={{ color: cert.color }} />
                   </MovingBorderIcon>
