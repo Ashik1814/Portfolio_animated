@@ -7,9 +7,9 @@ import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
 const positionClasses: Record<string, string> = {
-  "left-top": "absolute -left-4 top-1/4",
-  "right-middle": "absolute -right-4 top-1/2",
-  "left-bottom": "absolute -left-2 bottom-1/4",
+  "left-top": "absolute -left-6 sm:-left-10 top-4 sm:top-8 z-20",
+  "right-middle": "absolute -right-6 sm:-right-10 top-1/2 -translate-y-1/2 z-20",
+  "left-bottom": "absolute -left-4 sm:-left-8 bottom-4 sm:bottom-8 z-20",
 };
 
 export function Hero() {
@@ -22,7 +22,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center pt-16 overflow-hidden"
+      className="relative min-h-screen flex items-center pt-16"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -100,7 +100,7 @@ export function Hero() {
 
           {/* Right Content - Profile Image + Stats */}
           <div className="flex justify-center lg:justify-end">
-            <div className="relative">
+            <div className="relative p-8 sm:p-10">
               {/* Outer glow ring */}
               <div className="absolute -inset-8 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
 
@@ -139,7 +139,7 @@ export function Hero() {
               {heroStats.map((stat) => (
                 <div
                   key={stat.id}
-                  className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4"} dark:bg-[#0d0a18]/90 bg-white/90 backdrop-blur-md border dark:border-white/10 border-gray-200/60 rounded-xl px-4 py-3 shadow-lg animate-bounce`}
+                  className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20 animate-bounce`}
                   style={{ animationDuration: `${3 + stat.order * 0.5}s`, animationDelay: `${stat.order * 0.5}s` }}
                 >
                   <div className="flex items-center gap-2.5">
