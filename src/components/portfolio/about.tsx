@@ -30,22 +30,20 @@ export function About() {
           <div className="relative w-28 h-28 sm:w-32 sm:h-32 mx-auto mb-6">
             {/* Glow ring */}
             <div className="absolute -inset-3 bg-gradient-to-r from-[#00e5ff]/20 via-[#64b5f6]/20 to-[#a78bfa]/20 rounded-full blur-xl" />
-            {/* Gradient border */}
-            <div className="relative w-full h-full rounded-full p-[3px] bg-gradient-to-br from-[#00e5ff] via-[#64b5f6] to-[#a78bfa]">
-              <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white overflow-hidden">
-                {siteConfig.heroProfileImage ? (
-                  <img
-                    src={siteConfig.heroProfileImage}
-                    alt={siteConfig.heroName}
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                    <User className="w-10 h-10 dark:text-[#64748b]/60 text-gray-400" />
-                  </div>
-                )}
-              </div>
-            </div>
+            {/* Moving border profile ring */}
+            <MovingBorderIcon borderRadius="9999px" className="w-full h-full" duration={6}>
+              {siteConfig.heroProfileImage ? (
+                <img
+                  src={siteConfig.heroProfileImage}
+                  alt={siteConfig.heroName}
+                  className="w-full h-full rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                  <User className="w-10 h-10 dark:text-[#64748b]/60 text-gray-400" />
+                </div>
+              )}
+            </MovingBorderIcon>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">About Me</span>

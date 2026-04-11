@@ -104,8 +104,8 @@ export function Hero() {
               {/* Outer glow ring */}
               <div className="absolute -inset-8 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
 
-              {/* Rotating gradient border ring */}
-              <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full p-1 bg-gradient-to-br from-[#00e5ff] via-[#64b5f6] to-[#a78bfa]">
+              {/* Moving border profile ring */}
+              <MovingBorderIcon borderRadius="9999px" className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96" duration={6}>
                 {/* Inner circle */}
                 <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white flex items-center justify-center overflow-hidden p-1">
                   <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
@@ -133,7 +133,7 @@ export function Hero() {
                     )}
                   </div>
                 </div>
-              </div>
+              </MovingBorderIcon>
 
               {/* Floating stat badges */}
               {heroStats.map((stat) => (
