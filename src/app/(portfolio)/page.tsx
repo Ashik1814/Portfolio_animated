@@ -23,9 +23,9 @@ export default function Home() {
     return <Hero />;
   }
 
-  // Preview data: take first 3 projects, first 2 degrees
+  // Preview data: take first 3 projects, all degrees
   const previewProjects = projects.slice(0, 3);
-  const previewDegrees = degrees.slice(0, 2);
+  const previewDegrees = degrees;
 
   return (
     <>
