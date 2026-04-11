@@ -23,7 +23,7 @@ export function ContactSection() {
     setFormData({ name: "", email: "", message: "" });
   };
 
-  if (!siteConfig) return <section className="py-20" />;
+  if (!siteConfig) return null;
 
   return (
     <section id="contact" className="pt-20 pb-0">

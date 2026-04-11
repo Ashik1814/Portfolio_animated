@@ -17,7 +17,7 @@ export function Skills() {
   const additionalTech = useContent((s) => s.additionalTech);
   const currentlyLearning = useContent((s) => s.currentlyLearning);
 
-  if (!siteConfig) return <section className="py-20" />;
+  if (!siteConfig) return null;
 
   return (
     <section id="skills" className="py-20 section-padding">

@@ -2,6 +2,7 @@
 
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
+import Link from "next/link";
 
 export function Footer() {
   const socialLinks = useContent((s) => s.socialLinks);
@@ -17,7 +18,7 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-8 items-start">
           {/* Left - Logo & Copyright */}
           <div className="space-y-3">
-            <a href="/" className="flex items-center gap-2 group inline-flex hover:scale-105 transition-transform duration-200">
+            <Link href="/" className="flex items-center gap-2 group inline-flex hover:scale-105 transition-transform duration-200">
               <div className="w-7 h-7 rounded-md dark:bg-gradient-to-br dark:from-[#00e5ff]/20 dark:to-[#a78bfa]/20 bg-gradient-to-br from-[#00a8cc]/15 to-[#a78bfa]/15 flex items-center justify-center transition-all duration-300">
                 <svg
                   className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]"
@@ -37,7 +38,7 @@ export function Footer() {
                 <span className="dark:text-[#00e5ff] text-[#00a8cc]">{logoAccent}</span>
                 <span className="dark:text-white text-gray-900">{logoSuffix}</span>
               </span>
-            </a>
+            </Link>
             <p className="text-sm dark:text-[#475569] text-gray-500 leading-relaxed max-w-xs">
               {siteConfig?.footerCopyright || `© ${new Date().getFullYear()} Alchemist. All rights reserved.`}
             </p>
@@ -48,7 +49,7 @@ export function Footer() {
             <h4 className="text-sm font-semibold dark:text-white text-gray-900">Quick Links</h4>
             <nav className="grid grid-cols-2 gap-x-6 gap-y-2">
               {navItems.map((link) => (
-                <a key={link.id} href={link.href} className="text-sm dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] transition-colors duration-200">{link.label}</a>
+                <Link key={link.id} href={link.href} className="text-sm dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] transition-colors duration-200">{link.label}</Link>
               ))}
             </nav>
           </div>

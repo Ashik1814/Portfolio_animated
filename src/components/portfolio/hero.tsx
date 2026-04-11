@@ -17,7 +17,7 @@ export function Hero() {
   const socialLinks = useContent((s) => s.socialLinks);
   const heroStats = useContent((s) => s.heroStats);
 
-  if (!siteConfig) return <section className="min-h-screen" />;
+  if (!siteConfig) return null;
 
   return (
     <section

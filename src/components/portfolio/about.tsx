@@ -20,7 +20,7 @@ export function About() {
   const journeyItems = useContent((s) => s.journeyItems);
   const aboutTechTags = useContent((s) => s.aboutTechTags);
 
-  if (!siteConfig) return <section className="py-20" />;
+  if (!siteConfig) return null;
 
   return (
     <section id="about" className="py-20 section-padding">

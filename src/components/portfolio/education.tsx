@@ -15,7 +15,7 @@ export function Education() {
   const certifications = useContent((s) => s.certifications);
   const coursework = useContent((s) => s.coursework);
 
-  if (!siteConfig) return <section className="py-20" />;
+  if (!siteConfig) return null;
 
   return (
     <section id="education" className="py-20 section-padding">

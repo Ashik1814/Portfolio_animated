@@ -5,6 +5,7 @@ import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { useContent } from "@/stores/content-store";
 
 export function Header() {
@@ -31,7 +32,10 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Mobile menu closes via onClick handlers on nav links
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false); // eslint-disable-line react-hooks/set-state-in-effect
+  }, [pathname]);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -53,7 +57,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a
+          <Link
             href="/"
             className="flex items-center gap-2 group"
           >
@@ -77,14 +81,14 @@ export function Header() {
               <span className="dark:text-[#00e5ff] text-[#00a8cc]">{logoAccent}</span>
               <span className="dark:text-white text-gray-900">{logoSuffix}</span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1.5">
             {navItems.map((link) => {
               const active = isActive(link.href);
               return (
-                <a
+                <Link
                   key={link.id}
                   href={link.href}
                   className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 border ${
@@ -94,7 +98,7 @@ export function Header() {
                   }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
@@ -149,7 +153,7 @@ export function Header() {
             {navItems.map((link) => {
               const active = isActive(link.href);
               return (
-                <a
+                <Link
                   key={link.id}
                   href={link.href}
                   className={`py-2.5 px-4 text-sm font-medium rounded-full transition-all duration-200 flex items-center border ${
@@ -160,7 +164,7 @@ export function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               );
             })}
             <div className="flex items-center gap-3 pt-4 mt-2 dark:border-t-[#00e5ff]/8 border-t-gray-200/60 border-t">

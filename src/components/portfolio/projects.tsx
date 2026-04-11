@@ -63,7 +63,7 @@ export function Projects() {
   const siteConfig = useContent((s) => s.siteConfig);
   const projects = useContent((s) => s.projects);
 
-  if (!siteConfig) return <section className="py-20" />;
+  if (!siteConfig) return null;
 
   const filteredProjects = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
 

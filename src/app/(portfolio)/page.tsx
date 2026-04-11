@@ -7,6 +7,7 @@ import { TechIcon } from "@/components/ui/tech-icon";
 import {
   ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
@@ -80,10 +81,10 @@ export default function Home() {
               gradientTo="#00e5ff"
               className="bg-gradient-to-r from-[#a78bfa]/15 to-[#00e5ff]/15 dark:from-[#a78bfa]/15 dark:to-[#00e5ff]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/40 dark:hover:to-[#00e5ff]/40 hover:from-[#a78bfa]/35 hover:to-[#00e5ff]/35 dark:hover:border-[#a78bfa]/70 hover:border-[#a78bfa]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
-              <a href="/about">
+              <Link href="/about">
                 Learn More
                 <ArrowRight className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </AnimatedBorderButton>
           </div>
         </div>
@@ -142,10 +143,10 @@ export default function Home() {
               gradientTo="#64b5f6"
               className="bg-gradient-to-r from-[#a78bfa]/15 to-[#64b5f6]/15 dark:from-[#a78bfa]/15 dark:to-[#64b5f6]/15 border dark:border-[#a78bfa]/35 border-[#a78bfa]/35 dark:text-[#a78bfa] text-[#7c3aed] dark:hover:from-[#a78bfa]/40 dark:hover:to-[#64b5f6]/40 hover:from-[#a78bfa]/35 hover:to-[#64b5f6]/35 dark:hover:border-[#a78bfa]/70 hover:border-[#a78bfa]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#a78bfa]/10 shadow-[#a78bfa]/5"
             >
-              <a href="/skills">
+              <Link href="/skills">
                 View All Skills
                 <ArrowRight className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </AnimatedBorderButton>
           </div>
         </div>
@@ -204,10 +205,10 @@ export default function Home() {
               gradientTo="#64b5f6"
               className="bg-gradient-to-r from-[#00e5ff]/15 to-[#64b5f6]/15 dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/40 dark:hover:to-[#64b5f6]/40 hover:from-[#00a8cc]/35 hover:to-[#64b5f6]/35 dark:hover:border-[#00e5ff]/70 hover:border-[#00a8cc]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
-              <a href="/projects">
+              <Link href="/projects">
                 View All Projects
                 <ArrowRight className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </AnimatedBorderButton>
           </div>
         </div>
@@ -266,10 +267,10 @@ export default function Home() {
               gradientTo="#2dd4bf"
               className="bg-gradient-to-r from-[#00e5ff]/15 to-[#2dd4bf]/15 dark:from-[#00e5ff]/15 dark:to-[#2dd4bf]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/40 dark:hover:to-[#2dd4bf]/40 hover:from-[#00a8cc]/35 hover:to-[#2dd4bf]/35 dark:hover:border-[#00e5ff]/70 hover:border-[#00a8cc]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             >
-              <a href="/education">
+              <Link href="/education">
                 View All
                 <ArrowRight className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </AnimatedBorderButton>
           </div>
         </div>
@@ -317,10 +318,10 @@ export default function Home() {
                 gradientTo="#64b5f6"
                 className="bg-[#00e5ff] dark:bg-[#00e5ff] hover:bg-[#00c2e5] dark:hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-full px-8 shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20"
               >
-                <a href="/contact">
+                <Link href="/contact">
                   Get In Touch
                   <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
+                </Link>
               </AnimatedBorderButton>
             </CardSpotlight>
           </div>
