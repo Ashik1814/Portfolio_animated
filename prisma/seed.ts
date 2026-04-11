@@ -78,9 +78,9 @@ async function main() {
 
   // ─── Hero Stats ───
   await seedIfEmpty('heroStat', [
-    { value: '50+', label: 'Projects', color: '#00e5ff', position: 'left-top', order: 0 },
-    { value: '30+', label: 'Clients', color: '#64b5f6', position: 'right-middle', order: 1 },
-    { value: '4+', label: 'Years', color: '#2dd4bf', position: 'left-bottom', order: 2 },
+    { value: '30+', label: 'UI/UX', color: '#a78bfa', position: 'left-top', order: 0 },
+    { value: '15+', label: 'Front End', color: '#00e5ff', position: 'right-middle', order: 1 },
+    { value: '20+', label: 'Automation', color: '#2dd4bf', position: 'left-bottom', order: 2 },
   ])
 
   // ─── About Skills ───

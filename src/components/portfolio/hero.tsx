@@ -139,15 +139,17 @@ export function Hero() {
               {heroStats.map((stat) => (
                 <div
                   key={stat.id}
-                  className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4"} glass-card px-4 py-3 animate-bounce`}
+                  className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4"} dark:bg-[#0d0a18]/90 bg-white/90 backdrop-blur-md border dark:border-white/10 border-gray-200/60 rounded-xl px-4 py-3 shadow-lg animate-bounce`}
                   style={{ animationDuration: `${3 + stat.order * 0.5}s`, animationDelay: `${stat.order * 0.5}s` }}
                 >
-                  <div className="flex items-center gap-2">
-                    <MovingBorderIcon borderRadius="0.5rem" className="w-8 h-8" duration={5}>
-                      <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${stat.color}10` }} />
-                      <span className="text-sm font-bold relative" style={{ color: stat.color }}>{stat.value}</span>
-                    </MovingBorderIcon>
-                    <span className="text-xs dark:text-[#94a3b8] text-gray-600 whitespace-nowrap">{stat.label}</span>
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
+                      style={{ backgroundColor: `${stat.color}20`, color: stat.color }}
+                    >
+                      {stat.value}
+                    </span>
+                    <span className="text-xs font-semibold dark:text-white/80 text-gray-700 whitespace-nowrap">{stat.label}</span>
                   </div>
                 </div>
               ))}
