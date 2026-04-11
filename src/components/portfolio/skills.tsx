@@ -96,14 +96,14 @@ export function Skills() {
         <div className="text-center mb-8">
           <h3 className="text-2xl font-bold"><span className="gradient-text-cyan">Additional Technologies</span></h3>
         </div>
-        <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-16">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-16">
           {additionalTech.map((tech) => (
             <div
               key={tech.id}
-              className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl dark:bg-white/[0.04] bg-gray-50 dark:hover:bg-white/[0.08] hover:bg-gray-100 dark:border-white/[0.06] border-gray-200/60 border dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default group"
+              className="flex items-center gap-2.5 px-4 py-3 rounded-xl dark:bg-white/[0.04] bg-gray-50 dark:hover:bg-white/[0.08] hover:bg-gray-100 dark:border-white/[0.06] border-gray-200/60 border dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default group"
             >
               <TechIcon name={tech.name} size={20} className="shrink-0" />
-              <span className="text-sm font-medium dark:text-[#94a3b8] text-gray-600 group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200 truncate">
+              <span className="text-sm font-medium dark:text-[#94a3b8] text-gray-600 group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200 whitespace-nowrap">
                 {tech.name}
               </span>
             </div>
