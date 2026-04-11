@@ -21,32 +21,56 @@ export function About() {
   return (
     <section id="about" className="py-20 section-padding">
       <div className="max-w-7xl mx-auto">
-        {/* Profile Image + Section Header */}
-        <div className="text-center mb-16">
-          <div className="relative w-48 h-56 sm:w-56 sm:h-64 mx-auto mb-6">
-            {/* Glow */}
-            <div className="absolute -inset-3 bg-gradient-to-r from-[#00e5ff]/15 via-[#64b5f6]/15 to-[#a78bfa]/15 rounded-2xl blur-xl" />
-            {/* Rectangular card with moving border */}
-            <MovingBorderIcon borderRadius="1rem" className="w-full h-full" duration={6}>
+        {/* Hero: Profile Image + Section Header */}
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 mb-20">
+          {/* Profile Image */}
+          <div className="relative w-full max-w-md lg:max-w-lg shrink-0">
+            {/* Glow behind image */}
+            <div className="absolute -inset-4 bg-gradient-to-br from-[#00e5ff]/20 via-[#64b5f6]/10 to-[#a78bfa]/20 rounded-2xl blur-2xl" />
+            <MovingBorderIcon borderRadius="1.25rem" className="w-full aspect-[4/5]" duration={6}>
               {siteConfig.heroProfileImage ? (
-                <img
-                  src={siteConfig.heroProfileImage}
-                  alt={siteConfig.heroName}
-                  className="w-full h-full rounded-[calc(1rem-1px)] object-cover object-top"
-                />
+                <div className="w-full h-full rounded-[calc(1.25rem-1px)] overflow-hidden relative">
+                  <img
+                    src={siteConfig.heroProfileImage}
+                    alt={siteConfig.heroName}
+                    className="w-full h-full object-cover object-top"
+                  />
+                  {/* Bottom gradient fade to blend into dark background */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t dark:from-[#08050f] from-white to-transparent" />
+                </div>
               ) : (
-                <div className="w-full h-full rounded-[calc(1rem-1px)] dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-                  <User className="w-12 h-12 dark:text-[#64748b]/60 text-gray-400" />
+                <div className="w-full h-full rounded-[calc(1.25rem-1px)] dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                  <User className="w-16 h-16 dark:text-[#64748b]/60 text-gray-400" />
                 </div>
               )}
             </MovingBorderIcon>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            <span className="gradient-text-cyan">About Me</span>
-          </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
-            {siteConfig.aboutDescription}
-          </p>
+
+          {/* Text content */}
+          <div className="flex-1 text-center lg:text-left">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-5">
+              <span className="gradient-text-cyan">About Me</span>
+            </h2>
+            <p className="dark:text-[#94a3b8] text-gray-600 text-base sm:text-lg leading-relaxed mb-6">
+              {siteConfig.aboutDescription}
+            </p>
+            {/* Quick stats */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+              {aboutSkills.slice(0, 3).map((skill) => (
+                <div
+                  key={skill.id}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border dark:border-white/[0.06] border-gray-200/60 dark:bg-white/[0.02] bg-gray-50/50"
+                >
+                  <span className="text-lg font-bold" style={{ color: skill.color }}>
+                    {skill.metric}
+                  </span>
+                  <span className="text-xs dark:text-[#64748b] text-gray-500">
+                    {skill.metricLabel}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Skills Cards */}
