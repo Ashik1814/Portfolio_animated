@@ -7,11 +7,53 @@ import {
   Handshake,
   Sparkles,
   Award,
+  BookOpen,
+  Code2,
+  Database,
+  Globe,
+  Wrench,
+  Monitor,
+  Wifi,
+  Brain,
+  GitBranch,
+  Cpu,
+  Shield,
+  BarChart3,
+  FileCode,
+  Layers,
+  type LucideIcon,
 } from "lucide-react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
+
+/** Map coursework keywords to a matching icon + tint color */
+function getCourseworkIcon(name: string): { Icon: LucideIcon; color: string } {
+  const lower = name.toLowerCase();
+  const map: { keywords: string[]; Icon: LucideIcon; color: string }[] = [
+    { keywords: ["data structure", "algorithm", "dsa"], Icon: GitBranch, color: "#00e5ff" },
+    { keywords: ["object-oriented", "oop", "programming"], Icon: Code2, color: "#64b5f6" },
+    { keywords: ["database", "dbms", "sql"], Icon: Database, color: "#2dd4bf" },
+    { keywords: ["web", "frontend", "fullstack", "full-stack"], Icon: Globe, color: "#38bdf8" },
+    { keywords: ["software engineering", "software eng", "swe"], Icon: Wrench, color: "#a78bfa" },
+    { keywords: ["operating system", "os"], Icon: Monitor, color: "#f472b6" },
+    { keywords: ["network", "computer network"], Icon: Wifi, color: "#fb923c" },
+    { keywords: ["machine learning", "ml", "ai", "deep learning"], Icon: Brain, color: "#c084fc" },
+    { keywords: ["computer architecture", "architecture", "hardware"], Icon: Cpu, color: "#34d399" },
+    { keywords: ["security", "cyber", "crypto"], Icon: Shield, color: "#f87171" },
+    { keywords: ["statistics", "statistic", "probability", "data science"], Icon: BarChart3, color: "#fbbf24" },
+    { keywords: ["compiler", "automata", "theory"], Icon: FileCode, color: "#22d3ee" },
+    { keywords: ["design", "ui", "ux", "graphic"], Icon: Layers, color: "#e879f9" },
+  ];
+
+  for (const entry of map) {
+    if (entry.keywords.some((k) => lower.includes(k))) {
+      return { Icon: entry.Icon, color: entry.color };
+    }
+  }
+  return { Icon: BookOpen, color: "#94a3b8" };
+}
 
 export function About() {
   const siteConfig = useContent((s) => s.siteConfig);
@@ -19,6 +61,7 @@ export function About() {
   const coreValues = useContent((s) => s.coreValues);
   const journeyItems = useContent((s) => s.journeyItems);
   const aboutTechTags = useContent((s) => s.aboutTechTags);
+  const coursework = useContent((s) => s.coursework);
 
   if (!siteConfig) return null;
 
@@ -105,7 +148,40 @@ export function About() {
           </div>
         </CardSpotlight>
 
+        {/* Relevant Coursework */}
+        {coursework.length > 0 && (
+          <>
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold"><span className="gradient-text-pink-blue">Relevant Coursework</span></h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mb-16">
+              {coursework.map((course) => {
+                const { Icon, color } = getCourseworkIcon(course.name);
+                return (
+                  <div
+                    key={course.id}
+                    className="group flex items-center gap-3 px-4 py-3 rounded-lg border dark:border-white/[0.06] border-gray-200/60 dark:bg-white/[0.02] bg-gray-50/50 dark:hover:border-white/[0.12] hover:border-gray-300/60 dark:hover:bg-white/[0.04] hover:bg-gray-100/50 transition-all duration-200 cursor-default"
+                  >
+                    <div
+                      className="w-8 h-8 rounded-md flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: `${color}15` }}
+                    >
+                      <Icon className="w-4 h-4" style={{ color }} />
+                    </div>
+                    <span className="text-sm font-medium dark:text-[#94a3b8] text-gray-600 dark:group-hover:text-white group-hover:text-gray-900 transition-colors duration-200">
+                      {course.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+
         {/* Tech Tags */}
+        <div className="text-center mb-6">
+          <h3 className="text-lg font-semibold dark:text-white/60 text-gray-500">Technologies I Work With</h3>
+        </div>
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {aboutTechTags.map((tag) => (
             <span
