@@ -54,62 +54,7 @@ function getCourseworkIcon(name: string): { Icon: LucideIcon; color: string } {
   return { Icon: BookOpen, color: "#94a3b8" };
 }
 
-/** Leaf SVG + dripping drop at the top of the timeline */
-function LeafDrip() {
-  return (
-    <div className="relative flex flex-col items-center mb-2">
-      {/* Leaf */}
-      <div
-        style={{ animation: "leaf-sway 4s ease-in-out infinite" }}
-        className="origin-bottom"
-      >
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 64 64"
-          fill="none"
-          className="dark:drop-shadow-[0_0_6px_rgba(0,229,255,0.4)]"
-        >
-          <path
-            d="M32 4C32 4 12 18 12 36C12 50 22 58 32 58C42 58 52 50 52 36C52 18 32 4 32 4Z"
-            fill="url(#leafGrad)"
-            stroke="#2dd4bf"
-            strokeWidth="1.5"
-            strokeOpacity="0.5"
-          />
-          <path
-            d="M32 12V52"
-            stroke="#2dd4bf"
-            strokeWidth="1"
-            strokeOpacity="0.4"
-          />
-          <path
-            d="M32 24L22 20M32 32L20 30M32 40L22 40M32 24L42 20M32 32L44 30M32 40L42 40"
-            stroke="#2dd4bf"
-            strokeWidth="0.8"
-            strokeOpacity="0.3"
-          />
-          <defs>
-            <linearGradient id="leafGrad" x1="32" y1="4" x2="32" y2="58" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#00e5ff" stopOpacity="0.3" />
-              <stop offset="1" stopColor="#2dd4bf" stopOpacity="0.15" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
-      {/* Dripping drop from leaf tip */}
-      <div className="relative w-3 h-4 -mt-1">
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "radial-gradient(ellipse at 40% 30%, #00e5ff, #64b5f6 60%, transparent)",
-            animation: "drop-drip 3s ease-in infinite",
-          }}
-        />
-      </div>
-    </div>
-  );
-}
+
 
 export function Education() {
   const siteConfig = useContent((s) => s.siteConfig);
@@ -137,17 +82,12 @@ export function Education() {
 
         {/* Degree Cards — Timeline with water drop */}
         <div className="relative max-w-4xl mx-auto mb-20">
-          {/* Leaf at top */}
-          <div className="flex justify-center" style={{ paddingLeft: "calc(1.5rem + 0px)" }}>
-            <LeafDrip />
-          </div>
-
           {/* Vertical timeline line */}
-          <div className="absolute left-6 sm:left-8 top-20 bottom-0 w-px bg-gradient-to-b from-[#00e5ff]/60 via-[#64b5f6]/40 to-[#a78bfa]/30" />
+          <div className="absolute left-6 sm:left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#00e5ff]/60 via-[#64b5f6]/40 to-[#a78bfa]/30" />
 
           {/* Animated water drops flowing down the line */}
           <div
-            className="absolute left-6 sm:left-8 top-20 bottom-0 w-3 -translate-x-[5px]"
+            className="absolute left-6 sm:left-8 top-0 bottom-0 w-3 -translate-x-[5px]"
             style={{ overflow: "hidden" }}
           >
             {/* Drop 1 */}
@@ -206,10 +146,10 @@ export function Education() {
                     </div>
                   </div>
 
-                  {/* Compact Card */}
-                  <CardSpotlight className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 flex-1 ml-14 sm:ml-18">
+                  {/* Compact Card — border animation only, no spotlight glow */}
+                  <MovingBorderIcon borderRadius="0.75rem" className="flex-1 ml-14 sm:ml-18" duration={4}>
                     <div className="p-4 sm:p-5">
-                      {/* Top row: icon + title + meta */}
+                      {/* Top row: title + meta */}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
                         <h3 className="text-sm sm:text-base font-bold dark:text-white text-gray-900 flex-1">
                           {degree.title}
@@ -232,7 +172,7 @@ export function Education() {
                         <span>{degree.institution}{degree.location ? ` • ${degree.location}` : ''}</span>
                       </div>
 
-                      {/* Description — single line truncated on compact */}
+                      {/* Description */}
                       <p className="dark:text-[#94a3b8] text-gray-600 text-xs leading-relaxed mb-2 line-clamp-2">
                         {degree.description}
                       </p>
@@ -252,7 +192,7 @@ export function Education() {
                         </div>
                       )}
                     </div>
-                  </CardSpotlight>
+                  </MovingBorderIcon>
                 </div>
               );
             })}
