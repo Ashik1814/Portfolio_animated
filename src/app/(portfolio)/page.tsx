@@ -16,16 +16,14 @@ export default function Home() {
   const aboutSkills = useContent((s) => s.aboutSkills);
   const skillCategories = useContent((s) => s.skillCategories);
   const projects = useContent((s) => s.projects);
-  const degrees = useContent((s) => s.degrees);
   const socialLinks = useContent((s) => s.socialLinks);
 
   if (!siteConfig) {
     return <Hero />;
   }
 
-  // Preview data: take first 3 projects, all degrees
+  // Preview data: take first 3 projects
   const previewProjects = projects.slice(0, 3);
-  const previewDegrees = degrees;
 
   return (
     <>
@@ -207,68 +205,6 @@ export default function Home() {
             >
               <Link href="/projects">
                 View All Projects
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Link>
-            </AnimatedBorderButton>
-          </div>
-        </div>
-      </section>
-
-      {/* ──────────────── Education Preview ──────────────── */}
-      <section className="py-20 section-padding">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
-              My <span className="gradient-text-cyan">Education</span>
-            </h2>
-            <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              {siteConfig.educationDescription}
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 gap-6 mb-10 max-w-4xl mx-auto">
-            {previewDegrees.map((degree) => {
-              const Icon = getIcon(degree.icon);
-              return (
-                <CardSpotlight key={degree.id} className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ backgroundColor: `${degree.gpaColor}15` }}
-                    >
-                      <Icon className="w-6 h-6" style={{ color: degree.gpaColor }} />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="font-semibold dark:text-white text-gray-900 text-base mb-1 leading-snug">
-                        {degree.title}
-                      </h3>
-                      <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-2">
-                        {degree.institution}
-                      </p>
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-xs dark:text-[#64748b] text-gray-500">
-                          {degree.period}
-                        </span>
-                        <span className="text-sm font-bold" style={{ color: degree.gpaColor }}>
-                          GPA: {degree.gpa}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </CardSpotlight>
-              );
-            })}
-          </div>
-
-          <div className="text-center">
-            <AnimatedBorderButton
-              asChild
-              gradientVia="#00e5ff"
-              gradientTo="#2dd4bf"
-              className="bg-gradient-to-r from-[#00e5ff]/15 to-[#2dd4bf]/15 dark:from-[#00e5ff]/15 dark:to-[#2dd4bf]/15 border dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:from-[#00e5ff]/40 dark:hover:to-[#2dd4bf]/40 hover:from-[#00a8cc]/35 hover:to-[#2dd4bf]/35 dark:hover:border-[#00e5ff]/70 hover:border-[#00a8cc]/70 font-medium rounded-full px-6 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
-            >
-              <Link href="/education">
-                View All
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </AnimatedBorderButton>
