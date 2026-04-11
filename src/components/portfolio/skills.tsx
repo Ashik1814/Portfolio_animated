@@ -43,9 +43,9 @@ export function Skills() {
               <CardSpotlight key={category.id} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300">
                 <div className="p-6 space-y-5">
                   <div className="flex items-center gap-3">
-                    <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10" duration={5}>
+                    <MovingBorderIcon borderRadius="0.5rem" className="w-12 h-12" duration={5}>
                       <div className="absolute inset-0 rounded-[inherit]" style={{ backgroundColor: `${category.color}18` }} />
-                      <Icon className="w-5 h-5 relative" style={{ color: category.color }} />
+                      <Icon className="w-6 h-6 relative" style={{ color: category.color }} />
                     </MovingBorderIcon>
                     <h3 className="text-lg font-bold dark:text-white text-gray-900">{category.title}</h3>
                   </div>
@@ -57,9 +57,8 @@ export function Skills() {
                       >
                         <TechIcon
                           name={skill.name}
-                          size={20}
+                          size={28}
                           className="shrink-0 transition-colors duration-200"
-                          // We pass style via a wrapper approach below
                         />
                         <span className="text-sm font-medium dark:text-white text-gray-900 truncate group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200">
                           {skill.name}
@@ -83,8 +82,8 @@ export function Skills() {
             return (
               <CardSpotlight key={skill.id} className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 transition-all duration-300 text-center">
                 <div className="p-4 flex flex-col items-center gap-2">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${skill.color}18` }}>
-                    <Icon className="w-5 h-5" style={{ color: skill.color }} />
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: `${skill.color}18` }}>
+                    <Icon className="w-6 h-6" style={{ color: skill.color }} />
                   </div>
                   <h4 className="text-sm font-bold dark:text-white text-gray-900">{skill.name}</h4>
                 </div>
@@ -100,7 +99,7 @@ export function Skills() {
         <div className="flex flex-wrap justify-center gap-3 mb-16">
           {additionalTech.map((tech) => (
             <span key={tech.id} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default">
-              <TechIcon name={tech.name} size={16} />
+              <TechIcon name={tech.name} size={20} />
               {tech.name}
             </span>
           ))}
@@ -125,7 +124,7 @@ export function Skills() {
                     key={item.id}
                     className="flex items-center gap-2.5 px-4 py-3 rounded-xl dark:bg-white/[0.04] bg-gray-50 transition-colors duration-200"
                   >
-                    <TechIcon name={item.name} size={22} />
+                    <TechIcon name={item.name} size={28} />
                     <span className="text-sm font-medium dark:text-white text-gray-900">{item.name}</span>
                   </div>
                 ))}
