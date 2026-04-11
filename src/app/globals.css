@@ -265,6 +265,71 @@
   }
 }
 
+/* Water drop flowing animation */
+@keyframes water-drop-fall {
+  0% {
+    top: -2%;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  5% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  85% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes water-drop-stretch {
+  0%, 100% {
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  25% {
+    border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  }
+  50% {
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  75% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  }
+}
+
+@keyframes leaf-sway {
+  0%, 100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes drop-drip {
+  0% {
+    transform: scaleY(1) translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1.4) translateY(2px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: scaleY(0.6) translateY(6px);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scaleY(0.3) translateY(10px);
+    opacity: 0;
+  }
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
