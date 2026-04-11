@@ -146,8 +146,8 @@ export function Education() {
                     </div>
                   </div>
 
-                  {/* Compact Card — border animation only, no spotlight glow */}
-                  <MovingBorderIcon borderRadius="0.75rem" className="flex-1 ml-14 sm:ml-18" duration={4}>
+                  {/* Compact Card — subtle border animation, no background glow */}
+                  <MovingBorderIcon borderRadius="0.75rem" className="flex-1 ml-14 sm:ml-18" duration={4} subtle>
                     <div className="p-4 sm:p-5">
                       {/* Top row: title + meta */}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">

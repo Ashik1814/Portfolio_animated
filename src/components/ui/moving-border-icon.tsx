@@ -8,8 +8,10 @@ interface MovingBorderIconProps extends React.ComponentProps<"div"> {
   borderRadius?: string;
   /** Duration of the main rotation in seconds. Defaults to 4. */
   duration?: number;
-  /** Custom background for the inner content area. Defaults to near-opaque theme background. */
+  /** Custom background for the inner content area. Defaults to opaque theme background. */
   innerBackground?: string;
+  /** Use very muted gradient colors so the border animation is barely visible. Defaults to false. */
+  subtle?: boolean;
 }
 
 export function MovingBorderIcon({
@@ -18,20 +20,33 @@ export function MovingBorderIcon({
   borderRadius = "9999px",
   duration = 4,
   innerBackground,
+  subtle = false,
   ...props
 }: MovingBorderIconProps) {
   const isDark = useIsDark();
 
-  const bg = innerBackground ?? (isDark ? "rgba(8, 5, 15, 0.92)" : "rgba(248, 249, 252, 0.94)");
+  const bg = innerBackground ?? (isDark ? "rgba(8, 5, 15, 1)" : "rgba(248, 249, 252, 1)");
 
-  // Smaller arcs than CardSpotlight for subtle icon borders
-  const borderGradient = isDark
+  // Default: vivid neon arcs
+  const defaultGradient1 = isDark
     ? "conic-gradient(from 0deg, transparent 0%, #00e5ff 5%, #a78bfa 10%, #2dd4bf 14%, transparent 18%)"
     : "conic-gradient(from 0deg, transparent 0%, #00a8cc 5%, #7c3aed 10%, #14b8a6 14%, transparent 18%)";
 
-  const borderGradient2 = isDark
+  const defaultGradient2 = isDark
     ? "conic-gradient(from 180deg, transparent 0%, #d946ef 3%, #f472b6 6%, transparent 9%)"
     : "conic-gradient(from 180deg, transparent 0%, #c026d3 3%, #e879a8 6%, transparent 9%)";
+
+  // Subtle: very muted arcs — just a faint shimmer
+  const subtleGradient1 = isDark
+    ? "conic-gradient(from 0deg, transparent 0%, rgba(0,229,255,0.12) 5%, rgba(167,139,250,0.08) 10%, rgba(45,212,191,0.10) 14%, transparent 18%)"
+    : "conic-gradient(from 0deg, transparent 0%, rgba(0,168,204,0.10) 5%, rgba(124,58,237,0.07) 10%, rgba(20,184,166,0.08) 14%, transparent 18%)";
+
+  const subtleGradient2 = isDark
+    ? "conic-gradient(from 180deg, transparent 0%, rgba(217,70,239,0.06) 3%, rgba(244,114,182,0.05) 6%, transparent 9%)"
+    : "conic-gradient(from 180deg, transparent 0%, rgba(192,38,211,0.05) 3%, rgba(232,121,168,0.04) 6%, transparent 9%)";
+
+  const borderGradient = subtle ? subtleGradient1 : defaultGradient1;
+  const borderGradient2 = subtle ? subtleGradient2 : defaultGradient2;
 
   return (
     <div
