@@ -88,8 +88,8 @@ export function About() {
           })}
         </div>
 
-        {/* My Approach */}
-        <CardSpotlight className="glass-card-solid mb-12">
+        {/* My Approach — button-style spinning border animation */}
+        <MovingBorderIcon borderRadius="1rem" className="mb-12" duration={4}>
           <div className="p-8 text-center max-w-3xl mx-auto">
             <div className="w-12 h-12 rounded-full dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
@@ -102,7 +102,7 @@ export function About() {
               {siteConfig.approachText2}
             </p>
           </div>
-        </CardSpotlight>
+        </MovingBorderIcon>
 
         {/* Tech Tags */}
         <div className="text-center mb-6">
