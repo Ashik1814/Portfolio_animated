@@ -56,7 +56,7 @@ export function Hero() {
                 gradientVia="#00e5ff"
                 gradientTo="#64b5f6"
               >
-                <a href={siteConfig.heroCtaLink || "#contact"}>
+                <a href={siteConfig.heroCtaLink || "/contact"}>
                   {siteConfig.heroCtaText || "Get In Touch"}
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
@@ -67,7 +67,7 @@ export function Hero() {
                 gradientVia="#00e5ff"
                 gradientTo="#64b5f6"
               >
-                <a href={siteConfig.heroSecondaryCtaLink || "#projects"}>
+                <a href={siteConfig.heroSecondaryCtaLink || "/projects"}>
                   {siteConfig.heroSecondaryCtaText || "View Projects"}
                 </a>
               </AnimatedBorderButton>
