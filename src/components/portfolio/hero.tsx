@@ -7,9 +7,9 @@ import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
 const positionClasses: Record<string, string> = {
-  "left-top": "absolute left-0 top-0 sm:top-2 z-20",
-  "right-middle": "absolute right-0 top-1/2 -translate-y-1/2 z-20",
-  "left-bottom": "absolute left-0 bottom-0 sm:bottom-2 z-20",
+  "left-top": "absolute left-8 sm:left-10 -translate-x-1/2 top-8 sm:top-10 -translate-y-1/2 z-20",
+  "right-middle": "absolute right-8 sm:right-10 translate-x-1/2 top-1/2 -translate-y-1/2 z-20",
+  "left-bottom": "absolute left-8 sm:left-10 -translate-x-1/2 bottom-8 sm:bottom-10 translate-y-1/2 z-20",
 };
 
 export function Hero() {
