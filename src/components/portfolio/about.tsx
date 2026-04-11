@@ -21,13 +21,13 @@ export function About() {
   return (
     <section id="about" className="py-20 section-padding">
       <div className="max-w-7xl mx-auto">
-        {/* Profile Image + Section Header — same circular style as homepage */}
+        {/* Profile Image + Section Header — exact same circular style as homepage */}
         <div className="text-center mb-16">
-          <div className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 mx-auto mb-6">
+          <div className="relative inline-block mx-auto mb-10">
             {/* Outer glow ring */}
             <div className="absolute -inset-8 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
-            {/* Moving border profile ring */}
-            <MovingBorderIcon borderRadius="9999px" className="w-full h-full" duration={6}>
+            {/* Moving border profile ring — sizes on className, same as homepage */}
+            <MovingBorderIcon borderRadius="9999px" className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96" duration={6}>
               {/* Inner circle */}
               <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white flex items-center justify-center overflow-hidden p-1">
                 <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
