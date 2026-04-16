@@ -164,7 +164,7 @@ export function ContactSection() {
             </div>
 
             {/* Contact Form */}
-            <CardSpotlight className="p-6 glass-card-solid">
+            <CardSpotlight className="p-6 glass-card-solid mt-4">
               <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-4">
                 Send me a <span className="gradient-text-cyan">Message</span>
               </h3>
