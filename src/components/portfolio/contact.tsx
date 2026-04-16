@@ -27,9 +27,9 @@ export function ContactSection() {
   if (!siteConfig) return null;
 
   return (
-    <section id="contact" className="pt-20 pb-0">
+    <section id="contact" className="pt-28 pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold dark:text-white text-gray-900 mb-4">
             Let&apos;s work together
           </h2>
@@ -39,7 +39,7 @@ export function ContactSection() {
         </div>
 
         {/* Profile Image + Map + Contact Cards Row */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-12">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 mb-12">
           {/* Left — Profile Image (top) + Map (bottom, aligned with Send Message) */}
           <div className="flex flex-col items-center justify-between">
             {/* Profile image — same style as homepage, smaller size */}
@@ -81,11 +81,11 @@ export function ContactSection() {
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-1">
               <span className="gradient-text-cyan">{siteConfig.heroName}</span>
             </h3>
-            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-2">{siteConfig.heroTitle}</p>
+            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-4">{siteConfig.heroTitle}</p>
 
             {/* Google Map — pushed down to align with Send Message card */}
             <div className="w-full max-w-sm mt-auto">
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-4">
                 <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
                 <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
               </div>
@@ -104,7 +104,7 @@ export function ContactSection() {
             </div>
 
             {/* Location */}
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2 mt-6">
               <MapPin className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]" />
               <span className="text-xs dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
             </div>
@@ -113,7 +113,7 @@ export function ContactSection() {
           {/* Right — Contact Cards + Social Links + Message Form */}
           <div className="flex flex-col">
             {/* Contact Cards */}
-            <div className="grid grid-cols-2 gap-5 mb-6">
+            <div className="grid grid-cols-2 gap-6 mb-10">
               {contactCards.map((card) => {
                 const Icon = getIcon(card.icon);
                 return (
@@ -142,7 +142,7 @@ export function ContactSection() {
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-4 mb-8">
+            <div className="flex items-center gap-5 mb-12">
               {socialLinks.map((social) => {
                 const Icon = getIcon(social.icon);
                 return (
@@ -164,11 +164,11 @@ export function ContactSection() {
             </div>
 
             {/* Contact Form */}
-            <CardSpotlight className="p-6 glass-card-solid mt-4">
+            <CardSpotlight className="p-6 glass-card-solid mt-8">
               <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-4">
                 Send me a <span className="gradient-text-cyan">Message</span>
               </h3>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Name</label>
