@@ -43,9 +43,9 @@ export function ContactSection() {
           {/* Left — Profile Image + Map */}
           <div className="flex flex-col items-center">
             {/* Profile image — same style as homepage, smaller size */}
-            <div className="relative p-6 sm:p-8">
+            <div className="relative p-2 sm:p-3">
               {/* Outer glow ring */}
-              <div className="absolute -inset-6 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
+              <div className="absolute -inset-3 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
 
               <MovingBorderIcon borderRadius="9999px" className="w-52 h-52 sm:w-64 sm:h-64" duration={6}>
                 <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white flex items-center justify-center overflow-hidden p-1">
@@ -111,7 +111,7 @@ export function ContactSection() {
           </div>
 
           {/* Right — Contact Cards + Social Links + Message Form */}
-          <div className="flex flex-col">
+          <div className="flex flex-col lg:pt-28">
             {/* Contact Cards */}
             <div className="grid grid-cols-2 gap-5 mb-6">
               {contactCards.map((card) => {
