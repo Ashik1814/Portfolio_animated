@@ -46,7 +46,7 @@ const FIELD_GROUPS: FieldGroup[] = [
       { key: "heroSecondaryCtaLink", label: "Secondary Button Link", type: "input" },
       { key: "heroFollowText", label: '"Follow me" Label', type: "input" },
       { key: "heroAvailableText", label: "Availability Badge Text", type: "input" },
-      { key: "heroProfileImage", label: "Profile Image URL", type: "input" },
+      { key: "heroProfileImage", label: "Profile Image", type: "file", accept: "image/*" },
     ],
   },
   {
@@ -99,6 +99,9 @@ function FileField({
   const [uploading, setUploading] = useState(false);
   const [showManualUrl, setShowManualUrl] = useState(false);
 
+  const isImageAccept = accept?.includes("image");
+  const isImageValue = isImageAccept || /\.(jpg|jpeg|png|gif|webp|svg|ico|bmp)$/i.test(value);
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -143,7 +146,13 @@ function FileField({
       {value ? (
         /* Currently has a file */
         <div className="flex items-center gap-3 p-3 rounded-lg bg-[#06080f] border border-white/10">
-          <FileText className="w-8 h-8 text-cyan-400 shrink-0" />
+          {isImageValue ? (
+            <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-white/10">
+              <img src={value} alt="Preview" className="w-full h-full object-cover" />
+            </div>
+          ) : (
+            <FileText className="w-8 h-8 text-cyan-400 shrink-0" />
+          )}
           <div className="flex-1 min-w-0">
             <p className="text-sm text-gray-200 truncate">{fileName}</p>
             <p className="text-xs text-gray-500">Uploaded file</p>
@@ -186,7 +195,7 @@ function FileField({
           </button>
           {showManualUrl && (
             <Input
-              placeholder="https://example.com/resume.pdf"
+              placeholder="https://example.com/file"
               value={value}
               onChange={(e) => onChange(e.target.value)}
               className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20"
