@@ -12,7 +12,6 @@ import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
-import Image from "next/image";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -40,27 +39,41 @@ export function ContactSection() {
         </div>
 
         {/* Profile Image + Map Row */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-8">
-          {/* Left — Profile Image + Contact Info */}
-          <CardSpotlight className="glass-card-solid p-6 flex flex-col items-center">
-            {/* Profile Image */}
-            <div className="relative mb-5">
-              <MovingBorderIcon borderRadius="50%" className="w-32 h-32 sm:w-40 sm:h-40" duration={6}>
-                <div className="absolute inset-0 rounded-[inherit] dark:bg-[#0a0512] bg-white" />
-                {siteConfig.heroProfileImage ? (
-                  <Image
-                    src={siteConfig.heroProfileImage}
-                    alt={siteConfig.heroName || "Profile"}
-                    fill
-                    className="rounded-full object-cover p-1"
-                  />
-                ) : (
-                  <div className="w-full h-full rounded-full dark:bg-[#0a0512] bg-gray-100 flex items-center justify-center">
-                    <span className="text-3xl dark:text-[#00e5ff] text-[#00a8cc] font-bold">
-                      {siteConfig.heroName?.charAt(0) || "A"}
-                    </span>
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
+          {/* Left — Profile Image + Info */}
+          <div className="flex flex-col items-center">
+            {/* Profile image — same style as homepage, smaller size */}
+            <div className="relative p-6 sm:p-8">
+              {/* Outer glow ring */}
+              <div className="absolute -inset-6 bg-gradient-to-r from-[#00e5ff]/15 dark:from-[#00e5ff]/15 from-[#00a8cc]/10 via-[#64b5f6]/15 dark:via-[#64b5f6]/15 via-[#64b5f6]/10 to-[#a78bfa]/15 dark:to-[#a78bfa]/15 to-[#a78bfa]/10 rounded-full blur-2xl" />
+
+              <MovingBorderIcon borderRadius="9999px" className="w-52 h-52 sm:w-64 sm:h-64" duration={6}>
+                <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white flex items-center justify-center overflow-hidden p-1">
+                  <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
+                    {siteConfig.heroProfileImage ? (
+                      <img
+                        src={siteConfig.heroProfileImage}
+                        alt="Profile"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
+                        <div className="w-16 h-16 rounded-full dark:bg-gradient-to-br dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 bg-gradient-to-br from-[#00a8cc]/10 to-[#64b5f6]/10 flex items-center justify-center">
+                          <svg
+                            className="w-8 h-8 dark:text-[#64748b]/60 text-gray-400"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                          </svg>
+                        </div>
+                        <p className="text-xs dark:text-[#64748b]/60 text-gray-400 leading-relaxed">
+                          Add your photo<br />at <code className="dark:text-[#00e5ff]/60 text-[#00a8cc]">/public/profile.jpg</code>
+                        </p>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </MovingBorderIcon>
             </div>
 
@@ -68,10 +81,10 @@ export function ContactSection() {
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-1">
               <span className="gradient-text-cyan">{siteConfig.heroName}</span>
             </h3>
-            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-5">{siteConfig.heroTitle}</p>
+            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-4">{siteConfig.heroTitle}</p>
 
             {/* Contact Cards */}
-            <div className="w-full grid grid-cols-2 gap-3 mb-5">
+            <div className="w-full max-w-md grid grid-cols-2 gap-3 mb-4">
               {contactCards.map((card) => {
                 const Icon = getIcon(card.icon);
                 return (
@@ -100,7 +113,7 @@ export function ContactSection() {
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-3">
               {socialLinks.map((social) => {
                 const Icon = getIcon(social.icon);
                 return (
@@ -122,19 +135,19 @@ export function ContactSection() {
             </div>
 
             {/* Location */}
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2">
               <MapPin className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]" />
               <span className="text-xs dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
             </div>
-          </CardSpotlight>
+          </div>
 
-          {/* Right — Google Map */}
-          <CardSpotlight className="glass-card-solid p-4 flex flex-col overflow-hidden">
+          {/* Right — Google Map (no card wrapper) */}
+          <div className="flex flex-col">
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
               <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
             </div>
-            <div className="relative flex-1 min-h-[300px] rounded-xl overflow-hidden border dark:border-white/[0.06] border-gray-200/60">
+            <div className="relative flex-1 min-h-[400px] rounded-2xl overflow-hidden border dark:border-white/[0.06] border-gray-200/60">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703752325!2d90.27923991562853!3d23.780573258035916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563b5e21c6c0!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
                 width="100%"
@@ -146,7 +159,7 @@ export function ContactSection() {
                 title="Office Location"
               />
             </div>
-          </CardSpotlight>
+          </div>
         </div>
 
         {/* Contact Form */}
