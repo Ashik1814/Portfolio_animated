@@ -12,6 +12,7 @@ model SiteConfig {
   id                  String @id @default(cuid())
   siteName            String @default("Alchemist")
   logoText            String @default("Alchemist.io")
+  logoUrl             String @default("")
   heroWelcomeText     String @default("Welcome to my portfolio")
   heroName            String @default("Alchemist")
   heroTitle           String @default("UI/UX Designer • Frontend Developer • n8n Automation Specialist")

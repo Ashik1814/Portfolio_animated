@@ -18,6 +18,7 @@ export interface SiteConfigData {
   contactDescription: string
   contactLocationText: string
   logoText: string
+  logoUrl: string
   heroCtaText: string
   heroCtaLink: string
   heroSecondaryCtaText: string
@@ -126,6 +127,8 @@ export interface ProjectData {
   category: string
   gradient: string
   accentColor: string
+  imageUrl: string
+  videoUrl: string
   liveUrl: string
   codeUrl: string
   order: number

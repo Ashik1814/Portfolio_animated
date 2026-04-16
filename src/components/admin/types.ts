@@ -15,6 +15,7 @@ export interface SiteConfig {
   contactDescription: string;
   contactLocationText: string;
   logoText: string;
+  logoUrl: string;
   heroCtaText: string;
   heroCtaLink: string;
   heroSecondaryCtaText: string;
@@ -113,6 +114,8 @@ export interface Project {
   category: string;
   gradient: string;
   accentColor: string;
+  imageUrl: string;
+  videoUrl: string;
   liveUrl: string;
   codeUrl: string;
   order: number;

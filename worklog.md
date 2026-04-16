@@ -55,3 +55,20 @@ Stage Summary:
 - Code cleanup: 5 dead/redundant files removed, page files simplified
 - No lint errors
 - App loads cleanly with proper data
+---
+Task ID: 3
+Agent: Sub Agent
+Task: Update store + admin types with new fields
+
+Work Log:
+- Added `logoUrl: string` to `SiteConfigData` interface in `src/stores/content-store.ts` (after `logoText`)
+- Added `imageUrl: string` and `videoUrl: string` to `ProjectData` interface in `src/stores/content-store.ts` (after `accentColor`)
+- Added `logoUrl: string;` to `SiteConfig` interface in `src/components/admin/types.ts` (after `logoText`)
+- Added `imageUrl: string;` and `videoUrl: string;` to `Project` interface in `src/components/admin/types.ts` (after `accentColor`)
+- Ran `bun run lint` — passes cleanly with no errors
+
+Stage Summary:
+- Both type files updated with new fields for logo URL, project image URL, and project video URL
+- SiteConfigData/SiteConfig now include `logoUrl`
+- ProjectData/Project now include `imageUrl` and `videoUrl`
+- Lint passes cleanly
