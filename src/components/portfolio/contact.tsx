@@ -147,7 +147,7 @@ export function ContactSection() {
               <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
               <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
             </div>
-            <div className="relative flex-1 min-h-[400px] rounded-2xl overflow-hidden border dark:border-white/[0.06] border-gray-200/60">
+            <div className="relative min-h-[200px] rounded-2xl overflow-hidden border dark:border-[#00e5ff]/15 border-[#00a8cc]/20">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703752325!2d90.27923991562853!3d23.780573258035916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563b5e21c6c0!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
                 width="100%"
