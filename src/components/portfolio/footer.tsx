@@ -60,8 +60,9 @@ export function Footer() {
             <div className="flex items-center gap-3">
               {socialLinks.map((social) => {
                 const Icon = getIcon(social.icon);
+                const isExternal = social.href.startsWith('http');
                 return (
-                  <a key={social.id} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-9 h-9 rounded-lg dark:border-[#00e5ff]/10 border-gray-300/80 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/25 hover:border-[#00a8cc]/25 dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-200">
+                  <a key={social.id} href={social.href} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener noreferrer' : undefined} aria-label={social.label} className="w-9 h-9 rounded-lg dark:border-[#00e5ff]/10 border-gray-300/80 border flex items-center justify-center dark:text-[#64748b] text-gray-500 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/25 hover:border-[#00a8cc]/25 dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-200">
                     <Icon className="w-4 h-4" />
                   </a>
                 );

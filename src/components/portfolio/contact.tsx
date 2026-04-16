@@ -146,12 +146,13 @@ export function ContactSection() {
             <div className="flex items-center gap-5 mb-12">
               {socialLinks.map((social) => {
                 const Icon = getIcon(social.icon);
+                const isExternal = social.href.startsWith("http");
                 return (
                   <a
                     key={social.id}
                     href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
                     aria-label={social.label}
                     className="group"
                   >
