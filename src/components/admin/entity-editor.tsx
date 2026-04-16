@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, AlertTriangle, Upload, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, AlertTriangle, X, Image as ImageIcon } from "lucide-react";
 import type { ContentData } from "@/components/admin/types";
 
 /* ───── Entity definitions ───── */
@@ -843,9 +843,11 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                     {/* File upload */}
                     <div className="flex gap-2">
                       <label className="flex-1 cursor-pointer">
-                        <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-dashed border-white/20 hover:border-[#00e5ff]/40 bg-[#06080f] transition-colors text-sm text-gray-400 hover:text-[#00e5ff]">
-                          <Upload className="w-4 h-4" />
-                          <span>Choose File</span>
+                        <div className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border border-dashed border-white/20 hover:border-[#00e5ff]/40 bg-[#06080f] transition-colors text-sm text-gray-400 hover:text-[#00e5ff]">
+                          <div className="w-6 h-6 rounded-full bg-[#00e5ff]/10 flex items-center justify-center shrink-0">
+                            <Plus className="w-3.5 h-3.5 text-[#00e5ff]" />
+                          </div>
+                          <span>Add File</span>
                         </div>
                         <input
                           type="file"

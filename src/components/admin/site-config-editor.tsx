@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { SiteConfig } from "@/components/admin/types";
-import { Save, ChevronDown, ChevronUp, Upload, X, FileText, Link } from "lucide-react";
+import { Save, ChevronDown, ChevronUp, Plus, X, FileText, Link } from "lucide-react";
 
 interface SiteConfigEditorProps {
   config: SiteConfig | null;
@@ -178,11 +178,13 @@ function FileField({
         <div className="space-y-2">
           <div
             onClick={() => fileInputRef.current?.click()}
-            className={`flex items-center justify-center gap-2 p-4 rounded-lg border-2 border-dashed border-white/10 hover:border-cyan-500/30 hover:bg-cyan-500/5 cursor-pointer transition-all ${uploading ? "opacity-50 pointer-events-none" : ""}`}
+            className={`flex flex-col items-center justify-center gap-2 p-5 rounded-lg border-2 border-dashed border-white/10 hover:border-cyan-500/30 hover:bg-cyan-500/5 cursor-pointer transition-all ${uploading ? "opacity-50 pointer-events-none" : ""}`}
           >
-            <Upload className="w-4 h-4 text-cyan-400" />
+            <div className="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center">
+              <Plus className="w-4 h-4 text-cyan-400" />
+            </div>
             <span className="text-sm text-gray-400">
-              {uploading ? "Uploading..." : `Click to upload ${label}`}
+              {uploading ? "Uploading..." : `Click to add ${label}`}
             </span>
           </div>
           <button
