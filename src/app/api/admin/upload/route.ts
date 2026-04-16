@@ -22,6 +22,9 @@ export async function POST(request: NextRequest) {
     const allowedTypes = [
       'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
       'video/mp4', 'video/webm', 'video/ogg',
+      'application/pdf',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/msword', // .doc
     ]
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 })
@@ -34,7 +37,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate unique filename
-    const ext = path.extname(file.name) || (file.type.startsWith('image/') ? '.png' : '.mp4')
+    const ext = path.extname(file.name) || (file.type.startsWith('image/') ? '.png' : file.type.startsWith('video/') ? '.mp4' : file.type === 'application/pdf' ? '.pdf' : '.docx')
     const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`
     const filePath = path.join(uploadsDir, uniqueName)
 
