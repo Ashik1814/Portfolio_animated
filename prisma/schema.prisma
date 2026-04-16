@@ -151,6 +151,8 @@ model Project {
   category    String
   gradient    String
   accentColor String
+  imageUrl    String @default("")
+  videoUrl    String @default("")
   liveUrl     String @default("#")
   codeUrl     String @default("#")
   order       Int    @default(0)
