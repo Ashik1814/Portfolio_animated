@@ -163,54 +163,56 @@ export function ContactSection() {
               })}
             </div>
 
-            {/* Contact Form */}
-            <CardSpotlight className="p-6 glass-card-solid mt-8">
-              <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-4">
-                Send me a <span className="gradient-text-cyan">Message</span>
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Name</label>
-                    <Input
-                      placeholder="John Doe"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg h-11"
-                    />
+            {/* Contact Form — animated stroke border only */}
+            <MovingBorderIcon borderRadius="1rem" className="mt-8" duration={8}>
+              <div className="p-6 dark:bg-[#0a0512]/80 bg-white/80 backdrop-blur-xl">
+                <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-4">
+                  Send me a <span className="gradient-text-cyan">Message</span>
+                </h3>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Name</label>
+                      <Input
+                        placeholder="John Doe"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg h-11"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Email</label>
+                      <Input
+                        type="email"
+                        placeholder="john@example.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg h-11"
+                      />
+                    </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Email</label>
-                    <Input
-                      type="email"
-                      placeholder="john@example.com"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg h-11"
+                    <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Message</label>
+                    <Textarea
+                      placeholder="Tell me about your project..."
+                      rows={5}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg resize-none"
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Message</label>
-                  <Textarea
-                    placeholder="Tell me about your project..."
-                    rows={5}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg resize-none"
-                  />
-                </div>
-                <AnimatedBorderButton
-                  type="submit"
-                  className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200"
-                  gradientVia="#00e5ff"
-                  gradientTo="#a78bfa"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Send Message
-                </AnimatedBorderButton>
-              </form>
-            </CardSpotlight>
+                  <AnimatedBorderButton
+                    type="submit"
+                    className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200"
+                    gradientVia="#00e5ff"
+                    gradientTo="#a78bfa"
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Send Message
+                  </AnimatedBorderButton>
+                </form>
+              </div>
+            </MovingBorderIcon>
           </div>
         </div>
       </div>
