@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, AlertTriangle, X, Image as ImageIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, AlertTriangle, X, Image as ImageIcon, Upload } from "lucide-react";
 import type { ContentData } from "@/components/admin/types";
 
 /* ───── Entity definitions ───── */
