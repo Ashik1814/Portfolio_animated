@@ -72,3 +72,58 @@ Stage Summary:
 - SiteConfigData/SiteConfig now include `logoUrl`
 - ProjectData/Project now include `imageUrl` and `videoUrl`
 - Lint passes cleanly
+---
+Task ID: 4
+Agent: Sub Agent
+Task: Update Projects frontend component to display uploaded images/videos
+
+Work Log:
+- Read current `src/components/portfolio/projects.tsx` and worklog to understand context
+- Replaced gradient header section with conditional rendering:
+  - If `project.videoUrl` exists → shows `<video>` element with hover-to-play behavior (muted, loop, playsInline, play on mouseenter, pause on mouseleave)
+  - Else if `project.imageUrl` exists → shows `<img>` element with object-cover
+  - Else → falls back to original gradient + icon display
+- Updated action buttons to be conditional:
+  - "Live Demo" button only renders if `project.liveUrl && project.liveUrl !== "#"`
+  - "View Code" button only renders if `project.codeUrl && project.codeUrl !== "#"`
+  - "No links available" fallback text shown when both URLs are missing or "#"
+- All existing imports preserved; no other changes made
+- Lint passes cleanly with no errors
+
+Stage Summary:
+- Project cards now display uploaded images/videos when available, with gradient+icon as fallback
+- Video cards support hover-to-play interaction
+- Action buttons are now conditional based on URL availability
+- No breaking changes; component remains fully functional for projects without media URLs
+---
+Task ID: 2
+Agent: Sub Agent
+Task: Update Entity Editor component with "file" field type support and imageUrl/videoUrl fields
+
+Work Log:
+- Read worklog and current entity-editor.tsx to understand existing state
+- Noted that imports already included `Upload, X, Image as ImageIcon` from lucide-react (added by previous agent)
+- Noted that contact-cards and social-links icon fields were already upgraded to select dropdowns with comprehensive options (superior to simple label change)
+- Updated `FieldDef` interface: added `"file"` to type union and `accept?: string` property
+- Updated `EntityDef` displayFields type: added `"image"` to the type union
+- Updated projects entity definition:
+  - Added `{ key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" }` after codeUrl
+  - Added `{ key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" }` after imageUrl
+  - Added `{ key: "imageUrl", label: "Image", type: "image" }` to displayFields before Order
+- Updated `openAddDialog`: added explicit `f.type === "file"` case defaulting to empty string
+- Added image display in table rows: renders small thumbnail or placeholder with ImageIcon for "image" type displayFields
+- Added file upload UI in dialog form with:
+  - Current file preview (image thumbnail or video indicator) with Remove button
+  - File upload area with dashed border and Choose File button
+  - Manual URL paste input with clear button
+  - Upload POSTs to `/api/admin/upload` and sets formState to returned URL
+- Verified Prisma schema already has `imageUrl` and `videoUrl` on Project model
+- Verified upload API route at `/api/admin/upload` already exists and works
+- Ran `bun run lint` — passes cleanly with no errors
+
+Stage Summary:
+- Entity Editor now supports "file" field type with full upload UI (file picker + manual URL input + preview)
+- Projects entity has imageUrl and videoUrl fields with file upload support
+- Table displays image thumbnails via "image" displayField type
+- All existing field types continue to work as before
+- Lint passes, dev server compiles successfully

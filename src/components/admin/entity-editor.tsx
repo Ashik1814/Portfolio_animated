@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Pencil, Trash2, AlertTriangle } from "lucide-react";
+import { Plus, Pencil, Trash2, AlertTriangle, Upload, X, Image as ImageIcon } from "lucide-react";
 import type { ContentData } from "@/components/admin/types";
 
 /* ───── Entity definitions ───── */
@@ -29,10 +29,11 @@ import type { ContentData } from "@/components/admin/types";
 interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "number" | "textarea" | "color" | "select";
+  type: "text" | "number" | "textarea" | "color" | "select" | "file";
   options?: { value: string; label: string }[];
   selectDataKey?: string; // key in ContentData to use for select options
   selectLabelKey?: string; // field to use as label from selectData
+  accept?: string; // for file type fields, e.g. "image/*" or "video/*"
 }
 
 interface EntityDef {
@@ -41,7 +42,7 @@ interface EntityDef {
   dataKey: keyof ContentData;
   apiPath: string;
   fields: FieldDef[];
-  displayFields: { key: string; label: string; type?: "badge" | "color" | "text" }[];
+  displayFields: { key: string; label: string; type?: "badge" | "color" | "text" | "image" }[];
   isList?: boolean;
 }
 
@@ -52,7 +53,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "aboutSkills",
     apiPath: "about-skills",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon (Lucide name)", type: "text" },
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "metric", label: "Metric", type: "text" },
@@ -122,7 +123,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "skillCategories",
     apiPath: "skill-categories",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon (Lucide name)", type: "text" },
       { key: "title", label: "Title", type: "text" },
       { key: "color", label: "Color", type: "color" },
       { key: "order", label: "Order", type: "number" },
@@ -233,12 +234,15 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "accentColor", label: "Accent Color", type: "color" },
       { key: "liveUrl", label: "Live URL", type: "text" },
       { key: "codeUrl", label: "Code URL", type: "text" },
+      { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
+      { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "order", label: "Order", type: "number" },
     ],
     displayFields: [
       { key: "title", label: "Title" },
       { key: "category", label: "Category", type: "badge" },
       { key: "accentColor", label: "Accent", type: "color" },
+      { key: "imageUrl", label: "Image", type: "image" },
       { key: "order", label: "Order" },
     ],
   },
@@ -334,7 +338,48 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "contactCards",
     apiPath: "contact-cards",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      {
+        key: "icon",
+        label: "Icon",
+        type: "select",
+        options: [
+          // Lucide icons (commonly used)
+          { value: "Mail", label: "✉️ Mail" },
+          { value: "Phone", label: "📞 Phone" },
+          { value: "MapPin", label: "📍 MapPin" },
+          { value: "Globe", label: "🌐 Globe" },
+          { value: "Link", label: "🔗 Link" },
+          { value: "Github", label: "🐙 Github (Lucide)" },
+          { value: "Linkedin", label: "💼 Linkedin (Lucide)" },
+          { value: "Youtube", label: "▶️ Youtube (Lucide)" },
+          { value: "Facebook", label: "📘 Facebook (Lucide)" },
+          { value: "Twitter", label: "🐦 Twitter (Lucide)" },
+          { value: "Instagram", label: "📷 Instagram (Lucide)" },
+          // Brand icons (react-icons/fa)
+          { value: "FaWhatsapp", label: "💬 WhatsApp" },
+          { value: "FaFacebookF", label: "📘 Facebook" },
+          { value: "FaGithub", label: "🐙 GitHub" },
+          { value: "FaLinkedinIn", label: "💼 LinkedIn" },
+          { value: "FaYoutube", label: "▶️ YouTube" },
+          { value: "FaTwitter", label: "🐦 Twitter/X" },
+          { value: "FaInstagram", label: "📷 Instagram" },
+          { value: "FaTelegram", label: "✈️ Telegram" },
+          { value: "FaDiscord", label: "🎮 Discord" },
+          { value: "FaTiktok", label: "🎵 TikTok" },
+          { value: "FaMedium", label: "📝 Medium" },
+          { value: "FaDribbble", label: "🏀 Dribbble" },
+          { value: "FaBehance", label: "🎨 Behance" },
+          { value: "FaPinterest", label: "📌 Pinterest" },
+          // Brand icons (react-icons/si)
+          { value: "SiGmail", label: "📧 Gmail" },
+          { value: "SiGoogle", label: "🔍 Google" },
+          { value: "SiSlack", label: "💬 Slack" },
+          { value: "SiStackoverflow", label: "📚 Stack Overflow" },
+          { value: "SiFigma", label: "🎨 Figma" },
+          { value: "SiSpotify", label: "🎵 Spotify" },
+          { value: "SiDevdotto", label: "👩‍💻 Dev.to" },
+        ],
+      },
       { key: "label", label: "Label", type: "text" },
       { key: "value", label: "Value", type: "text" },
       { key: "href", label: "Link (href)", type: "text" },
@@ -353,7 +398,48 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "socialLinks",
     apiPath: "social-links",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      {
+        key: "icon",
+        label: "Icon",
+        type: "select",
+        options: [
+          // Lucide icons (commonly used)
+          { value: "Mail", label: "✉️ Mail" },
+          { value: "Phone", label: "📞 Phone" },
+          { value: "MapPin", label: "📍 MapPin" },
+          { value: "Globe", label: "🌐 Globe" },
+          { value: "Link", label: "🔗 Link" },
+          { value: "Github", label: "🐙 Github (Lucide)" },
+          { value: "Linkedin", label: "💼 Linkedin (Lucide)" },
+          { value: "Youtube", label: "▶️ Youtube (Lucide)" },
+          { value: "Facebook", label: "📘 Facebook (Lucide)" },
+          { value: "Twitter", label: "🐦 Twitter (Lucide)" },
+          { value: "Instagram", label: "📷 Instagram (Lucide)" },
+          // Brand icons (react-icons/fa)
+          { value: "FaWhatsapp", label: "💬 WhatsApp" },
+          { value: "FaFacebookF", label: "📘 Facebook" },
+          { value: "FaGithub", label: "🐙 GitHub" },
+          { value: "FaLinkedinIn", label: "💼 LinkedIn" },
+          { value: "FaYoutube", label: "▶️ YouTube" },
+          { value: "FaTwitter", label: "🐦 Twitter/X" },
+          { value: "FaInstagram", label: "📷 Instagram" },
+          { value: "FaTelegram", label: "✈️ Telegram" },
+          { value: "FaDiscord", label: "🎮 Discord" },
+          { value: "FaTiktok", label: "🎵 TikTok" },
+          { value: "FaMedium", label: "📝 Medium" },
+          { value: "FaDribbble", label: "🏀 Dribbble" },
+          { value: "FaBehance", label: "🎨 Behance" },
+          { value: "FaPinterest", label: "📌 Pinterest" },
+          // Brand icons (react-icons/si)
+          { value: "SiGmail", label: "📧 Gmail" },
+          { value: "SiGoogle", label: "🔍 Google" },
+          { value: "SiSlack", label: "💬 Slack" },
+          { value: "SiStackoverflow", label: "📚 Stack Overflow" },
+          { value: "SiFigma", label: "🎨 Figma" },
+          { value: "SiSpotify", label: "🎵 Spotify" },
+          { value: "SiDevdotto", label: "👩‍💻 Dev.to" },
+        ],
+      },
       { key: "href", label: "URL", type: "text" },
       { key: "label", label: "Label", type: "text" },
       { key: "order", label: "Order", type: "number" },
@@ -478,7 +564,8 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
         if (Array.isArray(selectItems) && selectItems.length > 0) {
           defaults[f.key] = (selectItems[0] as { id: string }).id;
         }
-      } else defaults[f.key] = "";
+      } else if (f.type === "file") defaults[f.key] = "";
+      else defaults[f.key] = "";
     }
     setFormState(defaults);
     setEditingItem(null);
@@ -604,6 +691,16 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                           {String(item[df.key] ?? "")}
                         </span>
                       </div>
+                    ) : df.type === "image" ? (
+                      <div className="flex items-center gap-2">
+                        {item[df.key] ? (
+                          <img src={String(item[df.key])} alt="" className="w-8 h-8 rounded object-cover border border-white/10" />
+                        ) : (
+                          <div className="w-8 h-8 rounded bg-[#06080f] border border-white/5 flex items-center justify-center">
+                            <ImageIcon className="w-3.5 h-3.5 text-gray-600" />
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       getDisplayValue(item, df)
                     )}
@@ -711,6 +808,89 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                       ))}
                     </SelectContent>
                   </Select>
+                ) : f.type === "file" ? (
+                  <div className="space-y-2">
+                    {/* Current file preview */}
+                    {formState[f.key] ? (
+                      <div className="flex items-center gap-2 p-2 rounded-lg bg-[#06080f] border border-white/10">
+                        {String(formState[f.key]).match(/\.(mp4|webm|ogg)$/i) ? (
+                          <div className="flex items-center gap-2 text-sm text-gray-300">
+                            <Upload className="w-4 h-4 text-[#00e5ff]" />
+                            <span className="truncate">Video uploaded</span>
+                          </div>
+                        ) : (
+                          <img
+                            src={String(formState[f.key])}
+                            alt="Preview"
+                            className="w-16 h-16 object-cover rounded-md border border-white/10"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-gray-400 truncate">{String(formState[f.key]).split('/').pop()}</p>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setFormState((prev) => ({ ...prev, [f.key]: "" }))}
+                          className="h-7 w-7 p-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </Button>
+                      </div>
+                    ) : null}
+
+                    {/* File upload */}
+                    <div className="flex gap-2">
+                      <label className="flex-1 cursor-pointer">
+                        <div className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-dashed border-white/20 hover:border-[#00e5ff]/40 bg-[#06080f] transition-colors text-sm text-gray-400 hover:text-[#00e5ff]">
+                          <Upload className="w-4 h-4" />
+                          <span>Choose File</span>
+                        </div>
+                        <input
+                          type="file"
+                          accept={f.accept || "*"}
+                          className="hidden"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+                            const fd = new FormData();
+                            fd.append("file", file);
+                            try {
+                              const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+                              const respData = await res.json();
+                              if (respData.url) {
+                                setFormState((prev) => ({ ...prev, [f.key]: respData.url }));
+                              }
+                            } catch (err) {
+                              console.error("Upload failed:", err);
+                            }
+                          }}
+                        />
+                      </label>
+                    </div>
+
+                    {/* Manual URL input */}
+                    <div className="relative">
+                      <Input
+                        placeholder="Or paste URL manually..."
+                        value={String(formState[f.key] ?? "")}
+                        onChange={(e) => setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                        className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 pr-8"
+                      />
+                      {formState[f.key] && (
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setFormState((prev) => ({ ...prev, [f.key]: "" }))}
+                          className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                        >
+                          <X className="w-3 h-3" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
                 ) : (
                   <Input
                     type={f.type === "number" ? "number" : "text"}

@@ -95,10 +95,35 @@ export function Projects() {
                 key={project.id}
                 className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group"
               >
-                <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
-                  <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                </div>
+                {/* Media header */}
+                {project.videoUrl ? (
+                  <div className="h-32 relative overflow-hidden bg-black">
+                    <video
+                      src={project.videoUrl}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      onMouseEnter={(e) => (e.target as HTMLVideoElement).play()}
+                      onMouseLeave={(e) => (e.target as HTMLVideoElement).pause()}
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                  </div>
+                ) : project.imageUrl ? (
+                  <div className="h-32 relative overflow-hidden">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                  </div>
+                ) : (
+                  <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
+                    <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                  </div>
+                )}
 
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>
@@ -113,24 +138,31 @@ export function Projects() {
                   </div>
 
                   <div className="flex gap-3 pt-3">
-                    <AnimatedBorderButton
-                      size="sm"
-                      className="flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200"
-                      gradientVia="#64b5f6"
-                      gradientTo="#a78bfa"
-                    >
-                      <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
-                      Live Demo
-                    </AnimatedBorderButton>
-                    <AnimatedBorderButton
-                      size="sm"
-                      className="flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200"
-                      gradientVia="#a78bfa"
-                      gradientTo="#64b5f6"
-                    >
-                      <Github className="w-3.5 h-3.5 mr-1.5" />
-                      View Code
-                    </AnimatedBorderButton>
+                    {project.liveUrl && project.liveUrl !== "#" && (
+                      <AnimatedBorderButton
+                        size="sm"
+                        className="flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200"
+                        gradientVia="#64b5f6"
+                        gradientTo="#a78bfa"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                        Live Demo
+                      </AnimatedBorderButton>
+                    )}
+                    {project.codeUrl && project.codeUrl !== "#" && (
+                      <AnimatedBorderButton
+                        size="sm"
+                        className="flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200"
+                        gradientVia="#a78bfa"
+                        gradientTo="#64b5f6"
+                      >
+                        <Github className="w-3.5 h-3.5 mr-1.5" />
+                        View Code
+                      </AnimatedBorderButton>
+                    )}
+                    {!project.liveUrl && project.liveUrl === "#" && !project.codeUrl && project.codeUrl === "#" && (
+                      <span className="text-xs dark:text-[#475569] text-gray-400 py-2">No links available</span>
+                    )}
                   </div>
                 </div>
               </CardSpotlight>
