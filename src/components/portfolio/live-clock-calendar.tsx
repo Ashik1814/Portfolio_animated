@@ -267,11 +267,11 @@ export function LiveClockCalendar() {
   return (
     <section className="py-5 section-padding">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-3">
-          <h2 className="text-lg sm:text-xl font-bold dark:text-white text-gray-900 mb-0.5">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
             <span className="gradient-text-cyan">{greeting}</span>
           </h2>
-          <p className="text-[11px] dark:text-[#64748b] text-gray-500">{dateString}</p>
+          <p className="text-xs dark:text-[#64748b] text-gray-500">{dateString}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-14">
