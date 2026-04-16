@@ -71,7 +71,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar with admin link */}
-        <div className="mt-8 pt-6 dark:border-t-[#00e5ff]/8 border-t-gray-200/60 flex items-center justify-between">
+        <div className="mt-8 pt-6 dark:border-t-[#00e5ff]/8 border-t-gray-200/60 flex items-center justify-center">
           <p className="text-xs dark:text-[#334155] text-gray-400">
             {siteConfig?.footerCopyright || `© ${new Date().getFullYear()} All rights reserved.`}
           </p>
