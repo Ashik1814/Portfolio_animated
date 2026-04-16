@@ -27,9 +27,9 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
   const secDeg = seconds * 6;
 
   return (
-    <div className="relative w-32 h-32 sm:w-36 sm:h-36">
+    <div className="relative w-24 h-24 sm:w-28 sm:h-28">
       {/* Outer glow */}
-      <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-[#00e5ff]/8 via-[#64b5f6]/4 to-[#a78bfa]/8 blur-lg" />
+      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#00e5ff]/8 via-[#64b5f6]/4 to-[#a78bfa]/8 blur-md" />
 
       {/* Clock face */}
       <svg viewBox="0 0 200 200" className="w-full h-full relative">
@@ -185,13 +185,12 @@ function Calendar({ viewYear, viewMonth, today }: { viewYear: number; viewMonth:
 
 /* ───── Main Component ───── */
 export function LiveClockCalendar() {
-  const [now, setNow] = useState<Date | null>(null);
+  const [now, setNow] = useState(() => new Date());
   const [viewMonth, setViewMonth] = useState(new Date().getMonth());
   const [viewYear, setViewYear] = useState(new Date().getFullYear());
   const [tzIndex, setTzIndex] = useState(0);
 
   useEffect(() => {
-    setNow(new Date());
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
@@ -209,8 +208,6 @@ export function LiveClockCalendar() {
       return m + 1;
     });
   }, []);
-
-  if (!now) return null;
 
   // Get time in selected timezone
   const tz = TIMEZONES[tzIndex].value;
@@ -244,47 +241,47 @@ export function LiveClockCalendar() {
   ];
 
   return (
-    <section className="py-10 section-padding">
+    <section className="py-6 section-padding">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl sm:text-3xl font-bold dark:text-white text-gray-900 mb-1">
+        <div className="text-center mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 mb-0.5">
             <span className="gradient-text-cyan">{greeting}</span>
           </h2>
           <p className="text-xs dark:text-[#64748b] text-gray-500">{dateString}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
           {/* Left — Clock + Info */}
-          <CardSpotlight className="glass-card-solid p-4 sm:p-5 flex flex-col items-center">
+          <CardSpotlight className="glass-card-solid p-3 sm:p-4 flex flex-col items-center justify-center">
             {/* Analog clock */}
             <AnalogClock hours={hours} minutes={minutes} seconds={seconds} />
 
             {/* Digital time */}
-            <div className="mt-3 text-center">
-              <p className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 font-mono tracking-wider">
+            <div className="mt-2 text-center">
+              <p className="text-lg sm:text-xl font-bold dark:text-white text-gray-900 font-mono tracking-wider">
                 {timeString}
               </p>
             </div>
 
             {/* Info row */}
-            <div className="mt-2.5 flex flex-wrap items-center justify-center gap-3 text-xs dark:text-[#94a3b8] text-gray-600">
-              <div className="flex items-center gap-1.5">
+            <div className="mt-1.5 flex flex-wrap items-center justify-center gap-3 text-[11px] dark:text-[#94a3b8] text-gray-600">
+              <div className="flex items-center gap-1">
                 <CloudMoon className="w-3 h-3 text-[#64b5f6]" />
                 <span>{hours >= 6 && hours < 18 ? "☀️ Day" : "🌙 Night"}</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-[#a78bfa]" />
                 <span>{tz.split("/").pop()?.replace("_", " ")}</span>
               </div>
             </div>
 
-            {/* Timezone selector */}
-            <div className="mt-3 flex items-center gap-2">
+            {/* Timezone selector — centered */}
+            <div className="mt-2 flex items-center justify-center gap-1.5 w-full">
               <Globe className="w-3 h-3 dark:text-[#00e5ff] text-[#00a8cc] shrink-0" />
               <select
                 value={tzIndex}
                 onChange={(e) => setTzIndex(Number(e.target.value))}
-                className="bg-transparent dark:text-[#00e5ff] text-[#00a8cc] text-xs font-medium border-none outline-none cursor-pointer appearance-none pr-1"
+                className="bg-transparent dark:text-[#00e5ff] text-[#00a8cc] text-[11px] font-medium border-none outline-none cursor-pointer appearance-none text-center"
               >
                 {TIMEZONES.map((t, i) => (
                   <option key={t.value} value={i} className="dark:bg-[#0d1525] bg-white dark:text-white text-gray-900">
@@ -296,9 +293,9 @@ export function LiveClockCalendar() {
           </CardSpotlight>
 
           {/* Right — Calendar */}
-          <CardSpotlight className="glass-card-solid p-4 sm:p-5">
+          <CardSpotlight className="glass-card-solid p-3 sm:p-4">
             {/* Month header with nav */}
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1.5">
               <button onClick={prevMonth} className="w-6 h-6 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#94a3b8] text-gray-500 transition-colors">
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
@@ -313,7 +310,7 @@ export function LiveClockCalendar() {
             <Calendar viewYear={viewYear} viewMonth={viewMonth} today={now} />
 
             {/* Today indicator */}
-            <div className="mt-2 pt-2 border-t dark:border-white/[0.06] border-gray-200/60 flex items-center justify-center gap-2">
+            <div className="mt-1.5 pt-1.5 border-t dark:border-white/[0.06] border-gray-200/60 flex items-center justify-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00e5ff] animate-pulse" />
               <span className="text-[10px] dark:text-[#64748b] text-gray-500">
                 {viewMonth === now.getMonth() && viewYear === now.getFullYear() ? "Today highlighted" : "Viewing different month"}
