@@ -252,7 +252,7 @@ export function LiveClockCalendar() {
 
         <div className="grid md:grid-cols-2 gap-9 lg:gap-12">
           {/* Left — Clock + Info */}
-          <CardSpotlight className="glass-card-solid p-2.5 sm:p-3 flex flex-col items-center justify-center">
+          <CardSpotlight className="p-2.5 sm:p-3 flex flex-col items-center justify-center bg-white/40 dark:bg-[#0a0512]/25 backdrop-blur-xl border border-white/20 dark:border-white/[0.08] rounded-2xl">
             {/* Analog clock */}
             <AnalogClock hours={hours} minutes={minutes} seconds={seconds} />
 
@@ -293,7 +293,7 @@ export function LiveClockCalendar() {
           </CardSpotlight>
 
           {/* Right — Calendar */}
-          <CardSpotlight className="glass-card-solid p-2.5 sm:p-3">
+          <CardSpotlight className="p-2.5 sm:p-3 bg-white/40 dark:bg-[#0a0512]/25 backdrop-blur-xl border border-white/20 dark:border-white/[0.08] rounded-2xl">
             {/* Month header with nav */}
             <div className="flex items-center justify-between mb-1.5">
               <button onClick={prevMonth} className="w-6 h-6 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#94a3b8] text-gray-500 transition-colors">
