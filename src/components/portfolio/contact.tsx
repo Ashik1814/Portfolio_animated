@@ -18,7 +18,6 @@ export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const siteConfig = useContent((s) => s.siteConfig);
   const contactCards = useContent((s) => s.contactCards);
-  const socialLinks = useContent((s) => s.socialLinks);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,29 +136,6 @@ export function ContactSection() {
                         </div>
                       </div>
                     </CardSpotlight>
-                  </a>
-                );
-              })}
-            </div>
-
-            {/* Social Links */}
-            <div className="flex items-center gap-5 mb-12">
-              {socialLinks.map((social) => {
-                const Icon = getIcon(social.icon);
-                const isExternal = social.href.startsWith("http");
-                return (
-                  <a
-                    key={social.id}
-                    href={social.href}
-                    target={isExternal ? "_blank" : undefined}
-                    rel={isExternal ? "noopener noreferrer" : undefined}
-                    aria-label={social.label}
-                    className="group"
-                  >
-                    <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10" duration={5}>
-                      <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 dark:group-hover:bg-[#00e5ff]/20 group-hover:bg-[#00a8cc]/20 transition-colors" />
-                      <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
-                    </MovingBorderIcon>
                   </a>
                 );
               })}
