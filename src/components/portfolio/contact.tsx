@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { MovingBorderIcon } from "@/components/ui/moving-border-icon";
+import { motion } from "framer-motion";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
@@ -163,9 +164,25 @@ export function ContactSection() {
               })}
             </div>
 
-            {/* Contact Form — animated stroke border only */}
-            <MovingBorderIcon borderRadius="1rem" className="mt-8" duration={8}>
-              <div className="p-6 dark:bg-[#0a0512]/80 bg-white/80 backdrop-blur-xl">
+            {/* Contact Form — traveling light dot stroke (same as Send Message button) */}
+            <div className="relative mt-8 rounded-xl overflow-hidden p-[1px]">
+              {/* Traveling light dot overlay */}
+              <div
+                className="-inset-px pointer-events-none absolute rounded-[inherit] border-2 border-transparent border-inset [mask-clip:padding-box,border-box] [mask-composite:intersect] [mask-image:linear-gradient(transparent,transparent),linear-gradient(#000,#000)]"
+              >
+                <motion.div
+                  className="absolute aspect-square"
+                  style={{
+                    width: 30,
+                    background: "linear-gradient(to right, transparent, #00e5ff, #a78bfa)",
+                    offsetPath: "rect(0 auto auto 0 round 30px)",
+                  }}
+                  animate={{ offsetDistance: ["0%", "100%"] }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                />
+              </div>
+              {/* Inner card content */}
+              <div className="relative p-6 rounded-xl dark:bg-[#0a0512]/80 bg-white/80 backdrop-blur-xl">
                 <h3 className="text-lg font-bold dark:text-white text-gray-900 mb-4">
                   Send me a <span className="gradient-text-cyan">Message</span>
                 </h3>
@@ -212,7 +229,7 @@ export function ContactSection() {
                   </AnimatedBorderButton>
                 </form>
               </div>
-            </MovingBorderIcon>
+            </div>
           </div>
         </div>
       </div>
