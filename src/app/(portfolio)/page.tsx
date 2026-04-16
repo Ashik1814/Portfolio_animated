@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Hero } from "@/components/portfolio/hero";
+import { LiveClockCalendar } from "@/components/portfolio/live-clock-calendar";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { TechIcon } from "@/components/ui/tech-icon";
@@ -71,6 +72,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <LiveClockCalendar />
 
       {/* ──────────────── About Preview ──────────────── */}
       <section className="py-20 section-padding">
