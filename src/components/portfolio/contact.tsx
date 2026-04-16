@@ -40,7 +40,7 @@ export function ContactSection() {
 
         {/* Profile Image + Map + Contact Cards Row */}
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
-          {/* Left — Profile Image + Contact Cards (aligned with profile image) */}
+          {/* Left — Profile Image + Map */}
           <div className="flex flex-col items-center">
             {/* Profile image — same style as homepage, smaller size */}
             <div className="relative p-6 sm:p-8">
@@ -83,8 +83,37 @@ export function ContactSection() {
             </h3>
             <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-6">{siteConfig.heroTitle}</p>
 
-            {/* Contact Cards — aligned with profile image width */}
-            <div className="w-full max-w-[280px] sm:max-w-[320px] grid grid-cols-1 gap-3 mb-6">
+            {/* Google Map */}
+            <div className="w-full max-w-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
+                <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
+              </div>
+              <div className="relative min-h-[240px] rounded-2xl overflow-hidden border dark:border-[#00e5ff]/15 border-[#00a8cc]/20">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703752325!2d90.27923991562853!3d23.780573258035916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563b5e21c6c0!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, position: "absolute", inset: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Office Location"
+                />
+              </div>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center gap-2 mt-4">
+              <MapPin className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]" />
+              <span className="text-xs dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
+            </div>
+          </div>
+
+          {/* Right — Contact Cards + Social Links + Message Form */}
+          <div className="flex flex-col">
+            {/* Contact Cards */}
+            <div className="grid grid-cols-2 gap-5 mb-6">
               {contactCards.map((card) => {
                 const Icon = getIcon(card.icon);
                 return (
@@ -95,11 +124,11 @@ export function ContactSection() {
                     rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     className="group"
                   >
-                    <CardSpotlight className="p-3 glass-card-solid transition-all duration-200">
+                    <CardSpotlight className="p-4 glass-card-solid transition-all duration-200">
                       <div className="flex items-center gap-3">
-                        <MovingBorderIcon borderRadius="0.5rem" className="w-8 h-8 shrink-0" duration={5}>
+                        <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9 shrink-0" duration={5}>
                           <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/15 bg-[#00a8cc]/15 dark:group-hover:bg-[#00e5ff]/25 group-hover:bg-[#00a8cc]/25 transition-colors" />
-                          <Icon className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc] relative" />
+                          <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
                         </MovingBorderIcon>
                         <div className="min-w-0">
                           <p className="text-xs dark:text-[#64748b] text-gray-500 mb-0.5">{card.label}</p>
@@ -113,7 +142,7 @@ export function ContactSection() {
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-4 mb-8">
               {socialLinks.map((social) => {
                 const Icon = getIcon(social.icon);
                 return (
@@ -125,42 +154,13 @@ export function ContactSection() {
                     aria-label={social.label}
                     className="group"
                   >
-                    <MovingBorderIcon borderRadius="0.5rem" className="w-9 h-9" duration={5}>
+                    <MovingBorderIcon borderRadius="0.5rem" className="w-10 h-10" duration={5}>
                       <div className="absolute inset-0 rounded-[inherit] dark:bg-[#00e5ff]/10 bg-[#00a8cc]/10 dark:group-hover:bg-[#00e5ff]/20 group-hover:bg-[#00a8cc]/20 transition-colors" />
-                      <Icon className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc] relative" />
+                      <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
                     </MovingBorderIcon>
                   </a>
                 );
               })}
-            </div>
-
-            {/* Location */}
-            <div className="flex items-center gap-2">
-              <MapPin className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]" />
-              <span className="text-xs dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
-            </div>
-          </div>
-
-          {/* Right — Map + Message Form */}
-          <div className="flex flex-col gap-6">
-            {/* Google Map */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
-                <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
-              </div>
-              <div className="relative min-h-[280px] rounded-2xl overflow-hidden border dark:border-[#00e5ff]/15 border-[#00a8cc]/20">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d233668.38703752325!2d90.27923991562853!3d23.780573258035916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b087026b81%3A0x8fa563b5e21c6c0!2sDhaka%2C%20Bangladesh!5e0!3m2!1sen!2sbd!4v1700000000000!5m2!1sen!2sbd"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, position: "absolute", inset: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Office Location"
-                />
-              </div>
             </div>
 
             {/* Contact Form */}
