@@ -27,9 +27,9 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
   const secDeg = seconds * 6;
 
   return (
-    <div className="relative w-24 h-24 sm:w-28 sm:h-28">
+    <div className="relative w-40 h-40 sm:w-48 sm:h-48">
       {/* Outer glow */}
-      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-[#00e5ff]/8 via-[#64b5f6]/4 to-[#a78bfa]/8 blur-md" />
+      <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-[#00e5ff]/8 via-[#64b5f6]/4 to-[#a78bfa]/8 blur-lg" />
 
       {/* Clock face */}
       <svg viewBox="0 0 200 200" className="w-full h-full relative">
@@ -154,7 +154,7 @@ function Calendar({ viewYear, viewMonth, today }: { viewYear: number; viewMonth:
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-0.5 mb-0.5">
         {dayNames.map((d) => (
-          <div key={d} className="text-center text-[9px] font-medium dark:text-[#64748b] text-gray-500 py-0.5">
+          <div key={d} className="text-center text-[8px] font-medium dark:text-[#64748b] text-gray-500 py-0">
             {d}
           </div>
         ))}
@@ -166,7 +166,7 @@ function Calendar({ viewYear, viewMonth, today }: { viewYear: number; viewMonth:
           <div
             key={i}
             className={`
-              aspect-square flex items-center justify-center rounded-md text-[11px] font-medium transition-all duration-200
+              aspect-square flex items-center justify-center rounded-md text-[10px] font-medium transition-all duration-200
               ${cell.isCurrentMonth
                 ? cell.isToday
                   ? "bg-gradient-to-br from-[#00e5ff] to-[#64b5f6] text-[#06080f] font-bold shadow-md shadow-[#00e5ff]/20"
@@ -242,7 +242,7 @@ export function LiveClockCalendar() {
 
   return (
     <section className="py-6 section-padding">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <div className="text-center mb-4">
           <h2 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 mb-0.5">
             <span className="gradient-text-cyan">{greeting}</span>
@@ -250,9 +250,9 @@ export function LiveClockCalendar() {
           <p className="text-xs dark:text-[#64748b] text-gray-500">{dateString}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid md:grid-cols-2 gap-9 lg:gap-12">
           {/* Left — Clock + Info */}
-          <CardSpotlight className="glass-card-solid p-3 sm:p-4 flex flex-col items-center justify-center">
+          <CardSpotlight className="glass-card-solid p-2.5 sm:p-3 flex flex-col items-center justify-center">
             {/* Analog clock */}
             <AnalogClock hours={hours} minutes={minutes} seconds={seconds} />
 
@@ -293,7 +293,7 @@ export function LiveClockCalendar() {
           </CardSpotlight>
 
           {/* Right — Calendar */}
-          <CardSpotlight className="glass-card-solid p-3 sm:p-4">
+          <CardSpotlight className="glass-card-solid p-2.5 sm:p-3">
             {/* Month header with nav */}
             <div className="flex items-center justify-between mb-1.5">
               <button onClick={prevMonth} className="w-6 h-6 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#94a3b8] text-gray-500 transition-colors">
