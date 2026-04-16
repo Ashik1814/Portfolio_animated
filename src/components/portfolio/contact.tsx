@@ -40,8 +40,8 @@ export function ContactSection() {
 
         {/* Profile Image + Map + Contact Cards Row */}
         <div className="grid lg:grid-cols-2 gap-12 mb-12">
-          {/* Left — Profile Image + Map */}
-          <div className="flex flex-col items-center">
+          {/* Left — Profile Image (top) + Map (bottom, aligned with Send Message) */}
+          <div className="flex flex-col items-center justify-between">
             {/* Profile image — same style as homepage, smaller size */}
             <div className="relative p-2 sm:p-3">
               {/* Outer glow ring */}
@@ -81,10 +81,10 @@ export function ContactSection() {
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-1">
               <span className="gradient-text-cyan">{siteConfig.heroName}</span>
             </h3>
-            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-6">{siteConfig.heroTitle}</p>
+            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-2">{siteConfig.heroTitle}</p>
 
-            {/* Google Map */}
-            <div className="w-full max-w-sm">
+            {/* Google Map — pushed down to align with Send Message card */}
+            <div className="w-full max-w-sm mt-auto">
               <div className="flex items-center gap-2 mb-3">
                 <MapPin className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc]" />
                 <h4 className="text-sm font-bold dark:text-white text-gray-900">My Location</h4>
@@ -111,7 +111,7 @@ export function ContactSection() {
           </div>
 
           {/* Right — Contact Cards + Social Links + Message Form */}
-          <div className="flex flex-col lg:pt-28">
+          <div className="flex flex-col">
             {/* Contact Cards */}
             <div className="grid grid-cols-2 gap-5 mb-6">
               {contactCards.map((card) => {
