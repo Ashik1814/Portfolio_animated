@@ -7,9 +7,9 @@ import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
 const positionClasses: Record<string, string> = {
-  "left-top": "absolute left-8 sm:left-10 -translate-x-1/2 top-8 sm:top-10 -translate-y-1/2 z-20",
+  "left-top": "absolute left-20 sm:left-24 top-8 sm:top-10 -translate-y-1/2 z-20",
   "right-middle": "absolute right-8 sm:right-10 translate-x-1/2 top-1/2 -translate-y-1/2 z-20",
-  "left-bottom": "absolute left-8 sm:left-10 -translate-x-1/2 bottom-8 sm:bottom-10 translate-y-1/2 z-20",
+  "left-bottom": "absolute left-20 sm:left-24 bottom-8 sm:bottom-10 translate-y-1/2 z-20",
 };
 
 export function Hero() {
@@ -155,7 +155,7 @@ export function Hero() {
               {heroStats?.map((stat) => (
                 <div
                   key={stat.id}
-                  className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20 animate-bounce`}
+                  className={`${positionClasses[stat.position] || "absolute left-0 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20 animate-bounce`}
                   style={{ animationDuration: `${3 + stat.order * 0.5}s`, animationDelay: `${stat.order * 0.5}s` }}
                 >
                   <div className="flex items-center gap-2.5">
