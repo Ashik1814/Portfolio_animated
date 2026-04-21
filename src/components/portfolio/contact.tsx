@@ -16,13 +16,40 @@ import { getIcon } from "@/lib/get-icon";
 
 export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
   const siteConfig = useContent((s) => s.siteConfig);
   const contactCards = useContent((s) => s.contactCards);
   const loading = useContent((s) => s.loading);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormData({ name: "", email: "", message: "" });
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to send message");
+        return;
+      }
+
+      setSuccess(true);
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setSuccess(false), 3000);
+    } catch {
+      setError("Connection error. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -207,14 +234,21 @@ export function ContactSection() {
                       className="dark:bg-[#06080f] bg-white dark:border-[#1e3a5f] border-gray-300 dark:text-white text-gray-900 dark:placeholder:text-[#475569] placeholder:text-gray-400 dark:focus:border-[#00e5ff]/50 focus:border-[#00a8cc]/50 rounded-lg resize-none"
                     />
                   </div>
+                  {error && (
+                    <p className="text-red-500 text-sm">{error}</p>
+                  )}
+                  {success && (
+                    <p className="text-green-500 text-sm">Message sent successfully!</p>
+                  )}
                   <AnimatedBorderButton
                     type="submit"
-                    className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200"
+                    disabled={submitting}
+                    className="w-full bg-[#00e5ff] hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-semibold rounded-lg h-11 shadow-lg dark:shadow-[#00e5ff]/20 shadow-[#00a8cc]/15 transition-all duration-200 disabled:opacity-50"
                     gradientVia="#00e5ff"
                     gradientTo="#a78bfa"
                   >
                     <Send className="w-4 h-4 mr-2" />
-                    Send Message
+                    {submitting ? "Sending..." : "Send Message"}
                   </AnimatedBorderButton>
                 </form>
               </div>
