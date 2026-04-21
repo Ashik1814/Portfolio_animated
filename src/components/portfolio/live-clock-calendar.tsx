@@ -149,7 +149,7 @@ function Calendar({
   const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
 
   const isToday = (d: number) =>
-    d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear();
+    d === today.getDate() && today.getMonth() === viewMonth && today.getFullYear() === viewYear;
 
   const cells: { day: number; isCurrentMonth: boolean; isToday: boolean; isSelected: boolean }[] = [];
 
@@ -209,12 +209,12 @@ function Calendar({
 
 /* ───── Main Component ───── */
 export function LiveClockCalendar() {
-  const [now, setNow] = useState(() => new Date(0));
+  const [now, setNow] = useState(() => new Date());
   const [mounted, setMounted] = useState(false);
-  const [viewMonth, setViewMonth] = useState(0);
-  const [viewYear, setViewYear] = useState(2024);
+  const [viewMonth, setViewMonth] = useState(new Date().getMonth());
+  const [viewYear, setViewYear] = useState(new Date().getFullYear());
   const [tzIndex, setTzIndex] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<number | null>(1);
+  const [selectedDate, setSelectedDate] = useState<number | null>(new Date().getDate());
 
   useEffect(() => {
     setMounted(true);
