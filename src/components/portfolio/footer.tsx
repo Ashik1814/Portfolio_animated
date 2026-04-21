@@ -8,6 +8,13 @@ export function Footer() {
   const socialLinks = useContent((s) => s.socialLinks);
   const siteConfig = useContent((s) => s.siteConfig);
   const navItems = useContent((s) => s.navItems);
+  const loading = useContent((s) => s.loading);
+
+  if (loading) {
+    return (
+      <footer className="h-32 animate-pulse bg-gray-50/50 dark:bg-[#06080f]/40" />
+    );
+  }
 
   const logoAccent = siteConfig?.logoText ? siteConfig.logoText.split('.')[0] : 'Alchemist';
   const logoSuffix = siteConfig?.logoText ? '.' + siteConfig.logoText.split('.').slice(1).join('.') : '.io';

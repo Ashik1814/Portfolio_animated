@@ -62,7 +62,19 @@ export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
   const siteConfig = useContent((s) => s.siteConfig);
   const projects = useContent((s) => s.projects);
+  const loading = useContent((s) => s.loading);
 
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 section-padding">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-40 mx-auto bg-gray-200 dark:bg-gray-700 rounded" />
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (!siteConfig) return null;
 
   const filteredProjects = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);

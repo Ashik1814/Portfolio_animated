@@ -194,6 +194,8 @@ export default function AdminPage() {
   }, []);
 
   useEffect(() => {
+    // The conditional fetch is intentional - ensure auth before fetching
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (authenticated) fetchData();
   }, [authenticated, fetchData]);
 

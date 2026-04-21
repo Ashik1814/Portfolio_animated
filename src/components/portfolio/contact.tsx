@@ -18,12 +18,24 @@ export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const siteConfig = useContent((s) => s.siteConfig);
   const contactCards = useContent((s) => s.contactCards);
+  const loading = useContent((s) => s.loading);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormData({ name: "", email: "", message: "" });
   };
 
+  if (loading) {
+    return (
+      <section id="contact" className="pt-28 pb-0">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-32 mx-auto bg-gray-200 dark:bg-gray-700 rounded" />
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (!siteConfig) return null;
 
   return (

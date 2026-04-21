@@ -15,6 +15,20 @@ export function About() {
   const coreValues = useContent((s) => s.coreValues);
   const journeyItems = useContent((s) => s.journeyItems);
   const aboutTechTags = useContent((s) => s.aboutTechTags);
+  const loading = useContent((s) => s.loading);
+
+  if (loading) {
+    return (
+      <section id="about" className="py-20 section-padding">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-32 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full" />
+            <div className="h-64 w-64 mx-auto bg-gray-200 dark:bg-gray-700 rounded-full" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (!siteConfig) return null;
 

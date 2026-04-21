@@ -518,7 +518,7 @@ function getFlatItems(entityKey: string, data: ContentData): Record<string, unkn
     );
   }
 
-  const items = data[def.dataKey];
+  const items = data[def.dataKey] as unknown as Record<string, unknown>[];
   if (Array.isArray(items)) return items;
   return [];
 }
@@ -800,7 +800,7 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                     </SelectTrigger>
                     <SelectContent className="bg-[#0d1525] border-white/10">
                       {(
-                        data[f.selectDataKey as keyof ContentData] as { id: string; [k: string]: unknown }[]
+                        data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]
                       )?.map((item) => (
                         <SelectItem key={item.id} value={item.id}>
                           {String(item[f.selectLabelKey ?? "id"])}
@@ -880,7 +880,7 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                         onChange={(e) => setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))}
                         className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 pr-8"
                       />
-                      {formState[f.key] && (
+                      {!!formState[f.key] && (
                         <Button
                           type="button"
                           variant="ghost"

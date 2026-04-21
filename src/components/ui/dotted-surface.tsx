@@ -191,7 +191,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     const mouseWorldPos = new THREE.Vector3(-9999, 0, -9999);
 
     let count = 0;
-    let animationId: number;
+    let animationId: number = 0;
 
     // Helper: bilinear interpolation between 4 palette corners with flowing animation
     function colorAt(

@@ -16,6 +16,24 @@ export function Skills() {
   const softSkills = useContent((s) => s.softSkills);
   const additionalTech = useContent((s) => s.additionalTech);
   const currentlyLearning = useContent((s) => s.currentlyLearning);
+  const loading = useContent((s) => s.loading);
+
+  if (loading) {
+    return (
+      <section id="skills" className="py-20 section-padding">
+        <div className="max-w-7xl mx-auto">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 w-48 mx-auto bg-gray-200 dark:bg-gray-700 rounded" />
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (!siteConfig) return null;
 

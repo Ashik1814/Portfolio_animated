@@ -2,6 +2,20 @@ import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
+function simpleHash(password: string): string {
+  let hash = 0
+  for (let i = 0; i < password.length; i++) {
+    const char = password.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash
+  }
+  return 'hash_' + Math.abs(hash).toString(16)
+}
+
+function verifyPassword(input: string, storedHash: string): boolean {
+  return simpleHash(input) === storedHash
+}
+
 export async function PUT(request: NextRequest) {
   try {
     const cookieStore = await cookies()
@@ -10,8 +24,8 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
     const { currentPassword, newPassword } = await request.json()
-    const auth = await db.adminAuth.findUnique({ where: { id: 'admin-auth' } })
-    if (!auth || auth.passwordHash !== currentPassword) {
+    const auth = await db.adminAuth.findUnique({ where: { id: "admin-auth" } })
+    if (!auth || !verifyPassword(currentPassword, auth.passwordHash)) {
       return NextResponse.json(
         { error: 'Current password is incorrect' },
         { status: 400 }
@@ -19,7 +33,7 @@ export async function PUT(request: NextRequest) {
     }
     await db.adminAuth.update({
       where: { id: 'admin-auth' },
-      data: { passwordHash: newPassword },
+      data: { passwordHash: simpleHash(newPassword) },
     })
     return NextResponse.json({ success: true })
   } catch (error) {

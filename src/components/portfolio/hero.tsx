@@ -16,6 +16,22 @@ export function Hero() {
   const siteConfig = useContent((s) => s.siteConfig);
   const socialLinks = useContent((s) => s.socialLinks);
   const heroStats = useContent((s) => s.heroStats);
+  const loading = useContent((s) => s.loading);
+  const error = useContent((s) => s.error);
+
+  if (loading) {
+    return (
+      <section id="home" className="min-h-screen flex items-center pt-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="animate-pulse space-y-4 max-w-lg">
+            <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+            <div className="h-10 w-64 bg-gray-200 dark:bg-gray-700 rounded" />
+            <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (!siteConfig) return null;
 
@@ -78,7 +94,7 @@ export function Hero() {
                 {siteConfig.heroFollowText || "Follow me:"}
               </span>
               <div className="flex gap-3">
-                {socialLinks.map((social) => {
+                {socialLinks?.map((social) => {
                   const SocialIcon = getIcon(social.icon);
                   return (
                     <a
@@ -136,7 +152,7 @@ export function Hero() {
               </MovingBorderIcon>
 
               {/* Floating stat badges */}
-              {heroStats.map((stat) => (
+              {heroStats?.map((stat) => (
                 <div
                   key={stat.id}
                   className={`${positionClasses[stat.position] || "absolute -left-4 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20 animate-bounce`}

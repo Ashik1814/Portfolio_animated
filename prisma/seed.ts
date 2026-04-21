@@ -53,7 +53,7 @@ async function main() {
   // ─── Helper: seed only if table is empty ───
   async function seedIfEmpty<T extends keyof typeof prisma>(
     table: T,
-    data: Parameters<typeof prisma[T]['createMany']>[0]['data'],
+    data: Record<string, unknown>[] | Record<string, unknown>
   ) {
     // @ts-expect-error — dynamic table access
     const count = await prisma[table].count()

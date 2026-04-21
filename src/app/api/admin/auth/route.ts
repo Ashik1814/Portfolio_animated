@@ -2,13 +2,23 @@ import { db } from '@/lib/db'
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
+function simpleHash(password: string): string {
+  let hash = 0
+  for (let i = 0; i < password.length; i++) {
+    const char = password.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash
+  }
+  return 'hash_' + Math.abs(hash).toString(16)
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { password } = await request.json()
     const auth = await db.adminAuth.findUnique({ where: { id: 'admin-auth' } })
     if (!auth) {
-      // Create default auth if not exists
-      await db.adminAuth.create({ data: { id: 'admin-auth', passwordHash: 'admin123' } })
+      const hashedPassword = simpleHash('admin123')
+      await db.adminAuth.create({ data: { id: 'admin-auth', passwordHash: hashedPassword } })
       if (password === 'admin123') {
         const cookieStore = await cookies()
         cookieStore.set('admin-session', 'authenticated', {
@@ -20,7 +30,8 @@ export async function POST(request: NextRequest) {
       }
       return NextResponse.json({ error: 'Invalid password' }, { status: 401 })
     }
-    if (password === auth.passwordHash) {
+    const inputHash = simpleHash(password)
+    if (inputHash === auth.passwordHash) {
       const cookieStore = await cookies()
       cookieStore.set('admin-session', 'authenticated', {
         httpOnly: true,

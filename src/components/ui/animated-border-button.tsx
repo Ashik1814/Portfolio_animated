@@ -1,6 +1,6 @@
 "use client";
 
-import { type VariantProps } from "@/components/ui/button";
+import type { VariantProps } from "class-variance-authority";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";

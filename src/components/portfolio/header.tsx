@@ -16,12 +16,11 @@ export function Header() {
   const pathname = usePathname();
   const navItems = useContent((s) => s.navItems);
   const siteConfig = useContent((s) => s.siteConfig);
-
-  const logoAccent = siteConfig?.logoText ? siteConfig.logoText.split('.')[0] : 'Alchemist';
-  const logoSuffix = siteConfig?.logoText ? '.' + siteConfig.logoText.split('.').slice(1).join('.') : '.io';
+  const loading = useContent((s) => s.loading);
 
   useEffect(() => {
-    setMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -32,10 +31,19 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
-    setMobileMenuOpen(false); // eslint-disable-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMobileMenuOpen(false);
   }, [pathname]);
+
+  if (loading) {
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-white/50 dark:bg-[#08050f]/50 backdrop-blur-md animate-pulse" />
+    );
+  }
+
+  const logoAccent = siteConfig?.logoText ? siteConfig.logoText.split('.')[0] : 'Alchemist';
+  const logoSuffix = siteConfig?.logoText ? '.' + siteConfig.logoText.split('.').slice(1).join('.') : '.io';
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
