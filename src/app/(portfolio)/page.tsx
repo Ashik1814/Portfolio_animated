@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Hero } from "@/components/portfolio/hero";
 import { LiveClockCalendar } from "@/components/portfolio/live-clock-calendar";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
@@ -56,15 +56,20 @@ function FilterButton({ active, onClick, children }: { active: boolean; onClick:
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const fetchContent = useContent((s) => s.fetch);
+  const loading = useContent((s) => s.loading);
   const siteConfig = useContent((s) => s.siteConfig);
   const aboutSkills = useContent((s) => s.aboutSkills);
   const skillCategories = useContent((s) => s.skillCategories);
   const projects = useContent((s) => s.projects);
   const socialLinks = useContent((s) => s.socialLinks);
+  
+  // Fetch content on mount
+useEffect(() => {
+  fetchContent();
+}, [fetchContent]);
 
-  if (!siteConfig) {
-    return <Hero />;
-  }
+// Always render content - child components handle loading states
 
   // Filter projects by category
   const filteredProjects = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter);
@@ -82,7 +87,7 @@ export default function Home() {
               What I <span className="gradient-text-cyan">Do</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              {siteConfig.aboutDescription}
+              {siteConfig?.aboutDescription}
             </p>
           </div>
 
@@ -141,7 +146,7 @@ export default function Home() {
               My <span className="gradient-text-purple-blue">Skills</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              {siteConfig.skillsDescription}
+              {siteConfig?.skillsDescription}
             </p>
           </div>
 
@@ -203,7 +208,7 @@ export default function Home() {
               Featured <span className="gradient-text-pink-blue">Projects</span>
             </h2>
             <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto">
-              {siteConfig.projectsDescription}
+              {siteConfig?.projectsDescription}
             </p>
           </div>
 
@@ -225,10 +230,16 @@ export default function Home() {
                   key={project.id}
                   className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group"
                 >
-                  <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
-                    <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                  </div>
+                  {project.imageUrl ? (
+                    <div className="h-32 overflow-hidden">
+                      <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                    </div>
+                  ) : (
+                    <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
+                      <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                    </div>
+                  )}
                   <div className="p-5 space-y-3">
                     <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>
                     <p className="text-sm dark:text-[#94a3b8] text-gray-600 leading-relaxed line-clamp-2">{project.description}</p>
@@ -296,7 +307,7 @@ export default function Home() {
                 Let&apos;s work together
               </h3>
               <p className="dark:text-[#94a3b8] text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
-                {siteConfig.contactDescription}
+                {siteConfig?.contactDescription}
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-8">

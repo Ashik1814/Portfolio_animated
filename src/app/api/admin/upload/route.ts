@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -9,8 +8,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Server configuration error' }, { status: 500 })
   }
 
-  const supabase = createClient(supabaseUrl, supabaseServiceKey)
-
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File | null
@@ -18,9 +15,6 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
     }
-
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
 
     const fileExt = file.name.split('.').pop()?.toLowerCase() || ''
     const allowedImageExts = ['png', 'jpg', 'jpeg']
@@ -41,23 +35,30 @@ export async function POST(request: NextRequest) {
     const folder = allowedImageExts.includes(fileExt) ? 'images' : 'documents'
     const path = `${folder}/${fileName}`
 
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('portfolio')
-      .upload(path, buffer, {
-        contentType: file.type,
-        upsert: false,
-      })
+    const uploadUrl = `${supabaseUrl}/storage/v1/object/portfolio-files/${path}`
 
-    if (uploadError) {
-      console.error('Supabase upload error:', uploadError)
-      return NextResponse.json({ error: uploadError.message }, { status: 500 })
+    const bytes = await file.arrayBuffer()
+    const data = new Uint8Array(bytes)
+
+    const uploadRes = await fetch(uploadUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${supabaseServiceKey}`,
+        'Content-Type': file.type,
+        'x-upsert': 'false',
+      },
+      body: data,
+    })
+
+    if (!uploadRes.ok) {
+      const errorText = await uploadRes.text()
+      console.error('Supabase upload error:', errorText)
+      return NextResponse.json({ error: errorText }, { status: 500 })
     }
 
-    const { data: urlData } = supabase.storage
-      .from('portfolio')
-      .getPublicUrl(path)
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/portfolio-files/${path}`
 
-    return NextResponse.json({ url: urlData.publicUrl })
+    return NextResponse.json({ url: publicUrl })
   } catch (error) {
     console.error('Upload route error:', error)
     return NextResponse.json({ error: 'Upload failed' }, { status: 500 })

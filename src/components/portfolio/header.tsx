@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Download, Sun, Moon, Loader2 } from "lucide-react";
+import { Menu, X, Download, Sun, Moon } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
@@ -12,7 +12,6 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [cvDownloading, setCvDownloading] = useState(false);
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const navItems = useContent((s) => s.navItems);
@@ -56,40 +55,26 @@ export function Header() {
   };
 
   const handleDownloadCV = async () => {
-    const cvUrl = siteConfig?.cvUrl;
     if (!cvUrl) return;
-
-    if (cvUrl.includes('supabase')) {
-      setCvDownloading(true);
-      try {
-        const urlObj = new URL(cvUrl);
-        const pathSegments = urlObj.pathname.split('/');
-        const path = pathSegments.slice(2).join('/');
-
-        const res = await fetch(`/api/admin/download?path=${encodeURIComponent(path)}`);
-        if (!res.ok) {
-          console.error('Download failed');
-          return;
-        }
-
-        const blob = await res.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = cvUrl.split('/').pop() || 'cv.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(blobUrl);
-      } catch (err) {
-        console.error('Download error:', err);
-      } finally {
-        setCvDownloading(false);
-      }
-    } else {
-      window.open(cvUrl, '_blank');
+    try {
+      const res = await fetch(`/api/admin/download?path=${encodeURIComponent(cvUrl)}`);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = cvFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (err) {
+      console.error('Download error:', err);
     }
   };
+
+  const cvUrl = siteConfig?.cvUrl;
+  const cvFileName = cvUrl ? cvUrl.split('/').pop() || 'cv.pdf' : '';
 
   return (
     <header
@@ -164,21 +149,21 @@ export function Header() {
             </button>
 
             {/* CV Download Button */}
-            <AnimatedBorderButton
-              size="sm"
+            <div
+              role="button"
               onClick={handleDownloadCV}
-              disabled={cvDownloading}
-              className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-300 hover:scale-105"
-              gradientVia="#64b5f6"
-              gradientTo="#a78bfa"
+              className={`inline-flex ${cvUrl ? 'cursor-pointer' : 'pointer-events-none opacity-50'}`}
             >
-              {cvDownloading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
+              <AnimatedBorderButton
+                size="sm"
+                className="bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-5 gap-1.5 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-300 hover:scale-105"
+                gradientVia="#64b5f6"
+                gradientTo="#a78bfa"
+              >
                 <Download className="w-4 h-4" />
-              )}
-              CV
-            </AnimatedBorderButton>
+                CV
+              </AnimatedBorderButton>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -223,21 +208,21 @@ export function Header() {
               >
                 {mounted && (theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />)}
               </button>
-              <AnimatedBorderButton
+              <div
+                role="button"
+                onClick={handleDownloadCV}
+                className={`flex-1 ${cvUrl ? 'cursor-pointer' : 'pointer-events-none opacity-50'}`}
+              >
+                <AnimatedBorderButton
                   size="sm"
-                  onClick={handleDownloadCV}
-                  disabled={cvDownloading}
                   className="flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-semibold rounded-full px-4 gap-1.5 flex-1 shadow-lg dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10"
                   gradientVia="#64b5f6"
                   gradientTo="#a78bfa"
                 >
-                  {cvDownloading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Download className="w-4 h-4" />
-                  )}
+                  <Download className="w-4 h-4" />
                   Download CV
                 </AnimatedBorderButton>
+              </div>
             </div>
           </nav>
         </div>

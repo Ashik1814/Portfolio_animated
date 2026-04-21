@@ -43,13 +43,15 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
           const isMain = i % 3 === 0;
           const r1 = isMain ? 78 : 82;
           const r2 = 88;
+          const sinA = +Math.sin(angle).toFixed(10);
+          const cosA = +Math.cos(angle).toFixed(10);
           return (
             <line
               key={i}
-              x1={100 + r1 * Math.sin(angle)}
-              y1={100 - r1 * Math.cos(angle)}
-              x2={100 + r2 * Math.sin(angle)}
-              y2={100 - r2 * Math.cos(angle)}
+              x1={100 + r1 * sinA}
+              y1={100 - r1 * cosA}
+              x2={100 + r2 * sinA}
+              y2={100 - r2 * cosA}
               stroke={isMain ? "#00e5ff" : "rgba(148,163,184,0.3)"}
               strokeWidth={isMain ? 2.5 : 1}
               strokeLinecap="round"
@@ -61,16 +63,19 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
         {Array.from({ length: 60 }).map((_, i) => {
           if (i % 5 === 0) return null;
           const angle = (i * 6 * Math.PI) / 180;
+          const sinA = +Math.sin(angle).toFixed(10);
+          const cosA = +Math.cos(angle).toFixed(10);
           return (
             <line
               key={`m${i}`}
-              x1={100 + 85 * Math.sin(angle)}
-              y1={100 - 85 * Math.cos(angle)}
-              x2={100 + 88 * Math.sin(angle)}
-              y2={100 - 88 * Math.cos(angle)}
+              x1={100 + 85 * sinA}
+              y1={100 - 85 * cosA}
+              x2={100 + 88 * sinA}
+              y2={100 - 88 * cosA}
               stroke="rgba(148,163,184,0.12)"
               strokeWidth={0.5}
               strokeLinecap="round"
+              className="min-h-0"
             />
           );
         })}
@@ -79,11 +84,13 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
         {Array.from({ length: 12 }).map((_, i) => {
           const num = i === 0 ? 12 : i;
           const angle = (i * 30 * Math.PI) / 180;
+          const sinA = +Math.sin(angle).toFixed(10);
+          const cosA = +Math.cos(angle).toFixed(10);
           return (
             <text
               key={`n${i}`}
-              x={100 + 68 * Math.sin(angle)}
-              y={100 - 68 * Math.cos(angle)}
+              x={100 + 68 * sinA}
+              y={100 - 68 * cosA}
               textAnchor="middle"
               dominantBaseline="central"
               fill="rgba(148,163,184,0.5)"
@@ -91,19 +98,19 @@ function AnalogClock({ hours, minutes, seconds }: { hours: number; minutes: numb
               fontFamily="system-ui"
               fontWeight="500"
             >
-              {num}
+              +{num.toString()}
             </text>
           );
         })}
 
         {/* Hour hand */}
-        <line x1="100" y1="100" x2={100 + 48 * Math.sin((hourDeg * Math.PI) / 180)} y2={100 - 48 * Math.cos((hourDeg * Math.PI) / 180)} stroke="#00e5ff" strokeWidth="3.5" strokeLinecap="round" />
+        <line x1="100" y1="100" x2={+(100 + 48 * Math.sin((hourDeg * Math.PI) / 180)).toFixed(10)} y2={+(100 - 48 * Math.cos((hourDeg * Math.PI) / 180)).toFixed(10)} stroke="#00e5ff" strokeWidth="3.5" strokeLinecap="round" />
 
         {/* Minute hand */}
-        <line x1="100" y1="100" x2={100 + 62 * Math.sin((minDeg * Math.PI) / 180)} y2={100 - 62 * Math.cos((minDeg * Math.PI) / 180)} stroke="#64b5f6" strokeWidth="2.5" strokeLinecap="round" />
+        <line x1="100" y1="100" x2={+(100 + 62 * Math.sin((minDeg * Math.PI) / 180)).toFixed(10)} y2={+(100 - 62 * Math.cos((minDeg * Math.PI) / 180)).toFixed(10)} stroke="#64b5f6" strokeWidth="2.5" strokeLinecap="round" />
 
         {/* Second hand */}
-        <line x1={100 - 14 * Math.sin((secDeg * Math.PI) / 180)} y1={100 + 14 * Math.cos((secDeg * Math.PI) / 180)} x2={100 + 70 * Math.sin((secDeg * Math.PI) / 180)} y2={100 - 70 * Math.cos((secDeg * Math.PI) / 180)} stroke="#a78bfa" strokeWidth="1" strokeLinecap="round" />
+        <line x1={+(100 - 14 * Math.sin((secDeg * Math.PI) / 180)).toFixed(10)} y1={+(100 + 14 * Math.cos((secDeg * Math.PI) / 180)).toFixed(10)} x2={+(100 + 70 * Math.sin((secDeg * Math.PI) / 180)).toFixed(10)} y2={+(100 - 70 * Math.cos((secDeg * Math.PI) / 180)).toFixed(10)} stroke="#a78bfa" strokeWidth="1" strokeLinecap="round" />
 
         {/* Center dot */}
         <circle cx="100" cy="100" r="4" fill="#00e5ff" />
@@ -202,13 +209,15 @@ function Calendar({
 
 /* ───── Main Component ───── */
 export function LiveClockCalendar() {
-  const [now, setNow] = useState(() => new Date());
-  const [viewMonth, setViewMonth] = useState(new Date().getMonth());
-  const [viewYear, setViewYear] = useState(new Date().getFullYear());
+  const [now, setNow] = useState(() => new Date(0));
+  const [mounted, setMounted] = useState(false);
+  const [viewMonth, setViewMonth] = useState(0);
+  const [viewYear, setViewYear] = useState(2024);
   const [tzIndex, setTzIndex] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<number | null>(new Date().getDate());
+  const [selectedDate, setSelectedDate] = useState<number | null>(1);
 
   useEffect(() => {
+    setMounted(true);
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
@@ -235,29 +244,30 @@ export function LiveClockCalendar() {
 
   // Get time in selected timezone
   const tz = TIMEZONES[tzIndex].value;
-  const tzNow = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+  const tzNow = mounted ? new Date(now.toLocaleString("en-US", { timeZone: tz })) : new Date(0);
   const hours = tzNow.getHours();
   const minutes = tzNow.getMinutes();
   const seconds = tzNow.getSeconds();
 
-  const timeString = tzNow.toLocaleTimeString("en-US", {
+  const timeString = mounted ? tzNow.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: true,
     timeZone: tz,
-  });
+  }) : "--:--:--";
 
-  const dateString = tzNow.toLocaleDateString("en-US", {
+  const dateString = mounted ? tzNow.toLocaleDateString("en-US", {
     weekday: "short",
     year: "numeric",
     month: "short",
     day: "numeric",
     timeZone: tz,
-  });
+  }) : "";
 
-  const greeting =
-    hours < 12 ? "Good Morning" : hours < 17 ? "Good Afternoon" : hours < 21 ? "Good Evening" : "Good Night";
+  const greeting = mounted
+    ? (hours < 12 ? "Good Morning" : hours < 17 ? "Good Afternoon" : hours < 21 ? "Good Evening" : "Good Night")
+    : "Loading...";
 
   const monthNames = [
     "January", "February", "March", "April", "May", "June",

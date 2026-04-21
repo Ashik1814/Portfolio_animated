@@ -251,10 +251,6 @@ export const useContent = create<ContentStore>((set, get) => ({
   loaded: false,
   error: null,
   fetch: async () => {
-    const state = get()
-    if (state.loaded && !state.error) {
-      return
-    }
     try {
       set({ loading: true, error: null })
       const res = await fetch('/api/content')

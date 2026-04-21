@@ -58,6 +58,48 @@ function AnimatedFilterButton({
   );
 }
 
+function buildImageUrl(path: string): string {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  return `https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/${path}`;
+}
+
+function ProjectImage({
+  imageUrl,
+  title,
+  gradient,
+  fallbackIcon: FallbackIcon,
+}: {
+  imageUrl: string;
+  title: string;
+  gradient: string;
+  fallbackIcon: React.ElementType;
+}) {
+  const [imgError, setImgError] = useState(false);
+  const imageSrc = buildImageUrl(imageUrl);
+
+  if (!imageSrc || imgError) {
+    return (
+      <div className={`h-32 bg-gradient-to-br ${gradient} flex items-center justify-center relative`}>
+        <FallbackIcon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-32 relative overflow-hidden">
+      <img
+        src={imageSrc}
+        alt={title}
+        className="w-full h-full object-cover"
+        onError={() => setImgError(true)}
+      />
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+    </div>
+  );
+}
+
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
   const siteConfig = useContent((s) => s.siteConfig);
@@ -105,7 +147,7 @@ export function Projects() {
             return (
               <CardSpotlight
                 key={project.id}
-                className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group"
+                className="glass-card-solid dark:hover:border-[#64b5f6]/15 hover:border-[#00a8cc]/20 overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl dark:hover:shadow-[#00e5ff]/5 hover:shadow-[#00a8cc]/5 group h-auto"
               >
                 {/* Media header */}
                 {project.videoUrl ? (
@@ -121,15 +163,12 @@ export function Projects() {
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                   </div>
-                ) : project.imageUrl ? (
-                  <div className="h-32 relative overflow-hidden">
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                  </div>
+                ) : (project.imageUrl && project.imageUrl.length > 0) ? (
+                  <img
+                    src={project.imageUrl}
+                    alt={project.title}
+                    className="w-full h-32 object-cover"
+                  />
                 ) : (
                   <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
                     <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />

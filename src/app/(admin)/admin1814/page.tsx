@@ -101,10 +101,6 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>
-
-          <p className="text-xs text-gray-500 text-center mt-6">
-            Default password: <code className="text-cyan-400/70 bg-cyan-500/10 px-1.5 py-0.5 rounded">admin123</code>
-          </p>
         </CardContent>
       </Card>
     </div>

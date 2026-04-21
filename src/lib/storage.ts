@@ -70,6 +70,8 @@ export async function downloadFile(path: string): Promise<Blob> {
 }
 
 export function getFileUrl(path: string): string {
-  const { data } = supabase.storage.from('portfolio').getPublicUrl(path)
-  return data.publicUrl
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  return `${supabaseUrl}/storage/v1/object/public/portfolio-files/${path}`;
 }

@@ -16,19 +16,15 @@ export async function GET(request: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
     const pathParts = path.split('/')
 
-    if (pathParts[0] === 'images') {
-      pathParts[0] = 'images'
-    } else if (pathParts[0] === 'documents') {
-      pathParts[0] = 'documents'
-    } else {
+    if (pathParts[0] !== 'images' && pathParts[0] !== 'documents') {
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 })
     }
 
     const fileName = pathParts[pathParts.length - 1]
-    const fullPath = pathParts.slice(1).join('/')
+    const fullPath = pathParts.join('/')
 
     const { data, error } = await supabase.storage
-      .from('portfolio')
+      .from('portfolio-files')
       .download(fullPath)
 
     if (error) {
