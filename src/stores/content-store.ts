@@ -220,6 +220,7 @@ export interface ContentData {
 
 interface ContentStore extends ContentData {
   loading: boolean
+  loaded: boolean
   error: string | null
   fetch: () => Promise<void>
 }
@@ -247,8 +248,13 @@ const defaults: ContentData = {
 export const useContent = create<ContentStore>((set, get) => ({
   ...defaults,
   loading: true,
+  loaded: false,
   error: null,
   fetch: async () => {
+    const state = get()
+    if (state.loaded && !state.error) {
+      return
+    }
     try {
       set({ loading: true, error: null })
       const res = await fetch('/api/content')
@@ -256,11 +262,11 @@ export const useContent = create<ContentStore>((set, get) => ({
         throw new Error(`HTTP ${res.status}`)
       }
       const data = await res.json()
-      set({ ...data, loading: false })
+      set({ ...data, loading: false, loaded: true })
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Failed to fetch content'
       console.error('Failed to fetch content:', message)
-      set({ loading: false, error: message })
+      set({ loading: false, error: message, loaded: true })
     }
   },
 }))
