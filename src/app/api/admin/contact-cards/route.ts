@@ -20,7 +20,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    if (data.label && (typeof data.label !== 'string' || data.label.length > 100)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (data.value && (typeof data.value !== 'string' || data.value.length > 200)) {
+      return NextResponse.json({ error: 'Invalid value' }, { status: 400 })
+    }
+    if (data.href && (typeof data.href !== 'string' || data.href.length > 500)) {
+      return NextResponse.json({ error: 'Invalid href' }, { status: 400 })
+    }
+    
     const item = await db.contactCard.create({ data })
     return NextResponse.json(item)
   } catch (error) {
@@ -37,7 +53,25 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const { id, ...data } = await request.json()
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    const { id, ...data } = body
+    
+    if (data.label && (typeof data.label !== 'string' || data.label.length > 100)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (data.value && (typeof data.value !== 'string' || data.value.length > 200)) {
+      return NextResponse.json({ error: 'Invalid value' }, { status: 400 })
+    }
+    if (data.href && (typeof data.href !== 'string' || data.href.length > 500)) {
+      return NextResponse.json({ error: 'Invalid href' }, { status: 400 })
+    }
+    
     const item = await db.contactCard.update({ where: { id }, data })
     return NextResponse.json(item)
   } catch (error) {

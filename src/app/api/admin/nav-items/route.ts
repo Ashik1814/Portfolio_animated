@@ -20,7 +20,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    if (data.label && (typeof data.label !== 'string' || data.label.length > 50)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (data.href && (typeof data.href !== 'string' || data.href.length > 200)) {
+      return NextResponse.json({ error: 'Invalid href' }, { status: 400 })
+    }
+    
     const item = await db.navItem.create({ data })
     return NextResponse.json(item)
   } catch (error) {
@@ -37,8 +50,22 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
     const { id, ...updateData } = data
+    
+    if (updateData.label && (typeof updateData.label !== 'string' || updateData.label.length > 50)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (updateData.href && (typeof updateData.href !== 'string' || updateData.href.length > 200)) {
+      return NextResponse.json({ error: 'Invalid href' }, { status: 400 })
+    }
+    
     const item = await db.navItem.update({ where: { id }, data: updateData })
     return NextResponse.json(item)
   } catch (error) {

@@ -20,7 +20,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    if (data.name && (typeof data.name !== 'string' || data.name.length > 100)) {
+      return NextResponse.json({ error: 'Invalid name' }, { status: 400 })
+    }
+    if (data.percentage !== undefined && (typeof data.percentage !== 'number' || data.percentage < 0 || data.percentage > 100)) {
+      return NextResponse.json({ error: 'Invalid percentage' }, { status: 400 })
+    }
+    
     const item = await db.skill.create({ data })
     return NextResponse.json(item)
   } catch (error) {
@@ -37,7 +50,22 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const { id, ...data } = await request.json()
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    const { id, ...data } = body
+    
+    if (data.name && (typeof data.name !== 'string' || data.name.length > 100)) {
+      return NextResponse.json({ error: 'Invalid name' }, { status: 400 })
+    }
+    if (data.percentage !== undefined && (typeof data.percentage !== 'number' || data.percentage < 0 || data.percentage > 100)) {
+      return NextResponse.json({ error: 'Invalid percentage' }, { status: 400 })
+    }
+    
     const item = await db.skill.update({ where: { id }, data })
     return NextResponse.json(item)
   } catch (error) {

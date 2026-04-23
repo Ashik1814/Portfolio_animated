@@ -20,7 +20,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    if (data.value && (typeof data.value !== 'string' || data.value.length > 20)) {
+      return NextResponse.json({ error: 'Invalid value' }, { status: 400 })
+    }
+    if (data.label && (typeof data.label !== 'string' || data.label.length > 50)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (data.position && !['left-top', 'right-middle', 'left-bottom'].includes(data.position)) {
+      return NextResponse.json({ error: 'Invalid position' }, { status: 400 })
+    }
+    
     const item = await db.heroStat.create({ data })
     return NextResponse.json(item)
   } catch (error) {
@@ -37,8 +53,25 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
     const { id, ...updateData } = data
+    
+    if (updateData.value && (typeof updateData.value !== 'string' || updateData.value.length > 20)) {
+      return NextResponse.json({ error: 'Invalid value' }, { status: 400 })
+    }
+    if (updateData.label && (typeof updateData.label !== 'string' || updateData.label.length > 50)) {
+      return NextResponse.json({ error: 'Invalid label' }, { status: 400 })
+    }
+    if (updateData.position && !['left-top', 'right-middle', 'left-bottom'].includes(updateData.position)) {
+      return NextResponse.json({ error: 'Invalid position' }, { status: 400 })
+    }
+    
     const item = await db.heroStat.update({ where: { id }, data: updateData })
     return NextResponse.json(item)
   } catch (error) {

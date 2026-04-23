@@ -3,10 +3,21 @@ import { db } from "@/lib/db"
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, email, message } = await request.json()
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+    
+    const { name, email, message } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 })
+    }
+
+    if (name.length > 100 || message.length > 5000) {
+      return NextResponse.json({ error: "Input exceeds maximum length" }, { status: 400 })
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

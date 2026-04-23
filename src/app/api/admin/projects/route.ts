@@ -23,7 +23,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const data = await request.json()
+    let data;
+    try {
+      data = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    if (data.title && (typeof data.title !== 'string' || data.title.length > 200)) {
+      return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
+    }
+    if (data.description && (typeof data.description !== 'string' || data.description.length > 5000)) {
+      return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
+    }
+    
     const item = await db.project.create({ data })
     return NextResponse.json(item)
   } catch (error) {
@@ -40,7 +53,22 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const { id, ...data } = await request.json()
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+    }
+    
+    const { id, ...data } = body
+    
+    if (data.title && (typeof data.title !== 'string' || data.title.length > 200)) {
+      return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
+    }
+    if (data.description && (typeof data.description !== 'string' || data.description.length > 5000)) {
+      return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
+    }
+    
     const item = await db.project.update({ where: { id }, data })
     return NextResponse.json(item)
   } catch (error) {
