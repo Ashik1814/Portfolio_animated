@@ -5,11 +5,12 @@ import { HeroContent } from "@/components/portfolio/hero";
 import { LiveClockCalendar } from "@/components/portfolio/live-clock-calendar";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
+import { ProjectGalleryModal } from "@/components/portfolio/project-gallery-modal";
 import { TechIcon } from "@/components/ui/tech-icon";
 import {
   ArrowRight,
   ExternalLink,
-  Github,
+  Eye,
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -56,6 +57,7 @@ function FilterButton({ active, onClick, children }: { active: boolean; onClick:
 
 export default function Home() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
   const fetchContent = useContent((s) => s.fetch);
   const loading = useContent((s) => s.loading);
   const siteConfig = useContent((s) => s.siteConfig);
@@ -265,9 +267,10 @@ useEffect(() => {
                         className="flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200"
                         gradientVia="#a78bfa"
                         gradientTo="#64b5f6"
+                        onClick={() => setSelectedProject(project)}
                       >
-                        <Github className="w-3.5 h-3.5 mr-1.5" />
-                        View Code
+                        <Eye className="w-3.5 h-3.5 mr-1.5" />
+                        View
                       </AnimatedBorderButton>
                     </div>
                   </div>
@@ -343,6 +346,8 @@ useEffect(() => {
           </div>
         </div>
       </section>
+
+      <ProjectGalleryModal project={selectedProject} onClose={() => setSelectedProject(null)} />
     </>
   );
 }
