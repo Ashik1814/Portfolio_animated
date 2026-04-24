@@ -22,14 +22,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Plus, Pencil, Trash2, AlertTriangle, X, Image as ImageIcon, Upload } from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import type { ContentData } from "@/components/admin/types";
+import { IconPicker } from "./icon-picker";
 
 /* ───── Entity definitions ───── */
 
 interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "number" | "textarea" | "color" | "select" | "file";
+  type: "text" | "number" | "textarea" | "color" | "select" | "file" | "icon";
   options?: { value: string; label: string }[];
   selectDataKey?: string; // key in ContentData to use for select options
   selectLabelKey?: string; // field to use as label from selectData
@@ -53,7 +55,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "aboutSkills",
     apiPath: "about-skills",
     fields: [
-      { key: "icon", label: "Icon (Lucide name)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "metric", label: "Metric", type: "text" },
@@ -75,7 +77,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "coreValues",
     apiPath: "core-values",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       { key: "order", label: "Order", type: "number" },
@@ -123,7 +125,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "skillCategories",
     apiPath: "skill-categories",
     fields: [
-      { key: "icon", label: "Icon (Lucide name)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "color", label: "Color", type: "color" },
       { key: "order", label: "Order", type: "number" },
@@ -166,7 +168,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "softSkills",
     apiPath: "soft-skills",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "name", label: "Name", type: "text" },
       { key: "percentage", label: "Percentage (0-100)", type: "number" },
       { key: "color", label: "Color", type: "color" },
@@ -217,7 +219,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "projects",
     apiPath: "projects",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       {
@@ -236,6 +238,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "codeUrl", label: "Code URL", type: "text" },
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
+      { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },
       { key: "order", label: "Order", type: "number" },
     ],
     displayFields: [
@@ -279,7 +282,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "degrees",
     apiPath: "degrees",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "institution", label: "Institution", type: "text" },
       { key: "location", label: "Location", type: "text" },
@@ -303,7 +306,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "certifications",
     apiPath: "certifications",
     fields: [
-      { key: "icon", label: "Icon (Lucide)", type: "text" },
+      { key: "icon", label: "Icon", type: "icon" },
       { key: "name", label: "Name", type: "text" },
       { key: "issuer", label: "Issuer", type: "text" },
       { key: "year", label: "Year", type: "text" },
@@ -701,6 +704,16 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                           </div>
                         )}
                       </div>
+                    ) : df.type === "icon" ? (
+                      <div className="flex items-center gap-2">
+                        {(() => {
+                          const iconName = String(item[df.key] || "");
+                          if (!iconName) return null;
+                          const Icon = (LucideIcons as Record<string, React.ComponentType<{ className?: string }>>)[iconName];
+                          return Icon ? <Icon className="w-4 h-4" /> : null;
+                        })()}
+                        <span>{String(item[df.key] || "")}</span>
+                      </div>
                     ) : (
                       getDisplayValue(item, df)
                     )}
@@ -770,6 +783,11 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                       className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 flex-1"
                     />
                   </div>
+                ) : f.type === "icon" ? (
+                  <IconPicker
+                    value={String(formState[f.key] ?? "")}
+                    onChange={(val) => setFormState((prev) => ({ ...prev, [f.key]: val }))}
+                  />
                 ) : f.type === "select" && f.options ? (
                   <Select
                     value={String(formState[f.key] ?? "")}

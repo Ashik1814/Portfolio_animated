@@ -155,10 +155,11 @@ model Project {
   accentColor String
   imageUrl    String @default("")
   videoUrl    String @default("")
+  images     String @default("[]")
   liveUrl     String @default("#")
   codeUrl     String @default("#")
-  order       Int    @default(0)
-  tags        ProjectTag[]
+  order      Int    @default(0)
+  tags       ProjectTag[]
 }
 
 model ProjectTag {

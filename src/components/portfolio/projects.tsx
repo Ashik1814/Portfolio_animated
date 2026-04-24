@@ -3,7 +3,8 @@
 import { useState } from "react";
 import {
   ExternalLink,
-  Github,
+  Eye,
+  Image,
 } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
@@ -11,6 +12,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
+import { ProjectGalleryModal } from "./project-gallery-modal";
 
 const filters = ["All", "Development", "Design", "Automation"];
 
@@ -102,6 +104,7 @@ function ProjectImage({
 
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
   const siteConfig = useContent((s) => s.siteConfig);
   const projects = useContent((s) => s.projects);
   const loading = useContent((s) => s.loading);
@@ -164,11 +167,28 @@ export function Projects() {
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                   </div>
                 ) : (project.imageUrl && project.imageUrl.length > 0) ? (
-                  <img
-                    src={project.imageUrl}
-                    alt={project.title}
-                    className="w-full h-32 object-cover"
-                  />
+                  <div className="relative h-32 overflow-hidden">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="w-full h-32 object-cover"
+                    />
+                    {(() => {
+                      try {
+                        const imagesArr = JSON.parse(project.images || "[]");
+                        const count = imagesArr.length;
+                        if (count > 0) {
+                          return (
+                            <div className="absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full bg-black/60 text-white text-xs font-medium">
+                              <Image className="w-3 h-3" />
+                              +{count}
+                            </div>
+                          );
+                        }
+                      } catch {}
+                      return null;
+                    })()}
+                  </div>
                 ) : (
                   <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
                     <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
@@ -189,31 +209,28 @@ export function Projects() {
                   </div>
 
                   <div className="flex gap-3 pt-3">
-                    {project.liveUrl && project.liveUrl !== "#" && (
-                      <AnimatedBorderButton
-                        size="sm"
-                        className="flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200"
-                        gradientVia="#64b5f6"
-                        gradientTo="#a78bfa"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
-                        Live Demo
-                      </AnimatedBorderButton>
-                    )}
-                    {project.codeUrl && project.codeUrl !== "#" && (
-                      <AnimatedBorderButton
-                        size="sm"
-                        className="flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200"
-                        gradientVia="#a78bfa"
-                        gradientTo="#64b5f6"
-                      >
-                        <Github className="w-3.5 h-3.5 mr-1.5" />
-                        View Code
-                      </AnimatedBorderButton>
-                    )}
-                    {!project.liveUrl && project.liveUrl === "#" && !project.codeUrl && project.codeUrl === "#" && (
-                      <span className="text-xs dark:text-[#475569] text-gray-400 py-2">No links available</span>
-                    )}
+                    <AnimatedBorderButton
+                      size="sm"
+                      className={`flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200 ${(!project.liveUrl || project.liveUrl === "#") ? "opacity-50 cursor-not-allowed" : ""}`}
+                      gradientVia="#64b5f6"
+                      gradientTo="#a78bfa"
+                      disabled={!project.liveUrl || project.liveUrl === "#"}
+                      onClick={() => project.liveUrl && project.liveUrl !== "#" && window.open(project.liveUrl, "_blank")}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                      Live Demo
+                    </AnimatedBorderButton>
+                    <AnimatedBorderButton
+                      size="sm"
+                      className={`flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200 ${(!project.codeUrl || project.codeUrl === "#") && (!project.imageUrl && !project.videoUrl) ? "opacity-50 cursor-not-allowed" : ""}`}
+                      gradientVia="#a78bfa"
+                      gradientTo="#64b5f6"
+                      disabled={!project.codeUrl && !project.imageUrl && !project.videoUrl}
+                      onClick={() => setSelectedProject(project)}
+                    >
+                      <Eye className="w-3.5 h-3.5 mr-1.5" />
+                      View
+                    </AnimatedBorderButton>
                   </div>
                 </div>
               </CardSpotlight>
@@ -231,6 +248,8 @@ export function Projects() {
             View All Projects
           </AnimatedBorderButton>
         </div>
+
+        <ProjectGalleryModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       </div>
     </section>
   );

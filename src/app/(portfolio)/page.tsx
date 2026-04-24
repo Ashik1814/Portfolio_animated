@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Hero } from "@/components/portfolio/hero";
+import { HeroContent } from "@/components/portfolio/hero";
 import { LiveClockCalendar } from "@/components/portfolio/live-clock-calendar";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
@@ -76,7 +76,7 @@ useEffect(() => {
 
   return (
     <>
-      <Hero />
+      <HeroContent />
       <LiveClockCalendar />
 
       {/* ──────────────── About Preview ──────────────── */}

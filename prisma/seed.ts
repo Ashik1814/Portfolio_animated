@@ -174,47 +174,47 @@ async function main() {
   const projCount = await prisma.project.count()
   if (projCount === 0) {
     const projectData = [
-      { icon: 'ShoppingBag', title: 'E-Commerce Platform', description: 'Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.', category: 'Development', gradient: 'from-[#4facfe] to-[#00f2fe]', accentColor: '#4facfe', tags: [
+      { icon: 'ShoppingBag', title: 'E-Commerce Platform', description: 'Modern e-commerce solution with seamless checkout, inventory management, and integrated payments.', category: 'Development', gradient: 'from-[#4facfe] to-[#00f2fe]', accentColor: '#4facfe', liveUrl: 'https://example.com/ecommerce', codeUrl: 'https://github.com/example/ecommerce', tags: [
         { name: 'React', bgLight: 'bg-cyan-100', bgDark: 'bg-cyan-500/20', textLight: 'text-cyan-700', textDark: 'text-cyan-300' },
         { name: 'Node.js', bgLight: 'bg-emerald-100', bgDark: 'bg-emerald-500/20', textLight: 'text-emerald-700', textDark: 'text-emerald-300' },
         { name: 'MongoDB', bgLight: 'bg-teal-100', bgDark: 'bg-teal-500/20', textLight: 'text-teal-700', textDark: 'text-teal-300' },
       ]},
-      { icon: 'Palette', title: 'Design System', description: 'Comprehensive component library with guidelines, documentation, and accessibility standards.', category: 'Design', gradient: 'from-[#667eea] to-[#764ba2]', accentColor: '#667eea', tags: [
+      { icon: 'Palette', title: 'Design System', description: 'Comprehensive component library with guidelines, documentation, and accessibility standards.', category: 'Design', gradient: 'from-[#667eea] to-[#764ba2]', accentColor: '#667eea', liveUrl: '#', codeUrl: 'https://github.com/example/design-system', tags: [
         { name: 'Figma', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
         { name: 'Storybook', bgLight: 'bg-indigo-100', bgDark: 'bg-indigo-500/20', textLight: 'text-indigo-700', textDark: 'text-indigo-300' },
         { name: 'Sketch', bgLight: 'bg-sky-100', bgDark: 'bg-sky-500/20', textLight: 'text-sky-700', textDark: 'text-sky-300' },
       ]},
-      { icon: 'Zap', title: 'Workflow Automation System', description: 'Automated business processes reducing manual work by 80% using AI and custom integrations.', category: 'Automation', gradient: 'from-[#a78bfa] to-[#64b5f6]', accentColor: '#a78bfa', tags: [
+      { icon: 'Zap', title: 'Workflow Automation System', description: 'Automated business processes reducing manual work by 80% using AI and custom integrations.', category: 'Automation', gradient: 'from-[#a78bfa] to-[#64b5f6]', accentColor: '#a78bfa', liveUrl: '#', codeUrl: '#', tags: [
         { name: 'Python', bgLight: 'bg-teal-100', bgDark: 'bg-teal-500/20', textLight: 'text-teal-700', textDark: 'text-teal-300' },
         { name: 'Airflow', bgLight: 'bg-sky-100', bgDark: 'bg-sky-500/20', textLight: 'text-sky-700', textDark: 'text-sky-300' },
         { name: 'AWS', bgLight: 'bg-indigo-100', bgDark: 'bg-indigo-500/20', textLight: 'text-indigo-700', textDark: 'text-indigo-300' },
       ]},
-      { icon: 'BarChart3', title: 'SaaS Analytics Dashboard', description: 'Real-time analytics dashboard with data visualization and customizable reporting features.', category: 'Development', gradient: 'from-[#4facfe] to-[#00f2fe]', accentColor: '#4facfe', tags: [
+      { icon: 'BarChart3', title: 'SaaS Analytics Dashboard', description: 'Real-time analytics dashboard with data visualization and customizable reporting features.', category: 'Development', gradient: 'from-[#4facfe] to-[#00f2fe]', accentColor: '#4facfe', liveUrl: 'https://example.com/dashboard', codeUrl: 'https://github.com/example/dashboard', tags: [
         { name: 'React', bgLight: 'bg-cyan-100', bgDark: 'bg-cyan-500/20', textLight: 'text-cyan-700', textDark: 'text-cyan-300' },
         { name: 'D3.js', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
         { name: 'PostgreSQL', bgLight: 'bg-blue-100', bgDark: 'bg-blue-500/20', textLight: 'text-blue-700', textDark: 'text-blue-300' },
       ]},
-      { icon: 'Smartphone', title: 'Mobile App Design', description: 'User-centered mobile application with intuitive navigation and modern aesthetics.', category: 'Design', gradient: 'from-[#43e97b] to-[#38f9d7]', accentColor: '#43e97b', tags: [
+      { icon: 'Smartphone', title: 'Mobile App Design', description: 'User-centered mobile application with intuitive navigation and modern aesthetics.', category: 'Design', gradient: 'from-[#43e97b] to-[#38f9d7]', accentColor: '#43e97b', liveUrl: '#', codeUrl: 'https://github.com/example/mobile-app', tags: [
         { name: 'Figma', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
         { name: 'Prototyping', bgLight: 'bg-indigo-100', bgDark: 'bg-indigo-500/20', textLight: 'text-indigo-700', textDark: 'text-indigo-300' },
         { name: 'User Research', bgLight: 'bg-emerald-100', bgDark: 'bg-emerald-500/20', textLight: 'text-emerald-700', textDark: 'text-emerald-300' },
       ]},
-      { icon: 'Bot', title: 'AI Integration Tool', description: 'Seamless integration of AI capabilities into existing platforms with custom solutions.', category: 'Automation', gradient: 'from-[#a78bfa] to-[#2dd4bf]', accentColor: '#a78bfa', tags: [
+      { icon: 'Bot', title: 'AI Integration Tool', description: 'Seamless integration of AI capabilities into existing platforms with custom solutions.', category: 'Automation', gradient: 'from-[#a78bfa] to-[#2dd4bf]', accentColor: '#a78bfa', liveUrl: 'https://example.com/ai-tool', codeUrl: '#', tags: [
         { name: 'Python', bgLight: 'bg-teal-100', bgDark: 'bg-teal-500/20', textLight: 'text-teal-700', textDark: 'text-teal-300' },
         { name: 'TensorFlow', bgLight: 'bg-cyan-100', bgDark: 'bg-cyan-500/20', textLight: 'text-cyan-700', textDark: 'text-cyan-300' },
         { name: 'API', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
       ]},
-      { icon: 'Briefcase', title: 'Portfolio Website', description: 'Modern portfolio website with glassmorphism effects, smooth animations, and responsive design.', category: 'Development', gradient: 'from-[#30cfd0] to-[#330867]', accentColor: '#30cfd0', tags: [
+      { icon: 'Briefcase', title: 'Portfolio Website', description: 'Modern portfolio website with glassmorphism effects, smooth animations, and responsive design.', category: 'Development', gradient: 'from-[#30cfd0] to-[#330867]', accentColor: '#30cfd0', liveUrl: '#', codeUrl: 'https://github.com/example/portfolio', tags: [
         { name: 'React', bgLight: 'bg-cyan-100', bgDark: 'bg-cyan-500/20', textLight: 'text-cyan-700', textDark: 'text-cyan-300' },
         { name: 'Tailwind CSS', bgLight: 'bg-sky-100', bgDark: 'bg-sky-500/20', textLight: 'text-sky-700', textDark: 'text-sky-300' },
         { name: 'Framer', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
       ]},
-      { icon: 'Utensils', title: 'Restaurant Landing Page', description: 'Beautiful landing page for a restaurant with online ordering, menu display, and gallery.', category: 'Design', gradient: 'from-[#a8edea] to-[#fed6e3]', accentColor: '#a8edea', tags: [
+      { icon: 'Utensils', title: 'Restaurant Landing Page', description: 'Beautiful landing page for a restaurant with online ordering, menu display, and gallery.', category: 'Design', gradient: 'from-[#a8edea] to-[#fed6e3]', accentColor: '#a8edea', liveUrl: 'https://example.com/restaurant', codeUrl: '#', tags: [
         { name: 'Next.js', bgLight: 'bg-slate-100', bgDark: 'bg-slate-500/20', textLight: 'text-slate-700', textDark: 'text-slate-300' },
         { name: 'Tailwind CSS', bgLight: 'bg-sky-100', bgDark: 'bg-sky-500/20', textLight: 'text-sky-700', textDark: 'text-sky-300' },
         { name: 'Figma', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-300' },
       ]},
-      { icon: 'CheckSquare', title: 'Task Management App', description: 'Productivity app with kanban boards, task lists, and team collaboration features.', category: 'Development', gradient: 'from-[#64b5f6] to-[#a78bfa]', accentColor: '#64b5f6', tags: [
+      { icon: 'CheckSquare', title: 'Task Management App', description: 'Productivity app with kanban boards, task lists, and team collaboration features.', category: 'Development', gradient: 'from-[#64b5f6] to-[#a78bfa]', accentColor: '#64b5f6', liveUrl: 'https://example.com/taskapp', codeUrl: 'https://github.com/example/taskapp', tags: [
         { name: 'Vue.js', bgLight: 'bg-emerald-100', bgDark: 'bg-emerald-500/20', textLight: 'text-emerald-700', textDark: 'text-emerald-300' },
         { name: 'Firebase', bgLight: 'bg-indigo-100', bgDark: 'bg-indigo-500/20', textLight: 'text-indigo-700', textDark: 'text-indigo-300' },
         { name: 'PWA', bgLight: 'bg-teal-100', bgDark: 'bg-teal-500/20', textLight: 'text-teal-700', textDark: 'text-teal-300' },
@@ -222,7 +222,7 @@ async function main() {
     ]
 
     for (const p of projectData) {
-      const project = await prisma.project.create({ data: { icon: p.icon, title: p.title, description: p.description, category: p.category, gradient: p.gradient, accentColor: p.accentColor, order: projectData.indexOf(p) } })
+      const project = await prisma.project.create({ data: { icon: p.icon, title: p.title, description: p.description, category: p.category, gradient: p.gradient, accentColor: p.accentColor, liveUrl: p.liveUrl || "#", codeUrl: p.codeUrl || "#", order: projectData.indexOf(p) } })
       await prisma.projectTag.createMany({ data: p.tags.map((t, i) => ({ ...t, projectId: project.id, order: i })) })
     }
     console.log('  ✓ Seeded project + projectTag')

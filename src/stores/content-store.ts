@@ -129,6 +129,7 @@ export interface ProjectData {
   accentColor: string
   imageUrl: string
   videoUrl: string
+  images: string
   liveUrl: string
   codeUrl: string
   order: number
