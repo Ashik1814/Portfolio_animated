@@ -598,10 +598,14 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
   const handleSubmit = async () => {
     setSubmitting(true);
     const body: Record<string, unknown> = { ...formState };
-    // Convert number fields
+    // Convert number fields and ensure multiple file fields are JSON strings
     for (const f of def.fields) {
       if (f.type === "number") {
         body[f.key] = Number(body[f.key]) || 0;
+      }
+      // Convert array values for multiple file fields back to JSON strings
+      if (f.multiple && Array.isArray(body[f.key])) {
+        body[f.key] = JSON.stringify(body[f.key]);
       }
     }
     if (editingItem) {

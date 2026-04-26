@@ -43,6 +43,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(item)
   } catch (error) {
     console.error('Failed to create project:', error)
+    if (error instanceof Error) {
+      console.error('Error name:', error.name)
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+      if ((error as any).code) console.error('Prisma error code:', (error as any).code)
+      if ((error as any).meta) console.error('Prisma error meta:', JSON.stringify((error as any).meta))
+    }
     return NextResponse.json(
       { error: 'Failed to create project' },
       { status: 500 }
@@ -78,6 +85,14 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(item)
   } catch (error) {
     console.error('Failed to update project:', error)
+    if (error instanceof Error) {
+      console.error('Error name:', error.name)
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+      // Log additional Prisma error details if available
+      if ((error as any).code) console.error('Prisma error code:', (error as any).code)
+      if ((error as any).meta) console.error('Prisma error meta:', JSON.stringify((error as any).meta))
+    }
     return NextResponse.json(
       { error: 'Failed to update project' },
       { status: 500 }
