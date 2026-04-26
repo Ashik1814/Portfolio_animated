@@ -235,7 +235,6 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "gradient", label: "Gradient", type: "text" },
       { key: "accentColor", label: "Accent Color", type: "color" },
       { key: "liveUrl", label: "Live URL", type: "text" },
-      { key: "codeUrl", label: "Code URL", type: "text" },
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },

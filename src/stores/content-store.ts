@@ -131,7 +131,6 @@ export interface ProjectData {
   videoUrl: string
   images: string
   liveUrl: string
-  codeUrl: string
   order: number
   tags: ProjectTagData[]
 }

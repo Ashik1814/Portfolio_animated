@@ -118,7 +118,6 @@ export interface Project {
   videoUrl: string;
   images: string;
   liveUrl: string;
-  codeUrl: string;
   order: number;
   tags: ProjectTag[];
 }

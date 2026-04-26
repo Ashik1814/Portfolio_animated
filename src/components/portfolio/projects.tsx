@@ -222,10 +222,10 @@ export function Projects() {
                     </AnimatedBorderButton>
                     <AnimatedBorderButton
                       size="sm"
-                      className={`flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200 ${(!project.codeUrl || project.codeUrl === "#") && (!project.imageUrl && !project.videoUrl) ? "opacity-50 cursor-not-allowed" : ""}`}
+                      className={`flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200 ${(!project.imageUrl && !project.videoUrl) ? "opacity-50 cursor-not-allowed" : ""}`}
                       gradientVia="#a78bfa"
                       gradientTo="#64b5f6"
-                      disabled={!project.codeUrl && !project.imageUrl && !project.videoUrl}
+                      disabled={!project.imageUrl && !project.videoUrl}
                       onClick={() => setSelectedProject(project)}
                     >
                       <Eye className="w-3.5 h-3.5 mr-1.5" />
