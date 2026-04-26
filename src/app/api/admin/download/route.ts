@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     const supabase = createClient(supabaseUrl, supabaseAnonKey)
     const pathParts = path.split('/')
 
-    if (pathParts[0] !== 'images' && pathParts[0] !== 'documents') {
+    if (pathParts[0] !== 'images' && pathParts[0] !== 'documents' && pathParts[0] !== 'videos') {
       return NextResponse.json({ error: 'Invalid path' }, { status: 400 })
     }
 
@@ -33,12 +33,24 @@ export async function GET(request: NextRequest) {
     }
 
     const ext = fileName.split('.').pop()?.toLowerCase() || ''
-    const contentType =
-      ext === 'pdf'
-        ? 'application/pdf'
-        : ext === 'docx'
-          ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-        : 'application/octet-stream'
+    const contentTypeMap: Record<string, string> = {
+      pdf: 'application/pdf',
+      docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      doc: 'application/msword',
+      txt: 'text/plain',
+      mp4: 'video/mp4',
+      webm: 'video/webm',
+      ogg: 'video/ogg',
+      mov: 'video/quicktime',
+      avi: 'video/x-msvideo',
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      gif: 'image/gif',
+      webp: 'image/webp',
+      svg: 'image/svg+xml',
+    }
+    const contentType = contentTypeMap[ext] || 'application/octet-stream'
 
     return new NextResponse(data, {
       headers: {

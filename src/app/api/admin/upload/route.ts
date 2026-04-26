@@ -17,9 +17,10 @@ export async function POST(request: NextRequest) {
     }
 
     const fileExt = file.name.split('.').pop()?.toLowerCase() || ''
-    const allowedImageExts = ['png', 'jpg', 'jpeg']
-    const allowedDocExts = ['pdf', 'docx']
-    const allowedExts = [...allowedImageExts, ...allowedDocExts]
+    const allowedImageExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
+    const allowedVideoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi']
+    const allowedDocExts = ['pdf', 'docx', 'doc', 'txt']
+    const allowedExts = [...allowedImageExts, ...allowedVideoExts, ...allowedDocExts]
 
     if (!allowedExts.includes(fileExt)) {
       return NextResponse.json(
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
     const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
     const fileName = `${timestamp}-${safeName}`
 
-    const folder = allowedImageExts.includes(fileExt) ? 'images' : 'documents'
+    const folder = allowedVideoExts.includes(fileExt) ? 'videos' : (allowedImageExts.includes(fileExt) ? 'images' : 'documents')
     const path = `${folder}/${fileName}`
 
     const uploadUrl = `${supabaseUrl}/storage/v1/object/portfolio-files/${path}`

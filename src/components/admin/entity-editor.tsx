@@ -36,6 +36,7 @@ interface FieldDef {
   selectDataKey?: string; // key in ContentData to use for select options
   selectLabelKey?: string; // field to use as label from selectData
   accept?: string; // for file type fields, e.g. "image/*" or "video/*"
+  multiple?: boolean; // for file type fields
 }
 
 interface EntityDef {
@@ -577,7 +578,12 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
   const openEditDialog = (item: Record<string, unknown>) => {
     const form: Record<string, unknown> = {};
     for (const f of def.fields) {
-      form[f.key] = item[f.key] ?? (f.type === "number" ? 0 : "");
+      const val = item[f.key];
+      if (f.multiple && typeof val === "string") {
+        try { form[f.key] = JSON.parse(val); } catch { form[f.key] = []; }
+      } else {
+        form[f.key] = val ?? (f.type === "number" ? 0 : "");
+      }
     }
     setFormState(form);
     setEditingItem(item);
@@ -828,34 +834,58 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                 ) : f.type === "file" ? (
                   <div className="space-y-2">
                     {/* Current file preview */}
-                    {formState[f.key] ? (
-                      <div className="flex items-center gap-2 p-2 rounded-lg bg-[#06080f] border border-white/10">
-                        {String(formState[f.key]).match(/\.(mp4|webm|ogg)$/i) ? (
-                          <div className="flex items-center gap-2 text-sm text-gray-300">
-                            <Upload className="w-4 h-4 text-[#00e5ff]" />
-                            <span className="truncate">Video uploaded</span>
-                          </div>
-                        ) : (
-                          <img
-                            src={String(formState[f.key])}
-                            alt="Preview"
-                            className="w-16 h-16 object-cover rounded-md border border-white/10"
-                          />
+                    {formState[f.key] && (
+                      <div className="flex flex-wrap gap-2 p-2 rounded-lg bg-[#06080f] border border-white/10">
+                        {(() => {
+                          const fileValue = formState[f.key];
+                          let fileUrls: string[] = [];
+                          if (f.multiple) {
+                            try { fileUrls = JSON.parse(String(fileValue)); } catch { fileUrls = []; }
+                          } else {
+                            fileUrls = [String(fileValue)];
+                          }
+                          
+                          return fileUrls.filter(Boolean).map((url, idx) => {
+                            const isVideo = url.match(/\.(mp4|webm|ogg|mov|avi)$/i);
+                            return (
+                              <div key={idx} className="relative group">
+                                {isVideo ? (
+                                  <div className="flex items-center gap-2 text-sm text-gray-300 w-24">
+                                    <Upload className="w-4 h-4 text-[#00e5ff]" />
+                                    <span className="truncate">Video</span>
+                                  </div>
+                                ) : (
+                                  <img src={url} alt={`Preview ${idx + 1}`} className="w-16 h-16 object-cover rounded-md border border-white/10" />
+                                )}
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newUrls = fileUrls.filter((_, i) => i !== idx);
+                                    setFormState((prev) => ({ ...prev, [f.key]: f.multiple ? JSON.stringify(newUrls) : "" }));
+                                  }}
+                                  className="absolute -top-1 -right-1 h-5 w-5 p-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10 opacity-0 group-hover:opacity-100"
+                                >
+                                  <X className="w-3 h-3" />
+                                </Button>
+                              </div>
+                            );
+                          });
+                        })()}
+                        {formState[f.key] && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setFormState((prev) => ({ ...prev, [f.key]: f.multiple ? "[]" : "" }))}
+                            className="h-7 text-xs text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                          >
+                            Clear all
+                          </Button>
                         )}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs text-gray-400 truncate">{String(formState[f.key]).split('/').pop()}</p>
-                        </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setFormState((prev) => ({ ...prev, [f.key]: "" }))}
-                          className="h-7 w-7 p-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </Button>
                       </div>
-                    ) : null}
+                    )}
 
                     {/* File upload */}
                     <div className="flex gap-2">
@@ -869,17 +899,28 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                         <input
                           type="file"
                           accept={f.accept || "*"}
+                          multiple={f.multiple}
                           className="hidden"
                           onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            const fd = new FormData();
-                            fd.append("file", file);
-                            try {
+                            const files = e.target.files;
+                            if (!files || files.length === 0) return;
+                            
+                            const uploadPromises = Array.from(files).map(async (file) => {
+                              const fd = new FormData();
+                              fd.append("file", file);
                               const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
                               const respData = await res.json();
-                              if (respData.url) {
-                                setFormState((prev) => ({ ...prev, [f.key]: respData.url }));
+                              return respData.url;
+                            });
+                            
+                            try {
+                              const urls = await Promise.all(uploadPromises);
+                              if (f.multiple) {
+                                const currentUrls = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                                const newUrls = [...currentUrls, ...urls.filter(Boolean)];
+                                setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(newUrls) }));
+                              } else {
+                                setFormState((prev) => ({ ...prev, [f.key]: urls[0] }));
                               }
                             } catch (err) {
                               console.error("Upload failed:", err);
@@ -890,25 +931,73 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                     </div>
 
                     {/* Manual URL input */}
-                    <div className="relative">
-                      <Input
-                        placeholder="Or paste URL manually..."
-                        value={String(formState[f.key] ?? "")}
-                        onChange={(e) => setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))}
-                        className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 pr-8"
-                      />
-                      {!!formState[f.key] && (
+                    {f.multiple ? (
+                      <div className="space-y-2">
+                        {(() => {
+                          let currentUrls: string[] = [];
+                          try { currentUrls = JSON.parse(String(formState[f.key] || "[]")); } catch { currentUrls = []; }
+                          return currentUrls.map((url, idx) => (
+                            <div key={idx} className="flex gap-2">
+                              <Input
+                                value={url}
+                                onChange={(e) => {
+                                  const newUrls = [...currentUrls];
+                                  newUrls[idx] = e.target.value;
+                                  setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(newUrls) }));
+                                }}
+                                placeholder="Paste URL..."
+                                className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20"
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  const newUrls = currentUrls.filter((_, i) => i !== idx);
+                                  setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(newUrls) }));
+                                }}
+                                className="h-9 w-9 p-0 text-gray-400 hover:text-red-400 hover:bg-red-500/10"
+                              >
+                                <X className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          ));
+                        })()}
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => setFormState((prev) => ({ ...prev, [f.key]: "" }))}
-                          className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                          onClick={() => {
+                            let currentUrls: string[] = [];
+                            try { currentUrls = JSON.parse(String(formState[f.key] || "[]")); } catch { currentUrls = []; }
+                            setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify([...currentUrls, ""]) }));
+                          }}
+                          className="text-xs text-cyan-400 hover:text-cyan-300"
                         >
-                          <X className="w-3 h-3" />
+                          + Add URL
                         </Button>
-                      )}
-                    </div>
+                      </div>
+                    ) : (
+                      <div className="relative">
+                        <Input
+                          placeholder="Or paste URL manually..."
+                          value={String(formState[f.key] ?? "")}
+                          onChange={(e) => setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))}
+                          className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 pr-8"
+                        />
+                        {!!formState[f.key] && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setFormState((prev) => ({ ...prev, [f.key]: "" }))}
+                            className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0 text-gray-400 hover:text-red-400"
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <Input

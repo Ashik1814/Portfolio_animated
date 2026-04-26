@@ -37,7 +37,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
     }
     
-    const item = await db.project.create({ data })
+    const item = await db.project.create({ 
+      data: { ...data, codeUrl: data.codeUrl || "#" }
+    })
     return NextResponse.json(item)
   } catch (error) {
     console.error('Failed to create project:', error)
@@ -60,7 +62,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
     
-    const { id, ...data } = body
+    const { id, codeUrl, ...data } = body
     
     if (data.title && (typeof data.title !== 'string' || data.title.length > 200)) {
       return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
@@ -69,7 +71,10 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
     }
     
-    const item = await db.project.update({ where: { id }, data })
+    const item = await db.project.update({
+      where: { id },
+      data: { ...data, codeUrl: codeUrl || "#" }
+    })
     return NextResponse.json(item)
   } catch (error) {
     console.error('Failed to update project:', error)
