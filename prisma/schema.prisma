@@ -8,67 +8,62 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// ─── Site-wide Configuration ───
 model SiteConfig {
-  id                  String @id @default(cuid())
-  siteName            String @default("Alchemist")
-  logoText            String @default("Alchemist.io")
-  logoUrl             String @default("")
-  heroWelcomeText     String @default("Welcome to my portfolio")
-  heroName            String @default("Alchemist")
-  heroTitle           String @default("UI/UX Designer • Frontend Developer • n8n Automation Specialist")
-  heroDescription     String @default("I transform ideas into exceptional digital experiences. With a unique blend of creative design thinking and technical expertise, I create interfaces that users love and businesses value.")
-  heroCtaText         String @default("Get In Touch")
-  heroCtaLink         String @default("#contact")
-  heroSecondaryCtaText String @default("View Projects")
-  heroSecondaryCtaLink String @default("#projects")
-  heroFollowText      String @default("Follow me:")
-  heroAvailableText   String @default("Available for work")
-  heroProfileImage    String @default("")
-  aboutDescription    String @default("I'm a passionate CSE graduate who loves turning ideas into reality through design and code. With a unique blend of creative design thinking and technical expertise, I create digital experiences that users love and businesses value.")
-  approachTitle       String @default("My Approach")
-  approachText1       String @default("I believe that great digital products are born at the intersection of beautiful design, clean code, and smart automation. My approach is user-centered, data-driven, and driven by a passion for continuous learning and improvement.")
-  approachText2       String @default("Whether I'm designing an interface, writing code, or setting up an automation workflow, I always ask: 'How can this create the most value for users while maintaining technical excellence?' This philosophy guides every project I take on.")
-  skillsDescription   String @default("A comprehensive toolkit of design, development, and automation skills honed through years of passionate work and continuous learning")
-  projectsDescription String @default("A collection of my recent work showcasing expertise in design, development, and automation. Each project represents a unique challenge and learning opportunity.")
-  educationDescription String @default("My academic journey and continual learning path in computer science and technology")
-  contactDescription  String @default("I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.")
-  contactLocationText String @default("Available for remote work worldwide")
-  cvUrl               String @default("#")
-  footerCopyright     String @default("© 2025 Alchemist. All rights reserved.")
-  seoTitle            String @default("Portfolio | Creative - UI/UX Designer & Developer")
-  seoDescription      String @default("A passionate CSE graduate who loves turning ideas into reality through design and code. Specializing in UI/UX Design, Frontend Development, and n8n Automation.")
-  seoKeywords         String @default("Portfolio, UI/UX Designer, Frontend Developer, n8n Automation, React, TypeScript, Tailwind CSS")
-  seoOgTitle          String @default("Portfolio | Creative - UI/UX Designer & Developer")
-  seoOgDescription    String @default("UI/UX Designer, Frontend Developer, and n8n Automation Specialist")
-  updatedAt           DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  siteName             String   @default("Alchemist")
+  logoText             String   @default("Alchemist.io")
+  logoUrl              String   @default("")
+  heroWelcomeText      String   @default("Welcome to my portfolio")
+  heroName             String   @default("Alchemist")
+  heroTitle            String   @default("UI/UX Designer • Frontend Developer • n8n Automation Specialist")
+  heroDescription      String   @default("I transform ideas into exceptional digital experiences. With a unique blend of creative design thinking and technical expertise, I create interfaces that users love and businesses value.")
+  heroCtaText          String   @default("Get In Touch")
+  heroCtaLink          String   @default("#contact")
+  heroSecondaryCtaText String   @default("View Projects")
+  heroSecondaryCtaLink String   @default("#projects")
+  heroFollowText       String   @default("Follow me:")
+  heroAvailableText    String   @default("Available for work")
+  heroProfileImage     String   @default("")
+  aboutDescription     String   @default("I'm a passionate CSE graduate who loves turning ideas into reality through design and code. With a unique blend of creative design thinking and technical expertise, I create digital experiences that users love and businesses value.")
+  approachTitle        String   @default("My Approach")
+  approachText1        String   @default("I believe that great digital products are born at the intersection of beautiful design, clean code, and smart automation. My approach is user-centered, data-driven, and driven by a passion for continuous learning and improvement.")
+  approachText2        String   @default("Whether I'm designing an interface, writing code, or setting up an automation workflow, I always ask: 'How can this create the most value for users while maintaining technical excellence?' This philosophy guides every project I take on.")
+  skillsDescription    String   @default("A comprehensive toolkit of design, development, and automation skills honed through years of passionate work and continuous learning")
+  projectsDescription  String   @default("A collection of my recent work showcasing expertise in design, development, and automation. Each project represents a unique challenge and learning opportunity.")
+  educationDescription String   @default("My academic journey and continual learning path in computer science and technology")
+  contactDescription   String   @default("I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.")
+  contactLocationText  String   @default("Available for remote work worldwide")
+  cvUrl                String   @default("#")
+  footerCopyright      String   @default("© 2025 Alchemist. All rights reserved.")
+  seoTitle             String   @default("Portfolio | Creative - UI/UX Designer & Developer")
+  seoDescription       String   @default("A passionate CSE graduate who loves turning ideas into reality through design and code. Specializing in UI/UX Design, Frontend Development, and n8n Automation.")
+  seoKeywords          String   @default("Portfolio, UI/UX Designer, Frontend Developer, n8n Automation, React, TypeScript, Tailwind CSS")
+  seoOgTitle           String   @default("Portfolio | Creative - UI/UX Designer & Developer")
+  seoOgDescription     String   @default("UI/UX Designer, Frontend Developer, and n8n Automation Specialist")
+  updatedAt            DateTime @updatedAt
 }
 
-// ─── Navigation ───
 model NavItem {
-  id     String @id @default(cuid())
-  label  String
-  href   String
-  order  Int    @default(0)
+  id    String @id @default(cuid())
+  label String
+  href  String
+  order Int    @default(0)
 }
 
-// ─── Hero Stats (floating badges) ───
 model HeroStat {
-  id         String @id @default(cuid())
-  value      String
-  label      String
-  color      String @default("#00e5ff")
-  position   String @default("left-top") // left-top, right-middle, left-bottom
-  order      Int    @default(0)
+  id       String @id @default(cuid())
+  value    String
+  label    String
+  color    String @default("#00e5ff")
+  position String @default("left-top")
+  order    Int    @default(0)
 }
 
-// ─── Admin Authentication ───
 model AdminAuth {
   id           String @id @default(cuid())
   passwordHash String @default("admin123")
 }
 
-// ─── About Section ───
 model AboutSkill {
   id          String @id @default(cuid())
   icon        String @default("Paintbrush")
@@ -102,23 +97,22 @@ model AboutTechTag {
   order Int    @default(0)
 }
 
-// ─── Skills Section ───
 model SkillCategory {
-  id    String @id @default(cuid())
-  icon  String
-  title String
-  color String
-  order Int    @default(0)
+  id     String  @id @default(cuid())
+  icon   String
+  title  String
+  color  String
+  order  Int     @default(0)
   skills Skill[]
 }
 
 model Skill {
-  id         String @id @default(cuid())
+  id         String        @id @default(cuid())
   name       String
   percentage Int
   categoryId String
+  order      Int           @default(0)
   category   SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  order      Int    @default(0)
 }
 
 model SoftSkill {
@@ -144,49 +138,47 @@ model CurrentlyLearning {
   order      Int    @default(0)
 }
 
-// ─── Projects Section ───
 model Project {
-  id          String @id @default(cuid())
+  id          String       @id @default(cuid())
   icon        String
   title       String
   description String
   category    String
   gradient    String
   accentColor String
-  imageUrl    String @default("")
-  videoUrl    String @default("")
-  images     String @default("[]")
-  liveUrl     String @default("#")
-  codeUrl     String @default("#")
-  order      Int    @default(0)
-  tags       ProjectTag[]
+  imageUrl    String       @default("")
+  videoUrl    String       @default("")
+  images      String       @default("[]")
+  liveUrl     String       @default("#")
+  codeUrl     String       @default("#")
+  order       Int          @default(0)
+  tags        ProjectTag[]
 }
 
 model ProjectTag {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   name      String
-  bgLight   String @default("bg-cyan-100")
-  bgDark    String @default("bg-cyan-500/20")
-  textLight String @default("text-cyan-700")
-  textDark  String @default("text-cyan-300")
+  bgLight   String  @default("bg-cyan-100")
+  bgDark    String  @default("bg-cyan-500/20")
+  textLight String  @default("text-cyan-700")
+  textDark  String  @default("text-cyan-300")
   projectId String
+  order     Int     @default(0)
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  order     Int    @default(0)
 }
 
-// ─── Education Section ───
 model Degree {
-  id          String @id @default(cuid())
-  icon        String
-  title       String
-  institution String
-  location    String @default("")
-  period      String
-  gpa         String
-  gpaColor    String @default("#00e5ff")
-  description String
-  achievements String @default("") // comma-separated
-  order       Int    @default(0)
+  id           String @id @default(cuid())
+  icon         String
+  title        String
+  institution  String
+  location     String @default("")
+  period       String
+  gpa          String
+  gpaColor     String @default("#00e5ff")
+  description  String
+  achievements String @default("")
+  order        Int    @default(0)
 }
 
 model Certification {
@@ -205,14 +197,13 @@ model Coursework {
   order Int    @default(0)
 }
 
-// ─── Contact Section ───
 model ContactCard {
-  id     String @id @default(cuid())
-  icon   String
-  label  String
-  value  String
-  href   String
-  order  Int    @default(0)
+  id    String @id @default(cuid())
+  icon  String
+  label String
+  value String
+  href  String
+  order Int    @default(0)
 }
 
 model SocialLink {
