@@ -31,7 +31,7 @@ import { IconPicker } from "./icon-picker";
 interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "number" | "textarea" | "color" | "select" | "file" | "icon";
+  type: "text" | "number" | "textarea" | "color" | "select" | "file" | "icon" | "tags";
   options?: { value: string; label: string }[];
   selectDataKey?: string; // key in ContentData to use for select options
   selectLabelKey?: string; // field to use as label from selectData
@@ -239,8 +239,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       {
         key: "tags",
         label: "Technologies",
-        type: "select",
-        multiple: true,
+        type: "tags",
         selectDataKey: "projectTags",
         selectLabelKey: "name",
       },
@@ -578,6 +577,8 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
         } else {
           defaults[f.key] = f.multiple ? "[]" : "";
         }
+      } else if (f.type === "tags") {
+        defaults[f.key] = "[]";
       } else if (f.type === "file") {
         defaults[f.key] = f.multiple ? "[]" : "";
       }
@@ -872,6 +873,53 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                         )?.map((item) => (
                           <SelectItem key={item.id} value={item.id}>
                             {String(item[f.selectLabelKey ?? "id"])}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ) : f.type === "tags" ? (
+                  <div className="space-y-2">
+                    {/* Selected tags display */}
+                    <div className="flex flex-wrap gap-1.5">
+                      {(() => {
+                        try { return JSON.parse(String(formState[f.key] || "[]")); } catch { return []; }
+                      })().map((tagId: string) => {
+                        const tag = (data[f.selectDataKey as keyof ContentData] as unknown as { id: string; name: string }[]).find((t) => t.id === tagId);
+                        return tag ? (
+                          <span key={tagId} className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-300">
+                            {tag.name}
+                            <button type="button" onClick={() => {
+                              const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                              const updated = current.filter((id: string) => id !== tagId);
+                              setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
+                            }} className="hover:text-red-400 ml-1">×</button>
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
+                    {/* Dropdown to add new tags */}
+                    <Select
+                      onValueChange={(val) => {
+                        if (!val) return;
+                        const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                        if (!current.includes(val)) {
+                          setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify([...current, val]) }));
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 w-full">
+                        <SelectValue placeholder="Add technology..." />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#0d1525] border-white/10 max-h-60 overflow-y-auto">
+                        {(
+                          data[f.selectDataKey as keyof ContentData] as unknown as { id: string; name: string }[]
+                        )?.filter((t) => {
+                          const current = formState[f.key] ? JSON.parse(String(formState[f.key] || "[]")) : [];
+                          return !current.includes(t.id);
+                        }).map((tag) => (
+                          <SelectItem key={tag.id} value={tag.id}>
+                            {tag.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
