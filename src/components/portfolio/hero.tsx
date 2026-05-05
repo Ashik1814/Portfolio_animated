@@ -13,6 +13,13 @@ const MovingBorderIcon = dynamic(() => import("@/components/ui/moving-border-ico
   ssr: false,
 });
 
+function buildImageUrl(path: string): string {
+  if (!path) return '';
+  const trimmed = path.trim();
+  if (trimmed.startsWith('http')) return trimmed;
+  return `https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/${trimmed}`;
+}
+
 const positionClasses: Record<string, string> = {
   "left-top": "absolute left-20 sm:left-24 top-8 sm:top-10 -translate-y-1/2 z-20",
   "right-middle": "absolute right-8 sm:right-10 translate-x-1/2 top-1/2 -translate-y-1/2 z-20",
@@ -155,18 +162,11 @@ export function HeroContent({ siteConfig, socialLinks, heroStats }: HeroContentP
                   <div className="w-full h-full rounded-full dark:bg-[#06080f] bg-white flex items-center justify-center overflow-hidden p-1">
                     <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
                       {siteConfig.heroProfileImage ? (
-                        <div className="relative w-full h-full rounded-full overflow-hidden">
-                          <Image
-                            src={siteConfig.heroProfileImage}
-                            alt="Profile"
-                            fill
-                            sizes="(max-width: 768px) 288px, (max-width: 1024px) 320px, 384px"
-                            className="object-cover"
-                            priority
-                            loading="eager"
-                            fetchPriority="high"
-                          />
-                        </div>
+                        <img
+                          src={siteConfig.heroProfileImage}
+                          alt="Profile"
+                          className="w-full h-full rounded-full object-cover"
+                        />
                       ) : (
                         <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
                           <div className="w-20 h-20 rounded-full dark:bg-gradient-to-br dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 bg-gradient-to-br from-[#00a8cc]/10 to-[#64b5f6]/10 flex items-center justify-center">

@@ -23,7 +23,7 @@ async function main() {
       heroSecondaryCtaLink: '/projects',
       heroFollowText: 'Follow me:',
       heroAvailableText: 'Available for work',
-      heroProfileImage: '',
+      heroProfileImage: 'https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/images/1776789415605-profile.jpg',
       aboutDescription: "I'm a passionate CSE graduate who loves turning ideas into reality through design and code. With a unique blend of creative design thinking and technical expertise, I create digital experiences that users love and businesses value.",
       approachTitle: 'My Approach',
       approachText1: "I believe that great digital products are born at the intersection of beautiful design, clean code, and smart automation. My approach is user-centered, data-driven, and driven by a passion for continuous learning and improvement.",

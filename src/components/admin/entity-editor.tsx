@@ -236,13 +236,6 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },
-      {
-        key: "tags",
-        label: "Technologies",
-        type: "tags",
-        selectDataKey: "projectTags",
-        selectLabelKey: "name",
-      },
       { key: "order", label: "Order", type: "number" },
     ],
     displayFields: [
@@ -560,77 +553,84 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
     );
   }
 
-  const openAddDialog = () => {
-    const defaults: Record<string, unknown> = {};
-    for (const f of def.fields) {
-      if (f.type === "number") defaults[f.key] = 0;
-      else if (f.type === "select" && f.options?.[0]) defaults[f.key] = f.options[0].value;
-      else if (f.type === "select" && f.selectDataKey) {
-        const selectItems = data[f.selectDataKey as keyof ContentData];
-        console.log(`[DEBUG] ${f.selectDataKey}:`, selectItems);
-        if (Array.isArray(selectItems) && selectItems.length > 0) {
-          if (f.multiple) {
-            defaults[f.key] = "[]";
-          } else {
-            defaults[f.key] = (selectItems[0] as { id: string }).id;
-          }
-        } else {
-          defaults[f.key] = f.multiple ? "[]" : "";
-        }
-      } else if (f.type === "tags") {
-        defaults[f.key] = "[]";
-      } else if (f.type === "file") {
-        defaults[f.key] = f.multiple ? "[]" : "";
-      }
-      else defaults[f.key] = "";
-    }
-    setFormState(defaults);
-    setEditingItem(null);
-    setDialogOpen(true);
-  };
+   const openAddDialog = () => {
+     const defaults: Record<string, unknown> = {};
+     for (const f of def.fields) {
+       if (f.type === "number") defaults[f.key] = 0;
+       else if (f.type === "select" && f.options?.[0]) defaults[f.key] = f.options[0].value;
+       else if (f.type === "select" && f.selectDataKey) {
+         const selectItems = data[f.selectDataKey as keyof ContentData];
+         console.log(`[DEBUG] ${f.selectDataKey}:`, selectItems);
+         if (Array.isArray(selectItems) && selectItems.length > 0) {
+           if (f.multiple) {
+             defaults[f.key] = "[]";
+           } else {
+             defaults[f.key] = (selectItems[0] as { id: string }).id;
+           }
+         } else {
+           defaults[f.key] = f.multiple ? "[]" : "";
+         }
+       } else if (f.type === "tags") {
+         defaults[f.key] = "[]";
+       } else if (f.type === "file") {
+         defaults[f.key] = f.multiple ? "[]" : "";
+       }
+       else defaults[f.key] = "";
+     }
+     setFormState(defaults);
+     setEditingItem(null);
+     setDialogOpen(true);
+   };
 
-  const openEditDialog = (item: Record<string, unknown>) => {
-    const form: Record<string, unknown> = {};
-    for (const f of def.fields) {
-      const val = item[f.key];
-      if (f.multiple && typeof val === "string") {
-        try { form[f.key] = JSON.parse(val); } catch { form[f.key] = []; }
-      } else {
-        form[f.key] = val ?? (f.type === "number" ? 0 : "");
-      }
-    }
-    setFormState(form);
-    setEditingItem(item);
-    setDialogOpen(true);
-  };
+   const openEditDialog = (item: Record<string, unknown>) => {
+     const form: Record<string, unknown> = {};
+     for (const f of def.fields) {
+       const val = item[f.key];
+       if (f.multiple && typeof val === "string") {
+         try { form[f.key] = JSON.parse(val); } catch { form[f.key] = []; }
+       } else if (f.type === "tags" && typeof val === "string") {
+         // For tags field, parse the JSON string into an array
+         try { form[f.key] = JSON.parse(val); } catch { form[f.key] = []; }
+       } else {
+         form[f.key] = val ?? (f.type === "number" ? 0 : "");
+       }
+     }
+     setFormState(form);
+     setEditingItem(item);
+     setDialogOpen(true);
+   };
 
   const openDeleteDialog = (item: Record<string, unknown>) => {
     setDeletingItem(item);
     setDeleteDialogOpen(true);
   };
 
-  const handleSubmit = async () => {
-    setSubmitting(true);
-    const body: Record<string, unknown> = { ...formState };
-    // Convert number fields and ensure multiple file fields are JSON strings
-    for (const f of def.fields) {
-      if (f.type === "number") {
-        body[f.key] = Number(body[f.key]) || 0;
-      }
-      // Convert array values for multiple file fields back to JSON strings
-      if (f.multiple && Array.isArray(body[f.key])) {
-        body[f.key] = JSON.stringify(body[f.key]);
-      }
-    }
-    if (editingItem) {
-      body.id = editingItem.id;
-      await onCrud("PUT", def.apiPath, body);
-    } else {
-      await onCrud("POST", def.apiPath, body);
-    }
-    setSubmitting(false);
-    setDialogOpen(false);
-  };
+   const handleSubmit = async () => {
+     setSubmitting(true);
+     const body: Record<string, unknown> = { ...formState };
+     // Convert number fields and ensure multiple file fields are JSON strings
+     for (const f of def.fields) {
+       if (f.type === "number") {
+         body[f.key] = Number(body[f.key]) || 0;
+       }
+       // Convert array values for multiple file fields back to JSON strings
+       if (f.multiple && Array.isArray(body[f.key])) {
+         body[f.key] = JSON.stringify(body[f.key]);
+       }
+       // Handle tags field - convert array to JSON string for storage
+       if (f.type === "tags" && Array.isArray(body[f.key])) {
+         body[f.key] = JSON.stringify(body[f.key]);
+       }
+     }
+     if (editingItem) {
+       body.id = editingItem.id;
+       await onCrud("PUT", def.apiPath, body);
+     } else {
+       await onCrud("POST", def.apiPath, body);
+     }
+     setSubmitting(false);
+     setDialogOpen(false);
+   };
 
   const handleDelete = async () => {
     if (!deletingItem) return;
@@ -878,53 +878,55 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                       </SelectContent>
                     </Select>
                   </div>
-                ) : f.type === "tags" ? (
-                  <div className="space-y-2">
-                    {/* Selected tags display */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {(() => {
-                        try { return JSON.parse(String(formState[f.key] || "[]")); } catch { return []; }
-                      })().map((tagId: string) => {
-                        const tag = (data[f.selectDataKey as keyof ContentData] as unknown as { id: string; name: string }[]).find((t) => t.id === tagId);
-                        return tag ? (
-                          <span key={tagId} className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-cyan-500/20 text-cyan-300">
-                            {tag.name}
-                            <button type="button" onClick={() => {
-                              const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
-                              const updated = current.filter((id: string) => id !== tagId);
-                              setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
-                            }} className="hover:text-red-400 ml-1">×</button>
-                          </span>
-                        ) : null;
-                      })}
-                    </div>
-                    {/* Dropdown to add new tags */}
-                    <Select
-                      onValueChange={(val) => {
-                        if (!val) return;
-                        const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
-                        if (!current.includes(val)) {
-                          setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify([...current, val]) }));
-                        }
-                      }}
-                    >
-                      <SelectTrigger className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 w-full">
-                        <SelectValue placeholder="Add technology..." />
-                      </SelectTrigger>
-                      <SelectContent className="bg-[#0d1525] border-white/10 max-h-60 overflow-y-auto">
-                        {(
-                          data[f.selectDataKey as keyof ContentData] as unknown as { id: string; name: string }[]
-                        )?.filter((t) => {
-                          const current = formState[f.key] ? JSON.parse(String(formState[f.key] || "[]")) : [];
-                          return !current.includes(t.id);
-                        }).map((tag) => (
-                          <SelectItem key={tag.id} value={tag.id}>
-                            {tag.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  ) : f.type === "tags" ? (
+                   <div className="space-y-2">
+                     {(f.multiple && formState[f.key]) ? (
+                       <div className="flex flex-wrap gap-1.5 p-2 rounded-lg bg-[#06080f] border border-white/10">
+                         {(() => {
+                           try { return JSON.parse(String(formState[f.key])); } catch { return []; }
+                         })().map((selectedId: string) => {
+                           const item = (data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]).find((i) => i.id === selectedId);
+                           return item ? (
+                             <span key={selectedId} className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs">
+                               {String(item[f.selectLabelKey ?? "id"])}
+                               <button type="button" onClick={() => {
+                                 const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                                 const updated = current.filter((id: string) => id !== selectedId);
+                                 setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
+                               }} className="hover:text-red-400 ml-1">×</button>
+                             </span>
+                           ) : null;
+                         })}
+                       </div>
+                     ) : null}
+                     <Select
+                       value={f.multiple ? "" : String(formState[f.key] ?? "")}
+                       onValueChange={(val) => {
+                         if (f.multiple && val) {
+                           const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                           if (!current.includes(val)) {
+                             const updated = [...current, val];
+                             setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
+                           }
+                         } else {
+                           setFormState((prev) => ({ ...prev, [f.key]: val }));
+                         }
+                       }}
+                     >
+                       <SelectTrigger className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 w-full">
+                         <SelectValue placeholder={f.multiple ? "Click to add..." : "Select..."} />
+                       </SelectTrigger>
+                       <SelectContent className="bg-[#0d1525] border-white/10 max-h-60 overflow-y-auto">
+                         {(
+                           data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]
+                         )?.map((item) => (
+                           <SelectItem key={item.id} value={item.id}>
+                             {String(item[f.selectLabelKey ?? "id"])}
+                           </SelectItem>
+                         ))}
+                       </SelectContent>
+                     </Select>
+                   </div>
                 ) : f.type === "file" ? (
                   <div className="space-y-2">
                     {/* Current file preview */}

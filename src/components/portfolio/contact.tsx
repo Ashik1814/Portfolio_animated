@@ -14,6 +14,13 @@ import { motion } from "framer-motion";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 
+function buildImageUrl(path: string): string {
+  if (!path) return '';
+  const trimmed = path.trim();
+  if (trimmed.startsWith('http')) return trimmed;
+  return `https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/${trimmed}`;
+}
+
 export function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -91,7 +98,7 @@ export function ContactSection() {
                   <div className="w-full h-full rounded-full dark:bg-gradient-to-br dark:from-[#0a0f1e] dark:to-[#0d1525] bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
                     {siteConfig.heroProfileImage ? (
                       <img
-                        src={siteConfig.heroProfileImage}
+                        src={buildImageUrl(siteConfig.heroProfileImage)}
                         alt="Profile"
                         className="w-full h-full rounded-full object-cover"
                       />
