@@ -172,14 +172,40 @@ async function main() {
 
   // ─── Project Tags ───
   await seedIfEmpty('projectTag', [
-    { name: 'React', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 0 },
-    { name: 'Next.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 1 },
-    { name: 'TypeScript', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 2 },
-    { name: 'Tailwind CSS', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 3 },
-    { name: 'Node.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 4 },
-    { name: 'Framer Motion', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 5 },
-    { name: 'Three.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 6 },
-    { name: 'Supabase', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 7 },
+    // Frontend
+    { name: 'React', bgLight: 'bg-blue-100', bgDark: 'bg-blue-500/20', textLight: 'text-blue-700', textDark: 'text-blue-400', order: 0 },
+    { name: 'Next.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-300', order: 1 },
+    { name: 'TypeScript', bgLight: 'bg-blue-100', bgDark: 'bg-blue-500/20', textLight: 'text-blue-700', textDark: 'text-blue-400', order: 2 },
+    { name: 'JavaScript', bgLight: 'bg-yellow-100', bgDark: 'bg-yellow-500/20', textLight: 'text-yellow-700', textDark: 'text-yellow-400', order: 3 },
+    { name: 'HTML/CSS', bgLight: 'bg-orange-100', bgDark: 'bg-orange-500/20', textLight: 'text-orange-700', textDark: 'text-orange-400', order: 4 },
+    { name: 'Tailwind CSS', bgLight: 'bg-cyan-100', bgDark: 'bg-cyan-500/20', textLight: 'text-cyan-700', textDark: 'text-cyan-400', order: 5 },
+    // UI/UX
+    { name: 'Figma', bgLight: 'bg-purple-100', bgDark: 'bg-purple-500/20', textLight: 'text-purple-700', textDark: 'text-purple-400', order: 6 },
+    { name: 'UI/UX Design', bgLight: 'bg-pink-100', bgDark: 'bg-pink-500/20', textLight: 'text-pink-700', textDark: 'text-pink-400', order: 7 },
+    { name: 'Responsive Design', bgLight: 'bg-green-100', bgDark: 'bg-green-500/20', textLight: 'text-green-700', textDark: 'text-green-400', order: 8 },
+    { name: 'Design Systems', bgLight: 'bg-rose-100', bgDark: 'bg-rose-500/20', textLight: 'text-rose-700', textDark: 'text-rose-400', order: 9 },
+    // Backend
+    { name: 'Node.js', bgLight: 'bg-green-100', bgDark: 'bg-green-500/20', textLight: 'text-green-700', textDark: 'text-green-400', order: 10 },
+    { name: 'Express', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-300', order: 11 },
+    { name: 'REST API', bgLight: 'bg-indigo-100', bgDark: 'bg-indigo-500/20', textLight: 'text-indigo-700', textDark: 'text-indigo-400', order: 12 },
+    { name: 'GraphQL', bgLight: 'bg-pink-100', bgDark: 'bg-pink-500/20', textLight: 'text-pink-700', textDark: 'text-pink-400', order: 13 },
+    // Database
+    { name: 'PostgreSQL', bgLight: 'bg-blue-100', bgDark: 'bg-blue-500/20', textLight: 'text-blue-700', textDark: 'text-blue-400', order: 14 },
+    { name: 'MongoDB', bgLight: 'bg-green-100', bgDark: 'bg-green-500/20', textLight: 'text-green-700', textDark: 'text-green-400', order: 15 },
+    { name: 'Prisma', bgLight: 'bg-teal-100', bgDark: 'bg-teal-500/20', textLight: 'text-teal-700', textDark: 'text-teal-400', order: 16 },
+    { name: 'Supabase', bgLight: 'bg-emerald-100', bgDark: 'bg-emerald-500/20', textLight: 'text-emerald-700', textDark: 'text-emerald-400', order: 17 },
+    // Animation
+    { name: 'Framer Motion', bgLight: 'bg-purple-100', bgDark: 'bg-purple-500/20', textLight: 'text-purple-700', textDark: 'text-purple-400', order: 18 },
+    { name: 'Three.js', bgLight: 'bg-black', bgDark: 'bg-white/10', textLight: 'text-black', textDark: 'text-white', order: 19 },
+    { name: 'GSAP', bgLight: 'bg-green-100', bgDark: 'bg-green-500/20', textLight: 'text-green-700', textDark: 'text-green-400', order: 20 },
+    // Tools
+    { name: 'Git', bgLight: 'bg-orange-100', bgDark: 'bg-orange-500/20', textLight: 'text-orange-700', textDark: 'text-orange-400', order: 21 },
+    { name: 'Docker', bgLight: 'bg-blue-100', bgDark: 'bg-blue-500/20', textLight: 'text-blue-700', textDark: 'text-blue-400', order: 22 },
+    { name: 'Vercel', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-300', order: 23 },
+    // AI/Other
+    { name: 'n8n', bgLight: 'bg-red-100', bgDark: 'bg-red-500/20', textLight: 'text-red-700', textDark: 'text-red-400', order: 24 },
+    { name: 'AI Integration', bgLight: 'bg-violet-100', bgDark: 'bg-violet-500/20', textLight: 'text-violet-700', textDark: 'text-violet-400', order: 25 },
+    { name: 'Web3', bgLight: 'bg-yellow-100', bgDark: 'bg-yellow-500/20', textLight: 'text-yellow-700', textDark: 'text-yellow-400', order: 26 },
   ])
 
   // ─── Projects ───
