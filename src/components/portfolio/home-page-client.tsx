@@ -244,7 +244,7 @@ export function HomePageClient({ data }: { data: ContentData }) {
           {/* Project cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
             {filteredProjects.map((project) => {
-              const Icon = getIcon(project.icon);
+              const hasMedia = project.videoUrl || (project.imageUrl && project.imageUrl.length > 0);
               return (
                 <CardSpotlight
                   key={project.id}
@@ -288,8 +288,7 @@ export function HomePageClient({ data }: { data: ContentData }) {
                       })()}
                     </div>
                   ) : (
-                    <div className={`h-32 bg-gradient-to-br ${project.gradient || gradientFromAccent(project.accentColor)} flex items-center justify-center relative`}>
-                      <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                    <div className="h-32 bg-gradient-to-br from-[#00e5ff] to-[#64b5f6] flex items-center justify-center relative">
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                     </div>
                   )}

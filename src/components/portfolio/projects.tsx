@@ -9,9 +9,7 @@ import {
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { useContent } from "@/stores/content-store";
-import { getIcon } from "@/lib/get-icon";
 import { ProjectModal } from "./project-gallery-modal";
 
 const filters = ["All", "Development", "Design", "Automation"];
@@ -166,7 +164,7 @@ export function Projects() {
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => {
-            const Icon = getIcon(project.icon);
+            const hasMedia = project.videoUrl || (project.imageUrl && project.imageUrl.length > 0);
             return (
               <CardSpotlight
                 key={project.id}
@@ -209,12 +207,11 @@ export function Projects() {
                       return null;
                     })()}
                   </div>
-                 ) : (
-                   <div className={`h-32 bg-gradient-to-br ${project.gradient || gradientFromAccent(project.accentColor)} flex items-center justify-center relative`}>
-                     <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
-                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                   </div>
-                 )}
+) : (
+                  <div className="h-32 bg-gradient-to-br from-[#00e5ff] to-[#64b5f6] flex items-center justify-center relative">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                  </div>
+                )}
 
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>

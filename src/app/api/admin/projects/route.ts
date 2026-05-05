@@ -38,7 +38,17 @@ export async function POST(request: NextRequest) {
     }
     
     const item = await db.project.create({ 
-      data: { ...data, codeUrl: data.codeUrl || "#" }
+      data: { 
+        title: data.title,
+        description: data.description || "",
+        category: data.category || "Development",
+        gradient: data.gradient || "from-[#00e5ff] to-[#64b5f6]",
+        imageUrl: data.imageUrl || "",
+        videoUrl: data.videoUrl || "",
+        liveUrl: data.liveUrl || "#",
+        order: data.order || 0,
+        images: data.images || "[]",
+      }
     })
     return NextResponse.json(item)
   } catch (error) {
@@ -74,7 +84,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
     }
     
-    const { id, codeUrl, ...data } = body
+    const { id, ...data } = body
     
     if (data.title && (typeof data.title !== 'string' || data.title.length > 200)) {
       return NextResponse.json({ error: 'Invalid title' }, { status: 400 })
@@ -85,7 +95,17 @@ export async function PUT(request: NextRequest) {
     
     const item = await db.project.update({
       where: { id },
-      data: { ...data, codeUrl: codeUrl || "#" }
+      data: {
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        gradient: data.gradient,
+        imageUrl: data.imageUrl,
+        videoUrl: data.videoUrl,
+        liveUrl: data.liveUrl,
+        order: data.order,
+        images: data.images,
+      }
     })
     return NextResponse.json(item)
   } catch (error) {

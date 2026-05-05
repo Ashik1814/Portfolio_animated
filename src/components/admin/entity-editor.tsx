@@ -220,7 +220,6 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     dataKey: "projects",
     apiPath: "projects",
     fields: [
-      { key: "icon", label: "Icon", type: "icon" },
       { key: "title", label: "Title", type: "text" },
       { key: "description", label: "Description", type: "textarea" },
       {
@@ -233,9 +232,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
           { value: "Automation", label: "Automation" },
         ],
       },
-      { key: "accentColor", label: "Accent Color", type: "color" },
       { key: "liveUrl", label: "Live URL", type: "text" },
-      { key: "codeUrl", label: "Code URL", type: "text" },
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },
@@ -244,7 +241,6 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     displayFields: [
       { key: "title", label: "Title" },
       { key: "category", label: "Category", type: "badge" },
-      { key: "accentColor", label: "Accent", type: "color" },
       { key: "imageUrl", label: "Image", type: "image" },
       { key: "order", label: "Order" },
     ],

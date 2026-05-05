@@ -121,17 +121,14 @@ export interface ProjectTagData {
 
 export interface ProjectData {
   id: string
-  icon: string
   title: string
   description: string
   category: string
   gradient: string
-  accentColor: string
   imageUrl: string
   videoUrl: string
   images: string
   liveUrl: string
-  codeUrl: string
   order: number
   tags: ProjectTagData[]
 }
