@@ -140,7 +140,7 @@ model CurrentlyLearning {
 
 model Project {
   id          String       @id @default(cuid())
-  icon        String
+  icon        String       @default("")
   title       String
   description String
   category    String
