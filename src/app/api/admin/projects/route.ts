@@ -43,9 +43,12 @@ export async function POST(request: NextRequest) {
         description: data.description || "",
         category: data.category || "Development",
         gradient: data.gradient || "from-[#00e5ff] to-[#64b5f6]",
+        icon: "",  // Required by DB but not used in new UI
+        accentColor: "",  // Required by DB but not used in new UI
         imageUrl: data.imageUrl || "",
         videoUrl: data.videoUrl || "",
         liveUrl: data.liveUrl || "#",
+        codeUrl: "",  // Required by DB but not used in new UI
         order: data.order || 0,
         images: data.images || "[]",
       }
@@ -100,9 +103,12 @@ export async function PUT(request: NextRequest) {
         description: data.description,
         category: data.category,
         gradient: data.gradient,
+        icon: data.icon || "",  // Required by DB but not used in new UI
+        accentColor: data.accentColor || "",  // Required by DB but not used in new UI
         imageUrl: data.imageUrl,
         videoUrl: data.videoUrl,
         liveUrl: data.liveUrl,
+        codeUrl: data.codeUrl || "",  // Required by DB but not used in new UI
         order: data.order,
         images: data.images,
       }
