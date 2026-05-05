@@ -568,8 +568,15 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
       else if (f.type === "select" && f.options?.[0]) defaults[f.key] = f.options[0].value;
       else if (f.type === "select" && f.selectDataKey) {
         const selectItems = data[f.selectDataKey as keyof ContentData];
+        console.log(`[DEBUG] ${f.selectDataKey}:`, selectItems);
         if (Array.isArray(selectItems) && selectItems.length > 0) {
-          defaults[f.key] = (selectItems[0] as { id: string }).id;
+          if (f.multiple) {
+            defaults[f.key] = "[]";
+          } else {
+            defaults[f.key] = (selectItems[0] as { id: string }).id;
+          }
+        } else {
+          defaults[f.key] = f.multiple ? "[]" : "";
         }
       } else if (f.type === "file") {
         defaults[f.key] = f.multiple ? "[]" : "";
