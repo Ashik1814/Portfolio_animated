@@ -197,6 +197,16 @@ export interface HeroStat {
   order: number;
 }
 
+export interface ProjectTag {
+  id: string;
+  name: string;
+  bgLight: string;
+  bgDark: string;
+  textLight: string;
+  textDark: string;
+  order: number;
+}
+
 export interface ContentData {
   siteConfig: SiteConfig | null;
   aboutSkills: AboutSkill[];
@@ -208,6 +218,7 @@ export interface ContentData {
   additionalTech: AdditionalTech[];
   currentlyLearning: CurrentlyLearning[];
   projects: Project[];
+  projectTags: ProjectTag[];
   degrees: Degree[];
   certifications: Certification[];
   coursework: Coursework[];
