@@ -33,7 +33,7 @@ function getMediaItems(project: ProjectGalleryModalProps["project"]): MediaItem[
   return items;
 }
 
-export function ProjectGalleryModal({ project, onClose }: ProjectGalleryModalProps) {
+export function ProjectModal({ project, onClose }: ProjectGalleryModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
   const [isBrowser, setIsBrowser] = useState(false);
@@ -41,8 +41,10 @@ export function ProjectGalleryModal({ project, onClose }: ProjectGalleryModalPro
   const mediaItems = getMediaItems(project);
 
   useEffect(() => {
-    setIsBrowser(true);
-    return () => setIsBrowser(false);
+    const timer = setTimeout(() => {
+      setIsBrowser(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {

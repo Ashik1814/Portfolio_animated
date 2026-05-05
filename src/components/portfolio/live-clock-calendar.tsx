@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { CloudMoon, MapPin, ChevronLeft, ChevronRight, Globe } from "lucide-react";
 
@@ -148,8 +148,9 @@ function Calendar({
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
 
+  const todayValid = today.getFullYear() >= 2020;
   const isToday = (d: number) =>
-    d === today.getDate() && today.getMonth() === viewMonth && today.getFullYear() === viewYear;
+    todayValid && d === today.getDate() && today.getMonth() === viewMonth && today.getFullYear() === viewYear;
 
   const cells: { day: number; isCurrentMonth: boolean; isToday: boolean; isSelected: boolean }[] = [];
 
@@ -174,7 +175,7 @@ function Calendar({
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-0.5 mb-0.5">
         {dayNames.map((d) => (
-          <div key={d} className="text-center text-[8px] font-medium dark:text-[#64748b] text-gray-500">
+          <div key={d} className="text-center text-[8px] font-medium dark:text-[#94a3b8] text-gray-500">
             {d}
           </div>
         ))}
@@ -209,17 +210,21 @@ function Calendar({
 
 /* ───── Main Component ───── */
 export function LiveClockCalendar() {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState<Date | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [viewMonth, setViewMonth] = useState(new Date().getMonth());
-  const [viewYear, setViewYear] = useState(new Date().getFullYear());
+  const [viewMonth, setViewMonth] = useState(() => new Date().getMonth());
+  const [viewYear, setViewYear] = useState(() => new Date().getFullYear());
   const [tzIndex, setTzIndex] = useState(0);
-  const [selectedDate, setSelectedDate] = useState<number | null>(new Date().getDate());
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
-    const interval = setInterval(() => setNow(new Date()), 1000);
+    setNow(new Date());
+    const interval = setInterval(() => {
+      setNow(new Date());
+    }, 1000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
   }, []);
 
   const prevMonth = useCallback(() => {
@@ -244,12 +249,12 @@ export function LiveClockCalendar() {
 
   // Get time in selected timezone
   const tz = TIMEZONES[tzIndex].value;
-  const tzNow = mounted ? new Date(now.toLocaleString("en-US", { timeZone: tz })) : new Date(0);
-  const hours = tzNow.getHours();
-  const minutes = tzNow.getMinutes();
-  const seconds = tzNow.getSeconds();
+  const tzNow = now ? new Date(now.toLocaleString("en-US", { timeZone: tz })) : new Date(0);
+  const hours = now ? tzNow.getHours() : 0;
+  const minutes = now ? tzNow.getMinutes() : 0;
+  const seconds = now ? tzNow.getSeconds() : 0;
 
-  const timeString = mounted ? tzNow.toLocaleTimeString("en-US", {
+  const timeString = now ? tzNow.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
@@ -257,7 +262,7 @@ export function LiveClockCalendar() {
     timeZone: tz,
   }) : "--:--:--";
 
-  const dateString = mounted ? tzNow.toLocaleDateString("en-US", {
+  const dateString = now ? tzNow.toLocaleDateString("en-US", {
     weekday: "short",
     year: "numeric",
     month: "short",
@@ -274,6 +279,8 @@ export function LiveClockCalendar() {
     "July", "August", "September", "October", "November", "December",
   ];
 
+  const calendarDate = now || new Date(1970, 0, 1);
+
   return (
     <section className="py-5 section-padding">
       <div className="max-w-2xl mx-auto">
@@ -281,14 +288,14 @@ export function LiveClockCalendar() {
           <h2 className="text-3xl sm:text-4xl font-bold dark:text-white text-gray-900 mb-4">
             <span className="gradient-text-cyan">{greeting}</span>
           </h2>
-          <p className="text-xs dark:text-[#64748b] text-gray-500">{dateString}</p>
+          <p className="text-xs dark:text-[#94a3b8] text-gray-500">{dateString}</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-14">
           {/* Left — Clock + Info */}
           <CardSpotlight className="p-2.5 sm:p-3 flex flex-col items-center justify-center bg-white/40 dark:bg-[#0a0512]/25 backdrop-blur-xl border border-white/20 dark:border-white/[0.08] rounded-2xl">
             {/* Analog clock */}
-            <AnalogClock hours={hours} minutes={minutes} seconds={seconds} />
+            {mounted && <AnalogClock hours={hours} minutes={minutes} seconds={seconds} />}
 
             {/* Digital time */}
             <div className="mt-1.5 text-center">
@@ -298,7 +305,8 @@ export function LiveClockCalendar() {
             </div>
 
             {/* Info row */}
-            <div className="mt-1 flex flex-wrap items-center justify-center gap-3 text-[10px] dark:text-[#94a3b8] text-gray-600">
+            {mounted && (
+            <div className="mt-1 flex flex-wrap items-center justify-center gap-3 text-[10px] dark:text-[#cbd5e1] text-gray-600">
               <div className="flex items-center gap-1">
                 <CloudMoon className="w-2.5 h-2.5 text-[#64b5f6]" />
                 <span>{hours >= 6 && hours < 18 ? "☀️ Day" : "🌙 Night"}</span>
@@ -308,6 +316,7 @@ export function LiveClockCalendar() {
                 <span>{tz.split("/").pop()?.replace("_", " ")}</span>
               </div>
             </div>
+            )}
 
             {/* Timezone selector — centered */}
             <div className="mt-1.5 flex items-center justify-center gap-1.5 w-full">
@@ -330,18 +339,18 @@ export function LiveClockCalendar() {
           <CardSpotlight className="p-2.5 sm:p-3 bg-white/40 dark:bg-[#0a0512]/25 backdrop-blur-xl border border-white/20 dark:border-white/[0.08] rounded-2xl">
             {/* Month header with nav */}
             <div className="flex items-center justify-between mb-1">
-              <button onClick={prevMonth} className="w-5 h-5 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#94a3b8] text-gray-500 transition-colors">
+              <button onClick={prevMonth} className="w-5 h-5 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#cbd5e1] text-gray-500 transition-colors">
                 <ChevronLeft className="w-3 h-3" />
               </button>
               <h4 className="text-xs font-bold dark:text-white text-gray-900">
                 {monthNames[viewMonth]} {viewYear}
               </h4>
-              <button onClick={nextMonth} className="w-5 h-5 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#94a3b8] text-gray-500 transition-colors">
+              <button onClick={nextMonth} className="w-5 h-5 rounded-md flex items-center justify-center dark:hover:bg-white/[0.06] hover:bg-gray-100 dark:text-[#cbd5e1] text-gray-500 transition-colors">
                 <ChevronRight className="w-3 h-3" />
               </button>
             </div>
 
-            <Calendar viewYear={viewYear} viewMonth={viewMonth} today={now} selectedDate={selectedDate} onSelectDate={handleSelectDate} />
+            <Calendar viewYear={viewYear} viewMonth={viewMonth} today={calendarDate} selectedDate={selectedDate} onSelectDate={handleSelectDate} />
           </CardSpotlight>
         </div>
       </div>

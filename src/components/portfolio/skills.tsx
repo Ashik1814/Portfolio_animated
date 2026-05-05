@@ -48,7 +48,7 @@ export function Skills() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Skills & Expertise</span>
           </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base">
+          <p className="dark:text-[#cbd5e1] text-gray-600 max-w-2xl mx-auto text-base">
             {siteConfig.skillsDescription}
           </p>
         </div>
@@ -121,7 +121,7 @@ export function Skills() {
               className="flex items-center gap-2.5 px-4 py-3 rounded-xl dark:bg-white/[0.04] bg-gray-50 dark:hover:bg-white/[0.08] hover:bg-gray-100 dark:border-white/[0.06] border-gray-200/60 border dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200 cursor-default group"
             >
               <TechIcon name={tech.name} size={20} className="shrink-0" />
-              <span className="text-sm font-medium dark:text-[#94a3b8] text-gray-600 group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200 whitespace-nowrap">
+              <span className="text-sm font-medium dark:text-[#cbd5e1] text-gray-600 group-hover:dark:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200 whitespace-nowrap">
                 {tech.name}
               </span>
             </div>

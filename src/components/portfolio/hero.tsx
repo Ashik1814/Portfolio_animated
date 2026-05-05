@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
-import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import type { SiteConfigData, SocialLinkData, HeroStatData } from "@/components/admin/types";
 
 const MovingBorderIcon = dynamic(() => import("@/components/ui/moving-border-icon").then((mod) => mod.MovingBorderIcon), {
   ssr: false,
@@ -47,26 +47,13 @@ function StatBadge({ stat, position }: { stat: { id: string; value: string; labe
   );
 }
 
-export function HeroContent() {
-  const siteConfig = useContent((s) => s.siteConfig);
-  const socialLinks = useContent((s) => s.socialLinks);
-  const heroStats = useContent((s) => s.heroStats);
-  const loading = useContent((s) => s.loading);
+interface HeroContentProps {
+  siteConfig: SiteConfigData | null;
+  socialLinks: SocialLinkData[] | null;
+  heroStats: HeroStatData[] | null;
+}
 
-  if (loading) {
-    return (
-      <section id="home" className="min-h-screen flex items-center pt-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="animate-pulse space-y-4 max-w-lg">
-            <div className="h-6 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
-            <div className="h-10 w-64 bg-gray-200 dark:bg-gray-700 rounded" />
-            <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded" />
-          </div>
-        </div>
-      </section>
-    );
-  }
-
+export function HeroContent({ siteConfig, socialLinks, heroStats }: HeroContentProps) {
   if (!siteConfig) return null;
 
   return (
@@ -80,7 +67,7 @@ export function HeroContent() {
           <div className="space-y-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full dark:border-[#00e5ff]/20 border-[#00a8cc]/20 dark:bg-[#00e5ff]/5 bg-[#00a8cc]/5">
               <span className="w-2 h-2 bg-[#2dd4bf] rounded-full animate-pulse" />
-              <span className="text-sm dark:text-[#94a3b8] text-gray-600">
+              <span className="text-sm dark:text-[#cbd5e1] text-gray-600">
                 {siteConfig.heroWelcomeText}
               </span>
             </div>
@@ -94,7 +81,7 @@ export function HeroContent() {
               {siteConfig.heroTitle}
             </p>
 
-            <p className="dark:text-[#94a3b8] text-gray-600 text-base leading-relaxed max-w-lg">
+            <p className="dark:text-[#cbd5e1] text-gray-600 text-base leading-relaxed max-w-lg">
               {siteConfig.heroDescription}
             </p>
 
@@ -124,7 +111,7 @@ export function HeroContent() {
             </div>
 
             <div className="flex items-center gap-4 pt-2">
-              <span className="text-sm dark:text-[#64748b] text-gray-500">
+              <span className="text-sm dark:text-[#94a3b8] text-gray-500">
                 {siteConfig.heroFollowText || "Follow me:"}
               </span>
               <div className="flex gap-3">
@@ -139,7 +126,7 @@ export function HeroContent() {
                       className="group"
                     >
                       <MovingBorderIcon borderRadius="9999px" className="w-9 h-9">
-                        <SocialIcon className="w-4 h-4 dark:text-[#64748b] text-gray-500 dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200" />
+                        <SocialIcon className="w-4 h-4 dark:text-[#94a3b8] text-gray-500 dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors duration-200" />
                       </MovingBorderIcon>
                     </a>
                   );
@@ -184,14 +171,14 @@ export function HeroContent() {
                         <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
                           <div className="w-20 h-20 rounded-full dark:bg-gradient-to-br dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 bg-gradient-to-br from-[#00a8cc]/10 to-[#64b5f6]/10 flex items-center justify-center">
                             <svg
-                              className="w-10 h-10 dark:text-[#64748b]/60 text-gray-400"
+                              className="w-10 h-10 dark:text-[#cbd5e1]/60 text-gray-400"
                               fill="currentColor"
                               viewBox="0 0 24 24"
                             >
                               <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                             </svg>
                           </div>
-                          <p className="text-xs dark:text-[#64748b]/60 text-gray-400 leading-relaxed">
+                          <p className="text-xs dark:text-[#cbd5e1]/60 text-gray-400 leading-relaxed">
                             Add your photo<br />at <code className="dark:text-[#00e5ff]/60 text-[#00a8cc]">/public/profile.jpg</code>
                           </p>
                         </div>

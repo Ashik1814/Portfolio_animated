@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useContent } from "@/stores/content-store";
 import { getIcon } from "@/lib/get-icon";
-import { ProjectGalleryModal } from "./project-gallery-modal";
+import { ProjectModal } from "./project-gallery-modal";
 
 const filters = ["All", "Development", "Design", "Automation"];
 
@@ -64,6 +64,26 @@ function buildImageUrl(path: string): string {
   if (!path) return '';
   if (path.startsWith('http')) return path;
   return `https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/${path}`;
+}
+
+// Generate a gradient class from an accent color
+function gradientFromAccent(color: string): string {
+  // Convert hex to a slightly lighter version for the second stop
+  const hex = color.replace('#', '');
+  if (hex.length !== 6) return 'from-[#00e5ff] to-[#64b5f6]';
+  
+  // Parse RGB
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  
+  // Lighten second color by mixing with white
+  const lr = Math.min(255, Math.floor(r + (255 - r) * 0.5));
+  const lg = Math.min(255, Math.floor(g + (255 - g) * 0.5));
+  const lb = Math.min(255, Math.floor(b + (255 - b) * 0.5));
+  
+  const lighter = `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`;
+  return `from-[${color}] to-[${lighter}]`;
 }
 
 function ProjectImage({
@@ -131,7 +151,7 @@ export function Projects() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Featured Projects</span>
           </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
+          <p className="dark:text-[#cbd5e1] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
             {siteConfig.projectsDescription}
           </p>
         </div>
@@ -189,16 +209,16 @@ export function Projects() {
                       return null;
                     })()}
                   </div>
-                ) : (
-                  <div className={`h-32 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative`}>
-                    <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                  </div>
-                )}
+                 ) : (
+                   <div className={`h-32 bg-gradient-to-br ${project.gradient || gradientFromAccent(project.accentColor)} flex items-center justify-center relative`}>
+                     <Icon className="w-14 h-14 text-white/90 drop-shadow-lg" />
+                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                   </div>
+                 )}
 
                 <div className="p-5 space-y-3">
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>
-                  <p className="text-sm dark:text-[#94a3b8] text-gray-600 leading-relaxed line-clamp-2">{project.description}</p>
+                  <p className="text-sm dark:text-[#cbd5e1] text-gray-600 leading-relaxed line-clamp-2">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 pt-1">
                     {project.tags.map((tag) => (
@@ -249,7 +269,7 @@ export function Projects() {
           </AnimatedBorderButton>
         </div>
 
-        <ProjectGalleryModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
       </div>
     </section>
   );

@@ -87,7 +87,7 @@ export function Education() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">Education</span>
           </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base">
+          <p className="dark:text-[#cbd5e1] text-gray-600 max-w-2xl mx-auto text-base">
             {siteConfig.educationDescription}
           </p>
         </div>
@@ -167,7 +167,7 @@ export function Education() {
                           {degree.title}
                         </h3>
                         <div className="flex items-center gap-2 shrink-0">
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium dark:bg-white/[0.05] bg-gray-100 dark:text-[#94a3b8] text-gray-600">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium dark:bg-white/[0.05] bg-gray-100 dark:text-[#cbd5e1] text-gray-600">
                             <Calendar className="w-3 h-3" />
                             {degree.period}
                           </span>
@@ -179,13 +179,13 @@ export function Education() {
                       </div>
 
                       {/* Institution */}
-                      <div className="flex items-center gap-1.5 text-xs dark:text-[#94a3b8] text-gray-500 mb-2">
+                      <div className="flex items-center gap-1.5 text-xs dark:text-[#cbd5e1] text-gray-500 mb-2">
                         <MapPin className="w-3 h-3 shrink-0" />
                         <span>{degree.institution}{degree.location ? ` • ${degree.location}` : ''}</span>
                       </div>
 
                       {/* Description */}
-                      <p className="dark:text-[#94a3b8] text-gray-600 text-xs leading-relaxed mb-2 line-clamp-2">
+                      <p className="dark:text-[#cbd5e1] text-gray-600 text-xs leading-relaxed mb-2 line-clamp-2">
                         {degree.description}
                       </p>
 
@@ -195,7 +195,7 @@ export function Education() {
                           {achievementList.map((achievement, i) => (
                             <span
                               key={i}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs dark:bg-white/[0.04] bg-gray-50 dark:text-[#94a3b8] text-gray-600"
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs dark:bg-white/[0.04] bg-gray-50 dark:text-[#cbd5e1] text-gray-600"
                             >
                               <Award className="w-3 h-3 text-[#fbbf24] shrink-0" />
                               {achievement.trim()}
@@ -227,7 +227,7 @@ export function Education() {
                   </MovingBorderIcon>
                   <div>
                     <h4 className="text-sm font-bold dark:text-white text-gray-900 mb-0.5">{cert.name}</h4>
-                    <p className="text-xs dark:text-[#94a3b8] text-gray-600">{cert.issuer} • {cert.year}</p>
+                    <p className="text-xs dark:text-[#cbd5e1] text-gray-600">{cert.issuer} • {cert.year}</p>
                   </div>
                 </div>
               </CardSpotlight>
@@ -253,7 +253,7 @@ export function Education() {
                 >
                   <Icon className="w-4 h-4" style={{ color }} />
                 </div>
-                <span className="text-sm font-medium dark:text-[#94a3b8] text-gray-600 dark:group-hover:text-white group-hover:text-gray-900 transition-colors duration-200">
+                <span className="text-sm font-medium dark:text-[#cbd5e1] text-gray-600 dark:group-hover:text-white group-hover:text-gray-900 transition-colors duration-200">
                   {course.name}
                 </span>
               </div>

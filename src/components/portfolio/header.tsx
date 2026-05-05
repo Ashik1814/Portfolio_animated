@@ -81,7 +81,7 @@ export function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "dark:bg-[#08050f]/70 bg-white/70 backdrop-blur-2xl dark:border-b dark:border-[#00e5ff]/8 border-b border-gray-200/60 shadow-lg dark:shadow-black/30 shadow-gray-200/20"
-          : "bg-transparent border-b border-transparent"
+          : "bg-black/50 backdrop-blur-md border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +124,7 @@ export function Header() {
                   className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-300 border ${
                     active
                       ? "dark:text-[#00e5ff] text-[#00a8cc] dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:bg-[#00e5ff]/6 bg-[#00a8cc]/6 dark:shadow-[0_0_12px_rgba(0,229,255,0.1)] shadow-[0_0_12px_rgba(0,168,204,0.08)]"
-                      : "dark:text-[#94a3b8] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
+                      : "dark:text-[#cbd5e1] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
                   }`}
                 >
                   {link.label}
@@ -168,7 +168,7 @@ export function Header() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden w-9 h-9 rounded-lg dark:border dark:border-[#00e5ff]/15 border border-[#00a8cc]/15 flex items-center justify-center dark:text-[#94a3b8] text-gray-500 dark:hover:border-[#00e5ff]/30 hover:border-[#00a8cc]/30 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-300"
+            className="md:hidden w-9 h-9 rounded-lg dark:border dark:border-[#00e5ff]/15 border border-[#00a8cc]/15 flex items-center justify-center dark:text-[#cbd5e1] text-gray-500 dark:hover:border-[#00e5ff]/30 hover:border-[#00a8cc]/30 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:bg-[#00e5ff]/5 hover:bg-[#00a8cc]/5 transition-all duration-300"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
@@ -193,7 +193,7 @@ export function Header() {
                   className={`py-2.5 px-4 text-sm font-medium rounded-full transition-all duration-200 flex items-center border ${
                     active
                       ? "dark:text-[#00e5ff] text-[#00a8cc] dark:border-[#00e5ff]/35 border-[#00a8cc]/35 dark:bg-[#00e5ff]/6 bg-[#00a8cc]/6 dark:shadow-[0_0_12px_rgba(0,229,255,0.1)] shadow-[0_0_12px_rgba(0,168,204,0.08)]"
-                      : "dark:text-[#94a3b8] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
+                      : "dark:text-[#cbd5e1] text-gray-500 dark:border-transparent border-transparent dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 dark:hover:bg-[#00e5ff]/4 hover:bg-[#00a8cc]/4"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >

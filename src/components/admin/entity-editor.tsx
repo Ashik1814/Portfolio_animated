@@ -233,9 +233,9 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
           { value: "Automation", label: "Automation" },
         ],
       },
-      { key: "gradient", label: "Gradient", type: "text" },
       { key: "accentColor", label: "Accent Color", type: "color" },
       { key: "liveUrl", label: "Live URL", type: "text" },
+      { key: "codeUrl", label: "Code URL", type: "text" },
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },
@@ -249,7 +249,7 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "order", label: "Order" },
     ],
   },
-  "project-tags": {
+   "project-tags": {
     title: "Project Tags",
     icon: "💼",
     dataKey: "projects",
@@ -567,7 +567,9 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
         if (Array.isArray(selectItems) && selectItems.length > 0) {
           defaults[f.key] = (selectItems[0] as { id: string }).id;
         }
-      } else if (f.type === "file") defaults[f.key] = "";
+      } else if (f.type === "file") {
+        defaults[f.key] = f.multiple ? "[]" : "";
+      }
       else defaults[f.key] = "";
     }
     setFormState(defaults);

@@ -144,8 +144,8 @@ model Project {
   title       String
   description String
   category    String
-  gradient    String
-  accentColor String
+  gradient    String       @default("from-[#00e5ff] to-[#64b5f6]")
+  accentColor String       @default("#00e5ff")
   imageUrl    String       @default("")
   videoUrl    String       @default("")
   liveUrl     String       @default("#")

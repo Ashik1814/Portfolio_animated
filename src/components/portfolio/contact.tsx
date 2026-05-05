@@ -72,7 +72,7 @@ export function ContactSection() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold dark:text-white text-gray-900 mb-4">
             Let&apos;s work together
           </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-xl mx-auto text-base leading-relaxed">
+          <p className="dark:text-[#cbd5e1] text-gray-600 max-w-xl mx-auto text-base leading-relaxed">
             {siteConfig.contactDescription}
           </p>
         </div>
@@ -99,14 +99,14 @@ export function ContactSection() {
                       <div className="flex flex-col items-center justify-center gap-3 text-center p-6">
                         <div className="w-16 h-16 rounded-full dark:bg-gradient-to-br dark:from-[#00e5ff]/15 dark:to-[#64b5f6]/15 bg-gradient-to-br from-[#00a8cc]/10 to-[#64b5f6]/10 flex items-center justify-center">
                           <svg
-                            className="w-8 h-8 dark:text-[#64748b]/60 text-gray-400"
+                            className="w-8 h-8 dark:text-[#cbd5e1]/60 text-gray-400"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                           >
                             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
                           </svg>
                         </div>
-                        <p className="text-xs dark:text-[#64748b]/60 text-gray-400 leading-relaxed">
+                        <p className="text-xs dark:text-[#cbd5e1]/60 text-gray-400 leading-relaxed">
                           Add your photo<br />at <code className="dark:text-[#00e5ff]/60 text-[#00a8cc]">/public/profile.jpg</code>
                         </p>
                       </div>
@@ -120,7 +120,7 @@ export function ContactSection() {
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-1">
               <span className="gradient-text-cyan">{siteConfig.heroName}</span>
             </h3>
-            <p className="text-sm dark:text-[#94a3b8] text-gray-600 mb-4">{siteConfig.heroTitle}</p>
+            <p className="text-sm dark:text-[#cbd5e1] text-gray-600 mb-4">{siteConfig.heroTitle}</p>
 
             {/* Google Map — pushed down to align with Send Message card */}
             <div className="w-full max-w-sm mt-auto">
@@ -145,7 +145,7 @@ export function ContactSection() {
             {/* Location */}
             <div className="flex items-center gap-2 mt-6">
               <MapPin className="w-3.5 h-3.5 dark:text-[#00e5ff] text-[#00a8cc]" />
-              <span className="text-xs dark:text-[#94a3b8] text-gray-600">{siteConfig.contactLocationText}</span>
+              <span className="text-xs dark:text-[#cbd5e1] text-gray-600">{siteConfig.contactLocationText}</span>
             </div>
           </div>
 
@@ -170,7 +170,7 @@ export function ContactSection() {
                           <Icon className="w-4 h-4 dark:text-[#00e5ff] text-[#00a8cc] relative" />
                         </MovingBorderIcon>
                         <div className="min-w-0">
-                          <p className="text-xs dark:text-[#64748b] text-gray-500 mb-0.5">{card.label}</p>
+                          <p className="text-xs dark:text-[#94a3b8] text-gray-500 mb-0.5">{card.label}</p>
                           <p className="text-sm font-medium dark:text-white text-gray-900 truncate dark:group-hover:text-[#00e5ff] group-hover:text-[#00a8cc] transition-colors">{card.value}</p>
                         </div>
                       </div>
@@ -205,7 +205,7 @@ export function ContactSection() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Name</label>
+                      <label className="text-sm dark:text-[#cbd5e1] text-gray-600">Your Name</label>
                       <Input
                         placeholder="John Doe"
                         value={formData.name}
@@ -214,7 +214,7 @@ export function ContactSection() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Email</label>
+                      <label className="text-sm dark:text-[#cbd5e1] text-gray-600">Your Email</label>
                       <Input
                         type="email"
                         placeholder="john@example.com"
@@ -225,7 +225,7 @@ export function ContactSection() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm dark:text-[#94a3b8] text-gray-600">Your Message</label>
+                    <label className="text-sm dark:text-[#cbd5e1] text-gray-600">Your Message</label>
                     <Textarea
                       placeholder="Tell me about your project..."
                       rows={5}

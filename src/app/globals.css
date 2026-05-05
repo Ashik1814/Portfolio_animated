@@ -43,115 +43,246 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* ===== LIGHT MODE (default) ===== */
-:root {
-  --radius: 0.625rem;
-  --background: #f8f9fc;
-  --foreground: #1a1a2e;
-  --card: rgba(255, 255, 255, 0.8);
-  --card-foreground: #1a1a2e;
-  --popover: rgba(255, 255, 255, 0.9);
-  --popover-foreground: #1a1a2e;
-  --primary: #d946ef;
-  --primary-foreground: #ffffff;
-  --secondary: rgba(240, 240, 250, 0.6);
-  --secondary-foreground: #1a1a2e;
-  --muted: rgba(230, 230, 245, 0.5);
-  --muted-foreground: #64748b;
-  --accent: #f472b6;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --border: rgba(100, 100, 160, 0.12);
-  --input: rgba(100, 100, 160, 0.12);
-  --ring: #d946ef;
-  --chart-1: #d946ef;
-  --chart-2: #f472b6;
-  --chart-3: #a78bfa;
-  --chart-4: #00a8cc;
-  --chart-5: #fbbf24;
-  --sidebar: rgba(255, 255, 255, 0.8);
-  --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #d946ef;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(230, 230, 245, 0.5);
-  --sidebar-accent-foreground: #1a1a2e;
-  --sidebar-border: rgba(100, 100, 160, 0.12);
-  --sidebar-ring: #d946ef;
+/* ============================ */
+/* CRT FLICKER TRANSITION EFFECT */
+/* ============================ */
 
-  /* Portfolio-specific tokens */
-  --portfolio-bg: #f8f9fc;
-  --portfolio-bg-deep: #eef0f6;
-  --portfolio-text: #1a1a2e;
-  --portfolio-text-muted: #64748b;
-  --portfolio-text-dim: #94a3b8;
-  --portfolio-text-heading: #0f0f23;
-  --portfolio-border: rgba(100, 100, 160, 0.12);
-  --portfolio-glass-bg: rgba(255, 255, 255, 0.6);
-  --portfolio-glass-bg-solid: rgba(255, 255, 255, 0.75);
-  --portfolio-glass-border: rgba(100, 100, 160, 0.1);
-  --portfolio-glass-border-hover: rgba(0, 168, 204, 0.2);
-  --portfolio-input-bg: #ffffff;
-  --portfolio-input-border: #d1d5db;
-  --portfolio-scrollbar-track: #f1f5f9;
-  --portfolio-scrollbar-thumb: #c7d2fe;
-  --portfolio-scrollbar-thumb-hover: #a5b4fc;
-  --portfolio-accent-cyan: #00a8cc;
-  --portfolio-accent-cyan-light: rgba(0, 168, 204, 0.1);
+.crt-flicker-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647; /* Highest possible z-index */
+  pointer-events: none;
+  overflow: hidden;
 }
+
+/* Phase 1: Scanline Pulse (200ms) */
+@keyframes crt-scanline-pulse {
+  0% {
+    top: -2px;
+    opacity: 1;
+    transform: scaleX(0.8);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(2.5);
+    transform: scaleX(1.05);
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
+    transform: scaleX(0.9);
+    filter: brightness(0.5);
+  }
+}
+
+.scanline-pulse {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #ffffff 20%,
+    #00e5ff 50%,
+    #64b5f6 80%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform-origin: center;
+}
+
+.scanline-pulse.active {
+  animation: crt-scanline-pulse 200ms cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+/* Phase 2: Film Grain / Digital Noise (200-400ms) */
+@keyframes crt-film-grain {
+  0%, 100% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 0.18;
+  }
+  80% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes crt-static-shift {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-1px, 1px);
+  }
+  20% {
+    transform: translate(1px, -1px);
+  }
+  30% {
+    transform: translate(-1px, -1px);
+  }
+  40% {
+    transform: translate(1px, 1px);
+  }
+  50% {
+    transform: translate(-0.5px, 0.5px);
+  }
+  60% {
+    transform: translate(0.5px, -0.5px);
+  }
+  70% {
+    transform: translate(-1px, 0);
+  }
+  80% {
+    transform: translate(1px, 0);
+  }
+  90% {
+    transform: translate(0, -1px);
+  }
+}
+
+.film-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  mix-blend-mode: overlay;
+}
+
+.film-grain.active {
+  animation: 
+    crt-film-grain 400ms ease-out forwards,
+    crt-static-shift 400ms ease-out forwards;
+}
+
+/* Phase 3: Content Glitch (400-450ms) */
+@keyframes crt-glitch-offset {
+  0% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  10% {
+    clip-path: inset(10% 0 80% 0);
+    transform: translate(-3px, 0);
+  }
+  20% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(3px, 0);
+  }
+  30% {
+    clip-path: inset(70% 0 10% 0);
+    transform: translate(-2px, 0);
+  }
+  40% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(2px, 0);
+  }
+  50% {
+    clip-path: inset(50% 0 40% 0);
+    transform: translate(-1px, 0);
+  }
+  60% {
+    clip-path: inset(80% 0 10% 0);
+    transform: translate(1px, 0);
+  }
+  70% {
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(-1px, 0);
+  }
+  80% {
+    clip-path: inset(60% 0 20% 0);
+    transform: translate(0, 0);
+  }
+  90% {
+    clip-path: inset(90% 0 5% 0);
+    transform: translate(0, 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+}
+
+.content-glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.content-glitch.active {
+  opacity: 0.15;
+  animation: crt-glitch-offset 50ms ease-in-out forwards;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .crt-flicker-overlay {
+    display: none !important;
+  }
+}
+
 
 /* ===== DARK MODE ===== */
 .dark {
   --background: #08050f;
-  --foreground: #e8e0f0;
-  --card: rgba(15, 8, 25, 0.75);
-  --card-foreground: #e8e0f0;
-  --popover: rgba(15, 8, 25, 0.85);
-  --popover-foreground: #e8e0f0;
+  --foreground: #ffffff;
+  --card: rgba(0, 0, 0, 0.85);
+  --card-foreground: #ffffff;
+  --popover: rgba(0, 0, 0, 0.9);
+  --popover-foreground: #ffffff;
   --primary: #d946ef;
   --primary-foreground: #08050f;
   --secondary: rgba(15, 8, 25, 0.6);
-  --secondary-foreground: #e8e0f0;
-  --muted: rgba(30, 15, 50, 0.5);
-  --muted-foreground: #a89bb8;
-  --accent: #f472b6;
-  --accent-foreground: #08050f;
-  --destructive: #ef4444;
-  --border: rgba(217, 70, 239, 0.08);
-  --input: rgba(217, 70, 239, 0.08);
-  --ring: #d946ef;
-  --chart-1: #d946ef;
-  --chart-2: #f472b6;
-  --chart-3: #a78bfa;
-  --chart-4: #00e5ff;
-  --chart-5: #fbbf24;
-  --sidebar: rgba(15, 8, 25, 0.75);
-  --sidebar-foreground: #e8e0f0;
-  --sidebar-primary: #d946ef;
-  --sidebar-primary-foreground: #08050f;
-  --sidebar-accent: rgba(30, 15, 50, 0.5);
-  --sidebar-accent-foreground: #e8e0f0;
-  --sidebar-border: rgba(217, 70, 239, 0.08);
-  --sidebar-ring: #d946ef;
+  --secondary-foreground: #ffffff;
+   --muted: rgba(30, 15, 50, 0.5);
+   --muted-foreground: #e2e8f0;
+   --accent: #f472b6;
+   --accent-foreground: #08050f;
+   --destructive: #ef4444;
+   --border: rgba(217, 70, 239, 0.12);
+   --input: rgba(217, 70, 239, 0.12);
+   --ring: #d946ef;
+   --chart-1: #d946ef;
+   --chart-2: #f472b6;
+   --chart-3: #a78bfa;
+   --chart-4: #00e5ff;
+   --chart-5: #fbbf24;
+   --sidebar: rgba(15, 8, 25, 0.75);
+   --sidebar-foreground: #ffffff;
+   --sidebar-primary: #d946ef;
+   --sidebar-primary-foreground: #08050f;
+   --sidebar-accent: rgba(30, 15, 50, 0.5);
+   --sidebar-accent-foreground: #ffffff;
+   --sidebar-border: rgba(217, 70, 239, 0.08);
+   --sidebar-ring: #d946ef;
 
   /* Portfolio-specific tokens */
   --portfolio-bg: #08050f;
   --portfolio-bg-deep: #06080f;
-  --portfolio-text: #e8e0f0;
-  --portfolio-text-muted: #94a3b8;
-  --portfolio-text-dim: #64748b;
+  --portfolio-text: #ffffff;
+  --portfolio-text-muted: #e2e8f0;
+  --portfolio-text-dim: #cbd5e1;
   --portfolio-text-heading: #ffffff;
-  --portfolio-border: rgba(217, 70, 239, 0.08);
-  --portfolio-glass-bg: rgba(12, 6, 20, 0.35);
-  --portfolio-glass-bg-solid: rgba(10, 5, 18, 0.5);
-  --portfolio-glass-border: rgba(217, 70, 239, 0.08);
-  --portfolio-glass-border-hover: rgba(100, 181, 246, 0.15);
-  --portfolio-input-bg: #06080f;
-  --portfolio-input-border: #1e3a5f;
-  --portfolio-scrollbar-track: #08050f;
-  --portfolio-scrollbar-thumb: #3b1a5e;
-  --portfolio-scrollbar-thumb-hover: #5b2a8e;
-  --portfolio-accent-cyan: #00e5ff;
-  --portfolio-accent-cyan-light: rgba(0, 229, 255, 0.1);
+  --portfolio-border: rgba(255, 255, 255, 0.15);
+  --portfolio-glass-bg: rgba(0, 0, 0, 0.85);
+  --portfolio-glass-bg-solid: rgba(0, 0, 0, 0.9);
+  --portfolio-glass-border: rgba(0, 212, 170, 0.4);
+  --portfolio-glass-border-hover: rgba(0, 212, 170, 0.7);
+  --portfolio-input-bg: #0a0a0a;
+  --portfolio-input-border: #475569;
+  --portfolio-scrollbar-track: #0a0a0a;
+  --portfolio-scrollbar-thumb: #475569;
+  --portfolio-scrollbar-thumb-hover: #64748b;
+  --portfolio-accent-cyan: #00d4aa;
+  --portfolio-accent-cyan-light: rgba(0, 212, 170, 0.2);
 }
 
 @layer base {

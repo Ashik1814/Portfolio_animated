@@ -52,7 +52,7 @@ export function About() {
                       className="w-full h-full rounded-full object-cover"
                     />
                   ) : (
-                    <User className="w-16 h-16 dark:text-[#64748b]/60 text-gray-400" />
+                    <User className="w-16 h-16 dark:text-[#cbd5e1]/60 text-gray-400" />
                   )}
                 </div>
               </div>
@@ -61,7 +61,7 @@ export function About() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
             <span className="gradient-text-cyan">About Me</span>
           </h2>
-          <p className="dark:text-[#94a3b8] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
+          <p className="dark:text-[#cbd5e1] text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
             {siteConfig.aboutDescription}
           </p>
         </div>
@@ -82,7 +82,7 @@ export function About() {
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">
                     {skill.title}
                   </h3>
-                  <p className="text-sm dark:text-[#94a3b8] text-gray-600 leading-relaxed">
+                  <p className="text-sm dark:text-[#cbd5e1] text-gray-600 leading-relaxed">
                     {skill.description}
                   </p>
                   <div className="pt-2">
@@ -92,7 +92,7 @@ export function About() {
                     >
                       {skill.metric}
                     </span>
-                    <span className="text-sm dark:text-[#64748b] text-gray-500 ml-2">
+                    <span className="text-sm dark:text-[#94a3b8] text-gray-500 ml-2">
                       {skill.metricLabel}
                     </span>
                   </div>
@@ -109,10 +109,10 @@ export function About() {
               <Sparkles className="w-6 h-6 dark:text-[#00e5ff] text-[#00a8cc]" />
             </div>
             <h3 className="text-xl font-bold dark:text-white text-gray-900 mb-4">{siteConfig.approachTitle}</h3>
-            <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed mb-4">
+            <p className="dark:text-[#cbd5e1] text-gray-600 text-sm leading-relaxed mb-4">
               {siteConfig.approachText1}
             </p>
-            <p className="dark:text-[#94a3b8] text-gray-600 text-sm leading-relaxed">
+            <p className="dark:text-[#cbd5e1] text-gray-600 text-sm leading-relaxed">
               {siteConfig.approachText2}
             </p>
           </div>
@@ -126,7 +126,7 @@ export function About() {
           {aboutTechTags.map((tag) => (
             <span
               key={tag.id}
-              className="px-4 py-2 rounded-full text-sm font-medium glass-card dark:text-[#94a3b8] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200"
+              className="px-4 py-2 rounded-full text-sm font-medium glass-card dark:text-[#cbd5e1] text-gray-600 dark:hover:text-[#00e5ff] hover:text-[#00a8cc] dark:hover:border-[#00e5ff]/20 hover:border-[#00a8cc]/20 transition-all duration-200"
             >
               {tag.name}
             </span>
@@ -152,7 +152,7 @@ export function About() {
                   <h4 className="text-sm font-bold dark:text-white text-gray-900">
                     {value.title}
                   </h4>
-                  <p className="text-xs dark:text-[#94a3b8] text-gray-600">{value.description}</p>
+                  <p className="text-xs dark:text-[#cbd5e1] text-gray-600">{value.description}</p>
                 </div>
               </CardSpotlight>
             );
@@ -202,7 +202,7 @@ export function About() {
                     <h4 className="text-sm font-bold dark:text-white text-gray-900 mb-1">
                       {item.title}
                     </h4>
-                    <p className="text-xs dark:text-[#94a3b8] text-gray-600 leading-relaxed">
+                    <p className="text-xs dark:text-[#cbd5e1] text-gray-600 leading-relaxed">
                       {item.description}
                     </p>
                   </div>

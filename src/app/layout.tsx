@@ -53,6 +53,7 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
+          suppressHydrationWarning
         >
           {children}
         </ThemeProvider>
