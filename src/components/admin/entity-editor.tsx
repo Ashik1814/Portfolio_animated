@@ -236,6 +236,14 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
       { key: "imageUrl", label: "Project Image", type: "file", accept: "image/*" },
       { key: "videoUrl", label: "Project Video", type: "file", accept: "video/*" },
       { key: "images", label: "Additional Images", type: "file", accept: "image/*", multiple: true },
+      {
+        key: "tags",
+        label: "Technologies",
+        type: "select",
+        multiple: true,
+        selectDataKey: "projectTags",
+        selectLabelKey: "name",
+      },
       { key: "order", label: "Order", type: "number" },
     ],
     displayFields: [

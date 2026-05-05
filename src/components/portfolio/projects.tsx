@@ -10,6 +10,7 @@ import { AnimatedBorderButton } from "@/components/ui/animated-border-button";
 import { CardSpotlight } from "@/components/ui/card-spotlight";
 import { motion } from "framer-motion";
 import { useContent } from "@/stores/content-store";
+import { cn } from "@/lib/utils";
 import { ProjectModal } from "./project-gallery-modal";
 
 const filters = ["All", "Development", "Design", "Automation"];

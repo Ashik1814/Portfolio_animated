@@ -170,12 +170,41 @@ async function main() {
     { name: 'Advanced AI Integration', percentage: 20, color: '#a78bfa', order: 1 },
   ])
 
-  // ─── Projects + Tags ───
-  // Demo projects have been removed. Add your actual projects via the admin panel.
-  // The project table starts empty and can be populated through /admin/projects
-  const projCount = await prisma.project.count()
-  console.log(`  ⊘ Skipped projects (table has ${projCount} row${projCount !== 1 ? 's' : ''})`)
-  // Note: When you're ready, add your projects via the admin panel at /admin
+  // ─── Project Tags ───
+  await seedIfEmpty('projectTag', [
+    { name: 'React', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 0 },
+    { name: 'Next.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 1 },
+    { name: 'TypeScript', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 2 },
+    { name: 'Tailwind CSS', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 3 },
+    { name: 'Node.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 4 },
+    { name: 'Framer Motion', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 5 },
+    { name: 'Three.js', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 6 },
+    { name: 'Supabase', bgLight: 'bg-gray-100', bgDark: 'bg-white/10', textLight: 'text-gray-700', textDark: 'text-gray-200', order: 7 },
+  ])
+
+  // ─── Projects ───
+  const existingProjects = await prisma.project.count()
+  const tagReact = await prisma.projectTag.findFirst({ where: { name: 'React' } })
+  const tagNext = await prisma.projectTag.findFirst({ where: { name: 'Next.js' } })
+  const tagTs = await prisma.projectTag.findFirst({ where: { name: 'TypeScript' } })
+  const tagTailwind = await prisma.projectTag.findFirst({ where: { name: 'Tailwind CSS' } })
+  
+  if (existingProjects === 0) {
+    await prisma.project.createMany({ data: [
+      { 
+        title: "A Modern Static Portfolio", 
+        description: "A high-performance, mechanical-themed web experience built for the modern developer. Featuring stepped-scroll physics, CRT-inspired transitions, and a continuous binary data stream, this project merges tactical hardware aesthetics with cutting-edge frontend engineering.", 
+        category: "Development",
+        gradient: "from-[#00e5ff] to-[#64b5f6]",
+        imageUrl: "https://ithjvuazalnpowimfzke.supabase.co/storage/v1/object/public/portfolio-files/images/1777996956062-Screenshot_from_2026-05-05_22.02.15_2x.png",
+        liveUrl: "#",
+        order: 0,
+      },
+    ]})
+    console.log(`  ✓ Seeded projects (1 row)`)
+  } else {
+    console.log(`  ⊘ Skipped projects (already has ${existingProjects} rows)`)
+  }
 
   // ─── Degrees ───
   await seedIfEmpty('degree', [

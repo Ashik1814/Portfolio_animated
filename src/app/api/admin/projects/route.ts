@@ -37,17 +37,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
     }
     
+    const tagsData = data.tags ? JSON.parse(String(data.tags)) : [];
+    
     const item = await db.project.create({ 
       data: { 
         title: data.title || "Untitled",
         description: data.description || "",
         category: data.category || "Development",
         gradient: data.gradient || "from-[#00e5ff] to-[#64b5f6]",
+        icon: "",  
+        accentColor: "#00e5ff",
         imageUrl: data.imageUrl || "",
         videoUrl: data.videoUrl || "",
         liveUrl: data.liveUrl || "#",
+        codeUrl: "#",
         order: Number(data.order) || 0,
         images: data.images || "[]",
+        tags: tagsData.length > 0 ? { connect: tagsData.map((id: string) => ({ id })) } : undefined,
       }
     })
     return NextResponse.json(item)
@@ -93,18 +99,24 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
     }
     
+    const tagsData = data.tags ? JSON.parse(String(data.tags)) : [];
+    
     const item = await db.project.update({
       where: { id },
       data: {
         title: data.title,
         description: data.description,
-        category: data.category,
+        category: data.category || "Development",
         gradient: data.gradient,
+        icon: data.icon || "",
+        accentColor: data.accentColor || "#00e5ff",
         imageUrl: data.imageUrl || "",
         videoUrl: data.videoUrl || "",
         liveUrl: data.liveUrl,
+        codeUrl: data.codeUrl || "#",
         order: Number(data.order) || 0,
         images: data.images,
+        tags: tagsData.length > 0 ? { set: [], connect: tagsData.map((tagId: string) => ({ id: tagId })) } : { set: [] },
       }
     })
     return NextResponse.json(item)
