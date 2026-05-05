@@ -822,25 +822,54 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                     </SelectContent>
                   </Select>
                 ) : f.type === "select" && f.selectDataKey ? (
-                  <Select
-                    value={String(formState[f.key] ?? "")}
-                    onValueChange={(val) =>
-                      setFormState((prev) => ({ ...prev, [f.key]: val }))
-                    }
-                  >
-                    <SelectTrigger className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 w-full">
-                      <SelectValue placeholder="Select..." />
-                    </SelectTrigger>
-                    <SelectContent className="bg-[#0d1525] border-white/10">
-                      {(
-                        data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]
-                      )?.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {String(item[f.selectLabelKey ?? "id"])}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="space-y-2">
+                    {(f.multiple && formState[f.key]) ? (
+                      <div className="flex flex-wrap gap-1.5 p-2 rounded-lg bg-[#06080f] border border-white/10">
+                        {(() => {
+                          try { return JSON.parse(String(formState[f.key])); } catch { return []; }
+                        })().map((selectedId: string) => {
+                          const item = (data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]).find((i) => i.id === selectedId);
+                          return item ? (
+                            <span key={selectedId} className="flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs">
+                              {String(item[f.selectLabelKey ?? "id"])}
+                              <button type="button" onClick={() => {
+                                const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                                const updated = current.filter((id: string) => id !== selectedId);
+                                setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
+                              }} className="hover:text-red-400 ml-1">×</button>
+                            </span>
+                          ) : null;
+                        })}
+                      </div>
+                    ) : null}
+                    <Select
+                      value={f.multiple ? "" : String(formState[f.key] ?? "")}
+                      onValueChange={(val) => {
+                        if (f.multiple && val) {
+                          const current = formState[f.key] ? JSON.parse(String(formState[f.key])) : [];
+                          if (!current.includes(val)) {
+                            const updated = [...current, val];
+                            setFormState((prev) => ({ ...prev, [f.key]: JSON.stringify(updated) }));
+                          }
+                        } else {
+                          setFormState((prev) => ({ ...prev, [f.key]: val }));
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 w-full">
+                        <SelectValue placeholder={f.multiple ? "Click to add..." : "Select..."} />
+                      </SelectTrigger>
+                      <SelectContent className="bg-[#0d1525] border-white/10 max-h-60 overflow-y-auto">
+                        {(
+                          data[f.selectDataKey as keyof ContentData] as unknown as { id: string; [k: string]: unknown }[]
+                        )?.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {String(item[f.selectLabelKey ?? "id"])}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 ) : f.type === "file" ? (
                   <div className="space-y-2">
                     {/* Current file preview */}
