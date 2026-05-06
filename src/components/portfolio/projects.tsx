@@ -214,39 +214,37 @@ export function Projects() {
                   </div>
                 )}
 
-                <div className="p-5 space-y-3">
+                <div className="p-6 space-y-4">
                   <h3 className="text-lg font-bold dark:text-white text-gray-900">{project.title}</h3>
                   <p className="text-sm dark:text-[#cbd5e1] text-gray-600 leading-relaxed line-clamp-2">{project.description}</p>
 
                   <div className="flex flex-wrap gap-2 pt-1">
                     {project.tags.map((tag) => (
-                      <span key={tag.id} className={`px-3 py-1 rounded-full text-xs font-medium ${tag.bgLight} dark:${tag.bgDark} ${tag.textLight} dark:${tag.textDark}`}>
+                      <span key={tag.id} className="project-tag px-3 py-1 rounded-full text-xs font-medium" style={{ "--tag-bg": tag.bgLight, "--tag-text": tag.textLight, "--tag-bg-dark": tag.bgDark, "--tag-text-dark": tag.textDark } as React.CSSProperties}>
                         {tag.name}
                       </span>
                     ))}
                   </div>
 
-                  <div className="flex gap-3 pt-3">
+                  <div className="flex gap-4 pt-3">
                     <AnimatedBorderButton
-                      size="sm"
-                      className={`flex-1 bg-gradient-to-r from-[#00e5ff] to-[#64b5f6] hover:from-[#00c2e5] hover:to-[#5ba3e0] dark:text-[#06080f] text-white font-medium text-xs rounded-md h-9 shadow-md dark:shadow-[#00e5ff]/15 shadow-[#00a8cc]/10 transition-all duration-200 ${(!project.liveUrl || project.liveUrl === "#") ? "opacity-50 cursor-not-allowed" : ""}`}
+                      className={`flex-1 bg-[#00e5ff] dark:bg-[#00e5ff] hover:bg-[#00c2e5] dark:hover:bg-[#00c2e5] dark:text-[#06080f] text-white font-medium text-sm rounded-full px-8 shadow-lg dark:shadow-[#00e5ff]/25 shadow-[#00a8cc]/20 transition-all ${(!project.liveUrl || project.liveUrl === "#") ? "opacity-50 cursor-not-allowed" : ""}`}
                       gradientVia="#64b5f6"
                       gradientTo="#a78bfa"
                       disabled={!project.liveUrl || project.liveUrl === "#"}
                       onClick={() => project.liveUrl && project.liveUrl !== "#" && window.open(project.liveUrl, "_blank")}
                     >
-                      <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                      <ExternalLink className="w-4 h-4 mr-2" />
                       Live Demo
                     </AnimatedBorderButton>
                     <AnimatedBorderButton
-                      size="sm"
-                      className={`flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-xs rounded-md h-9 transition-all duration-200 ${(!project.imageUrl && !project.videoUrl) ? "opacity-50 cursor-not-allowed" : ""}`}
+                      className={`flex-1 bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium text-sm rounded-full px-8 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5 transition-all ${(!project.imageUrl && !project.videoUrl) ? "opacity-50 cursor-not-allowed" : ""}`}
                       gradientVia="#a78bfa"
                       gradientTo="#64b5f6"
                       disabled={!project.imageUrl && !project.videoUrl}
                       onClick={() => setSelectedProject(project)}
                     >
-                      <Eye className="w-3.5 h-3.5 mr-1.5" />
+                      <Eye className="w-4 h-4 mr-2" />
                       View
                     </AnimatedBorderButton>
                   </div>
@@ -262,8 +260,9 @@ export function Projects() {
             className="bg-transparent dark:bg-transparent border dark:border-[#00e5ff]/30 border-[#00a8cc]/30 dark:text-[#00e5ff] text-[#00a8cc] dark:hover:bg-[#00e5ff]/25 hover:bg-[#00a8cc]/25 dark:hover:border-[#00e5ff]/60 hover:border-[#00a8cc]/60 dark:hover:text-[#00e5ff] hover:text-[#0088a3] font-medium rounded-full px-8 transition-all duration-300 shadow-sm dark:shadow-[#00e5ff]/10 shadow-[#00a8cc]/5"
             gradientVia="#00e5ff"
             gradientTo="#64b5f6"
+            onClick={() => window.location.href = "/contact"}
           >
-            View All Projects
+            Let's Work Together
           </AnimatedBorderButton>
         </div>
 

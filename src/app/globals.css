@@ -485,3 +485,13 @@ html {
     padding-right: 6rem;
   }
 }
+
+.project-tag {
+  background-color: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+.dark .project-tag {
+  background-color: var(--tag-bg-dark);
+  color: var(--tag-text-dark);
+}

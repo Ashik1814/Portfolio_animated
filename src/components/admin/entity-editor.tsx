@@ -31,7 +31,7 @@ import { IconPicker } from "./icon-picker";
 interface FieldDef {
   key: string;
   label: string;
-  type: "text" | "number" | "textarea" | "color" | "select" | "file" | "icon" | "tags";
+  type: "text" | "number" | "textarea" | "color" | "colorselect" | "select" | "file" | "icon" | "tags";
   options?: { value: string; label: string }[];
   selectDataKey?: string; // key in ContentData to use for select options
   selectLabelKey?: string; // field to use as label from selectData
@@ -252,10 +252,10 @@ const ENTITY_DEFS: Record<string, EntityDef> = {
     apiPath: "project-tags",
     fields: [
       { key: "name", label: "Name", type: "text" },
-      { key: "bgLight", label: "BG Light Class", type: "text" },
-      { key: "bgDark", label: "BG Dark Class", type: "text" },
-      { key: "textLight", label: "Text Light Class", type: "text" },
-      { key: "textDark", label: "Text Dark Class", type: "text" },
+      { key: "bgLight", label: "BG Light", type: "colorselect" },
+      { key: "bgDark", label: "BG Dark", type: "colorselect" },
+      { key: "textLight", label: "Text Light", type: "colorselect" },
+      { key: "textDark", label: "Text Dark", type: "colorselect" },
       {
         key: "projectId",
         label: "Project",
@@ -805,6 +805,46 @@ export function EntityEditor({ entityKey, data, onCrud }: EntityEditorProps) {
                       }
                       className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 flex-1"
                     />
+                  </div>
+                ) : f.type === "colorselect" ? (
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-6 gap-2">
+                      {[
+                        "#34e3c9", "#60a5fa", "#a78bfa", "#f472b6", "#fb923c", "#fbbf24",
+                        "#4ade80", "#22d3ee", "#a855f7", "#ef4444", "#ffffff", "#64748b"
+                      ].map((color) => (
+                        <button
+                          key={color}
+                          type="button"
+                          onClick={() => setFormState((prev) => ({ ...prev, [f.key]: color }))}
+                          className={`w-10 h-10 rounded-lg border-2 transition-all ${
+                            formState[f.key] === color
+                              ? "border-cyan-400 ring-2 ring-cyan-400/30"
+                              : "border-white/10 hover:border-white/30"
+                          }`}
+                          style={{ backgroundColor: color }}
+                          title={color}
+                        />
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={String(formState[f.key] ?? "#000000")}
+                        onChange={(e) =>
+                          setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))
+                        }
+                        className="w-10 h-10 rounded border border-white/10 bg-transparent cursor-pointer"
+                      />
+                      <Input
+                        value={String(formState[f.key] ?? "")}
+                        onChange={(e) =>
+                          setFormState((prev) => ({ ...prev, [f.key]: e.target.value }))
+                        }
+                        placeholder="#000000"
+                        className="bg-[#06080f] border-white/10 text-gray-200 focus:border-cyan-500/50 focus:ring-cyan-500/20 flex-1"
+                      />
+                    </div>
                   </div>
                 ) : f.type === "icon" ? (
                   <IconPicker

@@ -299,7 +299,7 @@ export function HomePageClient({ data }: { data: ContentData }) {
 
                     <div className="flex flex-wrap gap-2 pt-1">
                       {project.tags.map((tag) => (
-                        <span key={tag.id} className={`px-3 py-1 rounded-full text-xs font-medium ${tag.bgLight} dark:${tag.bgDark} ${tag.textLight} dark:${tag.textDark}`}>
+                        <span key={tag.id} className="project-tag px-3 py-1 rounded-full text-xs font-medium" style={{ "--tag-bg": tag.bgLight, "--tag-text": tag.textLight, "--tag-bg-dark": tag.bgDark, "--tag-text-dark": tag.textDark } as React.CSSProperties}>
                           {tag.name}
                         </span>
                       ))}
