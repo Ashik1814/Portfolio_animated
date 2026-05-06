@@ -39,9 +39,13 @@ function StatBadge({ stat, position }: { stat: { id: string; value: string; labe
       initial={{ opacity: 0, scale: 0.8 }}
       animate={isVisible ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`${positionClasses[position] || "absolute left-0 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20`}
+      className={`${positionClasses[position] || "absolute left-0 top-1/4 z-20"} dark:bg-[#120e20] bg-white border dark:border-white/15 border-gray-300/60 rounded-2xl px-4 py-3 shadow-xl dark:shadow-black/40 shadow-gray-400/20`}
     >
-      <div className="flex items-center gap-2.5">
+      <motion.div
+        animate={isVisible ? { y: [0, -8, 0] } : {}}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        className="flex items-center gap-2.5"
+      >
         <span
           className="w-9 h-9 rounded-lg flex items-center justify-center text-sm font-bold shrink-0"
           style={{ backgroundColor: `${stat.color}20`, color: stat.color }}
@@ -49,7 +53,7 @@ function StatBadge({ stat, position }: { stat: { id: string; value: string; labe
           {stat.value}
         </span>
         <span className="text-xs font-semibold dark:text-white/80 text-gray-700 whitespace-nowrap">{stat.label}</span>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -198,7 +202,7 @@ export function HeroContent({ siteConfig, socialLinks, heroStats }: HeroContentP
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.8 }}
-                className="absolute -bottom-2 left-1/2 -translate-x-1/2 glass-card px-4 py-2"
+                className="absolute -bottom-10 left-1/2 -translate-x-1/2 glass-card px-4 py-2"
               >
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 bg-[#2dd4bf] rounded-full animate-pulse" />

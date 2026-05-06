@@ -37,7 +37,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid description' }, { status: 400 })
     }
     
-    const tagsData = data.tags ? JSON.parse(String(data.tags)) : [];
+    let tagsData: string[] = [];
+    if (data.tags) {
+      try {
+        const parsed = JSON.parse(String(data.tags));
+        tagsData = Array.isArray(parsed) ? parsed : [];
+      } catch {
+        tagsData = [];
+      }
+    }
     
     const item = await db.project.create({ 
       data: { 
@@ -59,6 +67,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(item)
   } catch (error) {
     console.error('Failed to create project:', error)
+    console.error('Request data:', JSON.stringify(data, null, 2))
     let errorMessage = 'Failed to create project'
     if (error instanceof Error) {
       console.error('Error name:', error.name)
@@ -66,9 +75,8 @@ export async function POST(request: NextRequest) {
       console.error('Error stack:', error.stack)
       if ((error as any).code) console.error('Prisma error code:', (error as any).code)
       if ((error as any).meta) console.error('Prisma error meta:', JSON.stringify((error as any).meta))
-      // Return detailed error message for debugging (non-production only)
       if (process.env.NODE_ENV !== 'production') {
-        errorMessage = error.message
+        errorMessage = `${error.message} | Data: ${JSON.stringify(data)}`
       }
     }
     return NextResponse.json(
